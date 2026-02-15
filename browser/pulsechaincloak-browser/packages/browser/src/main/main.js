@@ -8,6 +8,21 @@ import { initExtensions } from './chrome-extensions';
 
 const log = require('electron-log');
 
+// Suppress non-critical crx-msg-remote errors from browser-action-list
+// These occur when no tab is active (e.g., on startup or internal pages)
+process.on('unhandledRejection', (reason) => {
+    if (reason && reason.message && reason.message.includes('crx-msg-remote')) {
+        // Silently ignore - this is expected when no tab is active
+        return;
+    }
+    if (reason && reason.message && reason.message.includes('Unable to get active tab')) {
+        return;
+    }
+    console.error('Unhandled rejection:', reason);
+});
+
+
+
 const isProduction = process.env.NODE_ENV === 'production';
 const debugProd = process.env.DEBUG_PROD === 'true';
 
@@ -54,6 +69,20 @@ const launchApp = async () => {
     // monitorWindow.loadURL(EXTENSION_MONITOR_WEBPACK_ENTRY);
 
     initExtensions();
+
+    // Create a default tab so extensions have an active tab to work with
+    // This prevents "Unable to get active tab" errors from browser-action-list
+    setTimeout(async () => {
+        try {
+            const tabsManager = (await import('./tabs')).default;
+            const existingTabs = tabsManager.tabList;
+            if (!existingTabs || existingTabs.size === 0) {
+                await tabsManager.loadInTab({ url: 'about:blank' });
+            }
+        } catch (err) {
+            console.log('Default tab creation skipped:', err.message);
+        }
+    }, 1000);
 
     // Browser starts with welcome page only - no auto-loading external sites
     // Users can navigate manually from the welcome page
