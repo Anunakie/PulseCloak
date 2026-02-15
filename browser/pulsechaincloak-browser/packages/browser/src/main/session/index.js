@@ -23,6 +23,14 @@ export const initSession = async (s) => {
         session = electronSession.defaultSession;
     }
 
+    // Spoof User-Agent to appear as standard Chrome (fixes extension installs)
+    const defaultUA = session.getUserAgent();
+    const chromeUA = defaultUA
+        .replace(/Electron\/[\S]+\s?/g, '')
+        .replace(/PulseChainCloakBrowser\/[\S]+\s?/g, '')
+        .replace(/pulsechaincloak-browser\/[\S]+\s?/g, '');
+    session.setUserAgent(chromeUA);
+
     const allowedSources = [`'self'`];
     isDevelopment && allowedSources.push(` 'unsafe-eval'`); // react-refresh-webpack-plugin needs this
 

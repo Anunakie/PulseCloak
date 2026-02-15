@@ -27,6 +27,16 @@ if (require('electron-squirrel-startup')) {
 }
 
 const start = async () => {
+    // Spoof User-Agent on default session to appear as standard Chrome
+    // This fixes Chrome Web Store and extension sites rejecting the browser
+    const { session: electronSession } = require('electron');
+    const defaultUA = electronSession.defaultSession.getUserAgent();
+    const chromeUA = defaultUA
+        .replace(/Electron\/[\S]+\s?/g, '')
+        .replace(/PulseChainCloakBrowser\/[\S]+\s?/g, '')
+        .replace(/pulsechaincloak-browser\/[\S]+\s?/g, '');
+    electronSession.defaultSession.setUserAgent(chromeUA);
+
     initSession();
     launchApp();
 };
