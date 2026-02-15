@@ -237,17 +237,57 @@
     </div>
 
     <script>
+      function resolveNavigationUrl(input) {
+        const trimmed = (input || '').trim();
+        if (!trimmed) return null;
+
+        // Already a full URL with protocol
+        if (/^https?:\/\//i.test(trimmed)) return trimmed;
+
+        // Other protocols (chrome://, chrome-extension://, file://, etc.)
+        if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//i.test(trimmed)) return trimmed;
+
+        // localhost with optional port
+        if (/^localhost(:\d+)?(\/.*)?$/i.test(trimmed)) return 'http://' + trimmed;
+
+        // IP address (v4) with optional port
+        if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/.test(trimmed)) return 'http://' + trimmed;
+
+        // Looks like a domain: contains a dot, no spaces, valid domain chars
+        if (/^[\w-]+(\.[\w-]+)+(\/.*)?$/.test(trimmed) && !trimmed.includes(' ')) {
+          return 'https://' + trimmed;
+        }
+
+        // Otherwise treat as a search query
+        return 'https://www.google.com/search?q=' + encodeURIComponent(trimmed);
+      }
+
       document.getElementById('searchInput').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-          const query = e.target.value.trim();
-          if (!query) return;
-          if (query.match(/^https?:\/\//i) || query.match(/^[\w-]+(\.[\w-]+)+/)) {
-            const url = query.match(/^https?:\/\//i) ? query : 'https://' + query;
-            window.location.href = url;
-          } else {
-            window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+          const url = resolveNavigationUrl(e.target.value);
+          if (url) {
+            // Use chrome.tabs.update to navigate within extension context
+            if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.update) {
+              chrome.tabs.update(undefined, { url: url });
+            } else {
+              // Fallback for non-extension context
+              window.location.href = url;
+            }
           }
         }
+      });
+
+      // Also handle quick-link clicks via chrome.tabs.update
+      document.querySelectorAll('.quick-link').forEach((link) => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const url = link.getAttribute('href');
+          if (url && typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.update) {
+            chrome.tabs.update(undefined, { url: url });
+          } else if (url) {
+            window.location.href = url;
+          }
+        });
       });
     </script>
   </body>

@@ -353,6 +353,51 @@ class Browser {
     }
 
     webContents.setWindowOpenHandler((details) => {
+      // Detect extension popup windows (e.g., MetaMask confirmation dialogs)
+      if (details.url && details.url.startsWith('chrome-extension://')) {
+        return {
+          action: 'allow',
+          outlivesOpener: true,
+          createWindow: ({ webContents: guest, webPreferences }) => {
+            const parentWin = this.getWindowFromWebContents(webContents)
+            const parentBounds = parentWin
+              ? parentWin.window.getBounds()
+              : { x: 100, y: 100, width: 1400, height: 900 }
+
+            const popupWin = new BrowserWindow({
+              width: 360,
+              height: 600,
+              x: parentBounds.x + parentBounds.width - 380,
+              y: parentBounds.y + 80,
+              frame: true,
+              resizable: true,
+              minimizable: false,
+              maximizable: false,
+              skipTaskbar: true,
+              parent: parentWin ? parentWin.window : undefined,
+              backgroundColor: '#0a0e1a',
+              title: 'Extension',
+              webPreferences: {
+                ...webPreferences,
+                nodeIntegration: false,
+                contextIsolation: true,
+              },
+            })
+
+            popupWin.loadURL(details.url)
+
+            // Close popup when it loses focus (optional UX improvement)
+            popupWin.on('blur', () => {
+              if (!popupWin.isDestroyed() && !popupWin.webContents.isDevToolsOpened()) {
+                popupWin.close()
+              }
+            })
+
+            return popupWin.webContents
+          },
+        }
+      }
+
       switch (details.disposition) {
         case 'foreground-tab':
         case 'background-tab':

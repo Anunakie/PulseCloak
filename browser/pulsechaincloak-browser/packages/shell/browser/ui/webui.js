@@ -662,10 +662,35 @@ class WebUI {
     }
   }
 
+  resolveNavigationUrl(input) {
+    const trimmed = (input || '').trim()
+    if (!trimmed) return null
+
+    // Already a full URL with protocol
+    if (/^https?:\/\//i.test(trimmed)) return trimmed
+
+    // chrome://, chrome-extension://, file://, etc.
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//i.test(trimmed)) return trimmed
+
+    // localhost with optional port
+    if (/^localhost(:\d+)?(\/.*)?$/i.test(trimmed)) return 'http://' + trimmed
+
+    // IP address (v4) with optional port
+    if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/.test(trimmed)) return 'http://' + trimmed
+
+    // Looks like a domain: contains a dot, no spaces, valid domain chars
+    if (/^[\w-]+(\.[\w-]+)+(\/.*)?$/.test(trimmed) && !trimmed.includes(' ')) {
+      return 'https://' + trimmed
+    }
+
+    // Otherwise treat as a search query
+    return 'https://www.google.com/search?q=' + encodeURIComponent(trimmed)
+  }
+
   onAddressUrlKeyPress(event) {
     if (event.code === 'Enter') {
-      const url = this.$.addressUrl.value
-      chrome.tabs.update({ url })
+      const url = this.resolveNavigationUrl(this.$.addressUrl.value)
+      if (url) chrome.tabs.update({ url })
     }
   }
 
