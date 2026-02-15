@@ -1,11 +1,13 @@
 const path = require('path')
-const { app, session, BrowserWindow, dialog } = require('electron')
+const { app, session, BrowserWindow, dialog, ipcMain } = require('electron')
 
 const { Tabs } = require('./tabs')
 const { ElectronChromeExtensions } = require('electron-chrome-extensions')
 const { setupMenu } = require('./menu')
 const { buildChromeContextMenu } = require('electron-chrome-context-menu')
 const { installChromeWebStore, loadAllExtensions } = require('electron-chrome-web-store')
+const { AdBlocker } = require('./adblocker')
+const { Wallet } = require('./wallet')
 
 // https://www.electronforge.io/config/plugins/webpack#main-process-code
 const SHELL_ROOT_DIR = path.join(__dirname, '../../')
@@ -91,6 +93,9 @@ class Browser {
   }
 
   constructor() {
+    this.adblocker = new AdBlocker()
+    this.wallet = new Wallet()
+
     this.ready = new Promise((resolve) => {
       this.resolveReady = resolve
     })
@@ -257,6 +262,18 @@ class Browser {
       }),
     )
 
+    // Initialize ad blocker and wallet
+    await this.adblocker.init()
+    await this.wallet.init()
+
+    // Setup IPC for wallet sidebar width changes
+    ipcMain.on('sidebar:walletToggle', (event, isOpen) => {
+      const win = this.getWindowFromWebContents(event.sender)
+      if (win) {
+        win.tabs.setWalletSidebarOpen(isOpen)
+      }
+    })
+
     this.createInitialWindow()
     this.resolveReady()
   }
@@ -311,6 +328,9 @@ class Browser {
       },
     })
     this.windows.push(win)
+
+    // Register webui webContents for adblocker updates
+    this.adblocker.addListener(win.webContents)
 
     if (process.env.SHELL_DEBUG) {
       win.webContents.openDevTools({ mode: 'detach' })

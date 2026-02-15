@@ -4,6 +4,7 @@ class WebUI {
   /** @type {chrome.tabs.Tab[]} */
   tabList = []
   activeSpace = 'browse'
+  walletOpen = false
 
   constructor() {
     const $ = document.querySelector.bind(document)
@@ -28,6 +29,50 @@ class WebUI {
       addSpaceButton: $('#addSpace'),
       settingsButton: $('#settingsBtn'),
       profileButton: $('#profileBtn'),
+
+      // Shield / Ad Blocker
+      shieldBtn: $('#shieldBtn'),
+      shieldBadge: $('#shieldBadge'),
+
+      // Wallet sidebar
+      walletToggleBtn: $('#walletToggleBtn'),
+      walletSidebar: $('#walletSidebar'),
+      walletCloseBtn: $('#walletCloseBtn'),
+      walletNetwork: $('#walletNetwork'),
+
+      // Wallet - not connected
+      walletNotConnected: $('#walletNotConnected'),
+      walletPassword: $('#walletPassword'),
+      walletLoadBtn: $('#walletLoadBtn'),
+      walletCreateBtn: $('#walletCreateBtn'),
+      walletImportBtn: $('#walletImportBtn'),
+      walletImportPanel: $('#walletImportPanel'),
+      walletImportInput: $('#walletImportInput'),
+      walletImportConfirmBtn: $('#walletImportConfirmBtn'),
+      walletImportCancelBtn: $('#walletImportCancelBtn'),
+
+      // Wallet - connected
+      walletConnected: $('#walletConnected'),
+      walletAddress: $('#walletAddress'),
+      walletCopyAddr: $('#walletCopyAddr'),
+      walletBalanceAmount: $('#walletBalanceAmount'),
+      walletBalanceCurrency: $('#walletBalanceCurrency'),
+      walletCloakBalance: $('#walletCloakBalance'),
+      walletRefreshBtn: $('#walletRefreshBtn'),
+      walletSendTo: $('#walletSendTo'),
+      walletSendAmount: $('#walletSendAmount'),
+      walletSendBtn: $('#walletSendBtn'),
+      walletSavePassword: $('#walletSavePassword'),
+      walletSaveBtn: $('#walletSaveBtn'),
+      walletDisconnectBtn: $('#walletDisconnectBtn'),
+
+      // Wallet - mnemonic display
+      walletMnemonicPanel: $('#walletMnemonicPanel'),
+      walletMnemonicDisplay: $('#walletMnemonicDisplay'),
+      walletMnemonicDoneBtn: $('#walletMnemonicDoneBtn'),
+
+      // Wallet - status
+      walletStatus: $('#walletStatus'),
     }
 
     // Tab controls
@@ -54,11 +99,19 @@ class WebUI {
     // Sidebar controls
     this.initSidebar()
 
+    // Shield / Ad Blocker
+    this.initShield()
+
+    // Wallet
+    this.initWallet()
+
     const platformClass = `platform-${navigator.userAgentData.platform.toLowerCase()}`
     document.body.classList.add(platformClass)
 
     this.initTabs()
   }
+
+  // ===== SIDEBAR =====
 
   initSidebar() {
     // Space switching
@@ -80,7 +133,6 @@ class WebUI {
 
     // Profile button
     this.$.profileButton.addEventListener('click', () => {
-      // Placeholder for profile/account panel
       console.log('Profile clicked')
     })
   }
@@ -115,6 +167,419 @@ class WebUI {
 
     spacesContainer.insertBefore(newSpace, addBtn)
   }
+
+  // ===== SHIELD / AD BLOCKER =====
+
+  initShield() {
+    if (!window.pulseCloak || !window.pulseCloak.adblocker) {
+      console.warn('[WebUI] pulseCloak.adblocker API not available')
+      return
+    }
+
+    // Get initial state
+    window.pulseCloak.adblocker.getState().then((state) => {
+      this.updateShieldUI(state)
+    })
+
+    // Toggle on click
+    this.$.shieldBtn.addEventListener('click', () => {
+      window.pulseCloak.adblocker.toggle().then((state) => {
+        this.updateShieldUI(state)
+      })
+    })
+
+    // Listen for updates from main process
+    window.pulseCloak.adblocker.onUpdate((data) => {
+      this.updateShieldUI(data)
+    })
+  }
+
+  updateShieldUI(state) {
+    if (!state) return
+
+    const btn = this.$.shieldBtn
+    const badge = this.$.shieldBadge
+
+    if (state.enabled) {
+      btn.classList.add('active')
+      btn.classList.remove('inactive')
+      btn.title = `Privacy Shield: ON (${state.blockedCount} blocked)`
+    } else {
+      btn.classList.remove('active')
+      btn.classList.add('inactive')
+      btn.title = 'Privacy Shield: OFF'
+    }
+
+    // Update badge
+    if (state.blockedCount > 0) {
+      badge.textContent = state.blockedCount > 999 ? '999+' : state.blockedCount
+      badge.classList.add('visible')
+    } else {
+      badge.classList.remove('visible')
+    }
+  }
+
+  // ===== WALLET =====
+
+  initWallet() {
+    // Toggle wallet sidebar
+    this.$.walletToggleBtn.addEventListener('click', () => {
+      this.toggleWallet()
+    })
+
+    this.$.walletCloseBtn.addEventListener('click', () => {
+      this.toggleWallet(false)
+    })
+
+    // Network selector
+    this.$.walletNetwork.addEventListener('change', () => {
+      this.switchWalletNetwork()
+    })
+
+    // Create wallet
+    this.$.walletCreateBtn.addEventListener('click', () => {
+      this.createWallet()
+    })
+
+    // Import wallet - show panel
+    this.$.walletImportBtn.addEventListener('click', () => {
+      this.$.walletImportPanel.classList.remove('hidden')
+    })
+
+    this.$.walletImportCancelBtn.addEventListener('click', () => {
+      this.$.walletImportPanel.classList.add('hidden')
+      this.$.walletImportInput.value = ''
+    })
+
+    this.$.walletImportConfirmBtn.addEventListener('click', () => {
+      this.importWallet()
+    })
+
+    // Load saved wallet
+    this.$.walletLoadBtn.addEventListener('click', () => {
+      this.loadWallet()
+    })
+
+    // Allow Enter key on password field
+    this.$.walletPassword.addEventListener('keypress', (e) => {
+      if (e.code === 'Enter') this.loadWallet()
+    })
+
+    // Copy address
+    this.$.walletCopyAddr.addEventListener('click', () => {
+      this.copyWalletAddress()
+    })
+
+    // Refresh balance
+    this.$.walletRefreshBtn.addEventListener('click', () => {
+      this.refreshBalance()
+    })
+
+    // Send
+    this.$.walletSendBtn.addEventListener('click', () => {
+      this.sendTransaction()
+    })
+
+    // Save wallet
+    this.$.walletSaveBtn.addEventListener('click', () => {
+      this.saveWallet()
+    })
+
+    // Disconnect
+    this.$.walletDisconnectBtn.addEventListener('click', () => {
+      this.disconnectWallet()
+    })
+
+    // Mnemonic done
+    this.$.walletMnemonicDoneBtn.addEventListener('click', () => {
+      this.$.walletMnemonicPanel.classList.add('hidden')
+      this.$.walletMnemonicDisplay.textContent = ''
+    })
+
+    // Check initial wallet state
+    this.checkWalletState()
+  }
+
+  toggleWallet(forceState) {
+    const isOpen = typeof forceState === 'boolean' ? forceState : !this.walletOpen
+    this.walletOpen = isOpen
+
+    if (isOpen) {
+      this.$.walletSidebar.classList.add('open')
+      this.$.walletToggleBtn.classList.add('active')
+    } else {
+      this.$.walletSidebar.classList.remove('open')
+      this.$.walletToggleBtn.classList.remove('active')
+    }
+
+    // Notify main process to adjust tab bounds
+    if (window.pulseCloak && window.pulseCloak.sidebar) {
+      window.pulseCloak.sidebar.walletToggle(isOpen)
+    }
+  }
+
+  async checkWalletState() {
+    if (!window.pulseCloak || !window.pulseCloak.wallet) {
+      console.warn('[WebUI] pulseCloak.wallet API not available')
+      return
+    }
+
+    try {
+      const state = await window.pulseCloak.wallet.getState()
+      this.updateWalletUI(state)
+    } catch (e) {
+      console.error('[WebUI] Failed to get wallet state:', e)
+    }
+  }
+
+  updateWalletUI(state) {
+    if (!state) return
+
+    if (state.connected) {
+      this.$.walletNotConnected.classList.add('hidden')
+      this.$.walletConnected.classList.remove('hidden')
+      this.$.walletAddress.textContent = state.address
+      this.$.walletBalanceCurrency.textContent = state.currency
+      this.refreshBalance()
+    } else {
+      this.$.walletNotConnected.classList.remove('hidden')
+      this.$.walletConnected.classList.add('hidden')
+    }
+
+    // Update network selector
+    this.$.walletNetwork.value = state.network || 'testnet'
+  }
+
+  async switchWalletNetwork() {
+    if (!window.pulseCloak?.wallet) return
+    try {
+      const network = this.$.walletNetwork.value
+      const state = await window.pulseCloak.wallet.switchNetwork(network)
+      this.updateWalletUI(state)
+      this.showWalletStatus(`Switched to ${state.networkName}`, 'info')
+    } catch (e) {
+      this.showWalletStatus('Failed to switch network', 'error')
+    }
+  }
+
+  async createWallet() {
+    if (!window.pulseCloak?.wallet) return
+    try {
+      this.showWalletStatus('Creating wallet...', 'info')
+      const result = await window.pulseCloak.wallet.create()
+      if (result.error) {
+        this.showWalletStatus(result.error, 'error')
+        return
+      }
+
+      // Show mnemonic
+      this.$.walletMnemonicPanel.classList.remove('hidden')
+      this.$.walletMnemonicDisplay.textContent = result.mnemonic
+
+      // Update UI to connected state
+      const state = await window.pulseCloak.wallet.getState()
+      this.updateWalletUI(state)
+      this.showWalletStatus('Wallet created! Save your mnemonic!', 'success')
+    } catch (e) {
+      this.showWalletStatus('Failed to create wallet', 'error')
+    }
+  }
+
+  async importWallet() {
+    if (!window.pulseCloak?.wallet) return
+    const input = this.$.walletImportInput.value.trim()
+    if (!input) {
+      this.showWalletStatus('Please enter a mnemonic or private key', 'error')
+      return
+    }
+
+    try {
+      this.showWalletStatus('Importing wallet...', 'info')
+      let result
+
+      // Detect if it's a private key (hex string) or mnemonic (words)
+      if (input.startsWith('0x') || /^[0-9a-fA-F]{64}$/.test(input)) {
+        result = await window.pulseCloak.wallet.importPrivateKey(input)
+      } else {
+        result = await window.pulseCloak.wallet.importMnemonic(input)
+      }
+
+      if (result.error) {
+        this.showWalletStatus(result.error, 'error')
+        return
+      }
+
+      this.$.walletImportPanel.classList.add('hidden')
+      this.$.walletImportInput.value = ''
+
+      const state = await window.pulseCloak.wallet.getState()
+      this.updateWalletUI(state)
+      this.showWalletStatus('Wallet imported successfully!', 'success')
+    } catch (e) {
+      this.showWalletStatus('Failed to import wallet', 'error')
+    }
+  }
+
+  async loadWallet() {
+    if (!window.pulseCloak?.wallet) return
+    const password = this.$.walletPassword.value
+    if (!password) {
+      this.showWalletStatus('Please enter your password', 'error')
+      return
+    }
+
+    try {
+      this.showWalletStatus('Unlocking wallet...', 'info')
+      const result = await window.pulseCloak.wallet.load(password)
+      if (result.error) {
+        this.showWalletStatus(result.error, 'error')
+        return
+      }
+
+      this.$.walletPassword.value = ''
+      const state = await window.pulseCloak.wallet.getState()
+      this.updateWalletUI(state)
+      this.showWalletStatus('Wallet unlocked!', 'success')
+    } catch (e) {
+      this.showWalletStatus('Failed to unlock wallet', 'error')
+    }
+  }
+
+  async refreshBalance() {
+    if (!window.pulseCloak?.wallet) return
+    try {
+      const [balance, cloakBalance] = await Promise.all([
+        window.pulseCloak.wallet.getBalance(),
+        window.pulseCloak.wallet.getCloakBalance(),
+      ])
+
+      if (balance.error) {
+        this.$.walletBalanceAmount.textContent = 'Error'
+        console.error('[Wallet] Balance error:', balance.error)
+      } else {
+        // Format to 4 decimal places
+        const formatted = parseFloat(balance.balance).toFixed(4)
+        this.$.walletBalanceAmount.textContent = formatted
+        this.$.walletBalanceCurrency.textContent = balance.currency
+      }
+
+      if (cloakBalance && !cloakBalance.error) {
+        this.$.walletCloakBalance.textContent = parseFloat(cloakBalance.balance).toFixed(2)
+      }
+    } catch (e) {
+      console.error('[Wallet] Refresh error:', e)
+    }
+  }
+
+  async sendTransaction() {
+    if (!window.pulseCloak?.wallet) return
+    const to = this.$.walletSendTo.value.trim()
+    const amount = this.$.walletSendAmount.value.trim()
+
+    if (!to || !amount) {
+      this.showWalletStatus('Please fill in recipient and amount', 'error')
+      return
+    }
+
+    if (!to.startsWith('0x') || to.length !== 42) {
+      this.showWalletStatus('Invalid recipient address', 'error')
+      return
+    }
+
+    try {
+      this.showWalletStatus('Sending transaction...', 'info')
+      const result = await window.pulseCloak.wallet.send(to, amount)
+      if (result.error) {
+        this.showWalletStatus(result.error, 'error')
+        return
+      }
+
+      this.$.walletSendTo.value = ''
+      this.$.walletSendAmount.value = ''
+      this.showWalletStatus(`Sent! TX: ${result.hash.substring(0, 16)}...`, 'success')
+
+      // Refresh balance after a delay
+      setTimeout(() => this.refreshBalance(), 3000)
+    } catch (e) {
+      this.showWalletStatus('Transaction failed', 'error')
+    }
+  }
+
+  async saveWallet() {
+    if (!window.pulseCloak?.wallet) return
+    const password = this.$.walletSavePassword.value
+    if (!password) {
+      this.showWalletStatus('Please enter a password to encrypt', 'error')
+      return
+    }
+    if (password.length < 4) {
+      this.showWalletStatus('Password too short (min 4 chars)', 'error')
+      return
+    }
+
+    try {
+      const result = await window.pulseCloak.wallet.save(password)
+      if (result.error) {
+        this.showWalletStatus(result.error, 'error')
+        return
+      }
+      this.$.walletSavePassword.value = ''
+      this.showWalletStatus('Wallet saved & encrypted!', 'success')
+    } catch (e) {
+      this.showWalletStatus('Failed to save wallet', 'error')
+    }
+  }
+
+  async disconnectWallet() {
+    if (!window.pulseCloak?.wallet) return
+    try {
+      const state = await window.pulseCloak.wallet.disconnect()
+      this.updateWalletUI(state)
+      this.$.walletBalanceAmount.textContent = '0.0000'
+      this.showWalletStatus('Wallet disconnected', 'info')
+    } catch (e) {
+      this.showWalletStatus('Failed to disconnect', 'error')
+    }
+  }
+
+  copyWalletAddress() {
+    const addr = this.$.walletAddress.textContent
+    if (addr && addr !== '0x...') {
+      navigator.clipboard.writeText(addr).then(() => {
+        this.$.walletCopyAddr.textContent = '\u2713'
+        setTimeout(() => {
+          this.$.walletCopyAddr.textContent = '\uD83D\uDCCB'
+        }, 1500)
+      }).catch(() => {
+        // Fallback
+        const ta = document.createElement('textarea')
+        ta.value = addr
+        document.body.appendChild(ta)
+        ta.select()
+        document.execCommand('copy')
+        document.body.removeChild(ta)
+        this.$.walletCopyAddr.textContent = '\u2713'
+        setTimeout(() => {
+          this.$.walletCopyAddr.textContent = '\uD83D\uDCCB'
+        }, 1500)
+      })
+    }
+  }
+
+  showWalletStatus(message, type) {
+    const el = this.$.walletStatus
+    el.textContent = message
+    el.className = `wallet-status ${type}`
+    el.classList.remove('hidden')
+
+    // Auto-hide after 5 seconds
+    clearTimeout(this._statusTimeout)
+    this._statusTimeout = setTimeout(() => {
+      el.classList.add('hidden')
+    }, 5000)
+  }
+
+  // ===== TABS =====
 
   async initTabs() {
     const tabs = await new Promise((resolve) => chrome.tabs.query({ windowId: -2 }, resolve))

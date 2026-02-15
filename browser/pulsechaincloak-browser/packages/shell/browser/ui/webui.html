@@ -20,6 +20,7 @@
         --sidebar-width: 56px;
         --tabstrip-height: 36px;
         --toolbar-height: 40px;
+        --wallet-sidebar-width: 340px;
 
         /* electron-chrome-extensions colors */
         --browser-action-badge-outline: var(--bg-tab-active);
@@ -172,11 +173,18 @@
         border: none;
         color: var(--text-secondary);
         transition: all 0.2s;
+        position: relative;
       }
 
       .sidebar-btn:hover {
         background: var(--hover-cyan);
         color: var(--accent-cyan);
+      }
+
+      .sidebar-btn.active {
+        background: rgba(124, 58, 237, 0.15);
+        color: var(--accent-purple);
+        box-shadow: 0 0 8px rgba(124, 58, 237, 0.2);
       }
 
       /* ===== MAIN CONTENT ===== */
@@ -479,24 +487,375 @@
         margin-left: 4px;
       }
 
-      .shield-icon {
+      /* ===== SHIELD / AD BLOCKER BUTTON ===== */
+      .shield-btn {
         position: relative;
+        background: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border-radius: 6px;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
       }
 
-      .shield-icon .status-dot {
+      .shield-btn:hover {
+        background: var(--hover-cyan);
+      }
+
+      .shield-btn.active {
+        color: #22c55e;
+      }
+
+      .shield-btn.active:hover {
+        background: rgba(34, 197, 94, 0.1);
+      }
+
+      .shield-btn.inactive {
+        color: #ef4444;
+      }
+
+      .shield-badge {
         position: absolute;
-        top: 2px;
-        right: 2px;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: #22c55e;
-        border: 1px solid var(--bg-toolbar);
+        top: 1px;
+        right: 0px;
+        min-width: 14px;
+        height: 14px;
+        padding: 0 3px;
+        border-radius: 7px;
+        background: var(--accent-cyan);
+        color: #0a0e1a;
+        font-size: 9px;
+        font-weight: 700;
+        line-height: 14px;
+        text-align: center;
+        pointer-events: none;
+        display: none;
+      }
+
+      .shield-badge.visible {
+        display: block;
       }
 
       browser-action-list {
         display: flex;
         align-items: center;
+      }
+
+      /* ===== WALLET SIDEBAR ===== */
+      .wallet-sidebar {
+        width: 0;
+        min-width: 0;
+        background: var(--bg-sidebar);
+        border-left: 1px solid var(--border-subtle);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: width 0.25s ease, min-width 0.25s ease;
+        z-index: 10;
+      }
+
+      .wallet-sidebar.open {
+        width: var(--wallet-sidebar-width);
+        min-width: var(--wallet-sidebar-width);
+      }
+
+      .wallet-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-subtle);
+        flex-shrink: 0;
+      }
+
+      .wallet-header h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--accent-cyan);
+        white-space: nowrap;
+      }
+
+      .wallet-close-btn {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 18px;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 4px;
+        transition: all 0.15s;
+      }
+
+      .wallet-close-btn:hover {
+        background: rgba(255, 100, 100, 0.2);
+        color: #ff6b6b;
+      }
+
+      .wallet-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .wallet-body::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .wallet-body::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .wallet-body::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+      }
+
+      /* Wallet sections */
+      .wallet-section {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-subtle);
+        border-radius: 10px;
+        padding: 14px;
+      }
+
+      .wallet-section-title {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+      }
+
+      .wallet-network-select {
+        width: 100%;
+        padding: 8px 10px;
+        background: var(--bg-addressbar);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-size: 12px;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
+      .wallet-network-select:focus {
+        border-color: rgba(0, 229, 255, 0.4);
+      }
+
+      .wallet-address {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg-addressbar);
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: var(--accent-cyan);
+        word-break: break-all;
+        line-height: 1.4;
+      }
+
+      .wallet-copy-btn {
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 2px;
+        flex-shrink: 0;
+        transition: color 0.15s;
+      }
+
+      .wallet-copy-btn:hover {
+        color: var(--accent-cyan);
+      }
+
+      .wallet-balance {
+        text-align: center;
+        padding: 8px 0;
+      }
+
+      .wallet-balance-amount {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+
+      .wallet-balance-currency {
+        font-size: 12px;
+        color: var(--text-secondary);
+      }
+
+      .wallet-balance-cloak {
+        font-size: 13px;
+        color: var(--accent-purple);
+        margin-top: 6px;
+      }
+
+      .wallet-btn {
+        width: 100%;
+        padding: 10px 14px;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .wallet-btn-primary {
+        background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+        color: #0a0e1a;
+      }
+
+      .wallet-btn-primary:hover {
+        box-shadow: 0 0 16px rgba(0, 229, 255, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .wallet-btn-secondary {
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text-primary);
+        border: 1px solid var(--border-subtle);
+      }
+
+      .wallet-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(0, 229, 255, 0.3);
+      }
+
+      .wallet-btn-danger {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+
+      .wallet-btn-danger:hover {
+        background: rgba(239, 68, 68, 0.2);
+      }
+
+      .wallet-btn-sm {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      .wallet-input {
+        width: 100%;
+        padding: 8px 10px;
+        background: var(--bg-addressbar);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        color: var(--text-primary);
+        font-size: 12px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .wallet-input:focus {
+        border-color: rgba(0, 229, 255, 0.4);
+      }
+
+      .wallet-input::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .wallet-input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .wallet-input-label {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+
+      .wallet-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .wallet-row > * {
+        flex: 1;
+      }
+
+      .wallet-status {
+        font-size: 11px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .wallet-status.success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #22c55e;
+      }
+
+      .wallet-status.error {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
+
+      .wallet-status.info {
+        background: rgba(0, 229, 255, 0.1);
+        color: var(--accent-cyan);
+      }
+
+      .wallet-mnemonic-display {
+        background: var(--bg-addressbar);
+        border-radius: 6px;
+        padding: 10px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        color: #fbbf24;
+        line-height: 1.6;
+        word-break: break-word;
+        border: 1px solid rgba(251, 191, 36, 0.2);
+      }
+
+      .wallet-mnemonic-warning {
+        font-size: 10px;
+        color: #fbbf24;
+        text-align: center;
+        margin-top: 4px;
+      }
+
+      .wallet-tx-link {
+        color: var(--accent-cyan);
+        text-decoration: none;
+        font-size: 11px;
+        word-break: break-all;
+      }
+
+      .wallet-tx-link:hover {
+        text-decoration: underline;
+      }
+
+      .hidden {
+        display: none !important;
       }
     </style>
   </head>
@@ -521,6 +880,9 @@
           </div>
         </div>
         <div class="sidebar-bottom">
+          <button class="sidebar-btn" id="walletToggleBtn" title="Wallet">
+            &#128179;
+          </button>
           <button class="sidebar-btn" id="settingsBtn" title="Settings">
             &#9881;&#65039;
           </button>
@@ -568,15 +930,115 @@
             </div>
             <div class="toolbar-right">
               <browser-action-list id="actions" alignment="bottom left"></browser-action-list>
-              <button class="control shield-icon" title="Privacy Shield">
+              <button class="shield-btn active" id="shieldBtn" title="Privacy Shield: ON">
                 &#128737;
-                <span class="status-dot"></span>
+                <span class="shield-badge" id="shieldBadge">0</span>
               </button>
               <button class="control" id="menuBtn" title="Menu">&#8942;</button>
             </div>
           </div>
         </div>
       </main>
+
+      <!-- Wallet Sidebar -->
+      <aside class="wallet-sidebar" id="walletSidebar">
+        <div class="wallet-header">
+          <h3>&#128179; PulseCloak Wallet</h3>
+          <button class="wallet-close-btn" id="walletCloseBtn">&times;</button>
+        </div>
+        <div class="wallet-body">
+          <!-- Network Selector -->
+          <div class="wallet-section">
+            <div class="wallet-section-title">Network</div>
+            <select class="wallet-network-select" id="walletNetwork">
+              <option value="testnet">PulseChain Testnet v4 (943)</option>
+              <option value="mainnet">PulseChain Mainnet (369)</option>
+            </select>
+          </div>
+
+          <!-- Not Connected State -->
+          <div id="walletNotConnected">
+            <div class="wallet-section">
+              <div class="wallet-section-title">Connect Wallet</div>
+              <div class="wallet-input-group">
+                <input type="password" class="wallet-input" id="walletPassword" placeholder="Enter password to unlock..." />
+                <button class="wallet-btn wallet-btn-primary" id="walletLoadBtn">&#128274; Unlock Saved Wallet</button>
+              </div>
+              <div style="text-align:center;padding:10px 0;color:var(--text-secondary);font-size:11px;">— or —</div>
+              <div class="wallet-input-group">
+                <button class="wallet-btn wallet-btn-secondary" id="walletCreateBtn">&#10024; Create New Wallet</button>
+                <button class="wallet-btn wallet-btn-secondary" id="walletImportBtn">&#128229; Import Wallet</button>
+              </div>
+            </div>
+
+            <!-- Import Panel (hidden by default) -->
+            <div class="wallet-section hidden" id="walletImportPanel">
+              <div class="wallet-section-title">Import Wallet</div>
+              <div class="wallet-input-group">
+                <textarea class="wallet-input" id="walletImportInput" rows="3" placeholder="Enter mnemonic phrase or private key..." style="resize:vertical;min-height:60px;"></textarea>
+                <div class="wallet-row">
+                  <button class="wallet-btn wallet-btn-primary wallet-btn-sm" id="walletImportConfirmBtn">Import</button>
+                  <button class="wallet-btn wallet-btn-secondary wallet-btn-sm" id="walletImportCancelBtn">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connected State -->
+          <div id="walletConnected" class="hidden">
+            <!-- Address -->
+            <div class="wallet-section">
+              <div class="wallet-section-title">Address</div>
+              <div class="wallet-address">
+                <span id="walletAddress">0x...</span>
+                <button class="wallet-copy-btn" id="walletCopyAddr" title="Copy address">&#128203;</button>
+              </div>
+            </div>
+
+            <!-- Balance -->
+            <div class="wallet-section">
+              <div class="wallet-balance">
+                <div class="wallet-balance-amount" id="walletBalanceAmount">0.0000</div>
+                <div class="wallet-balance-currency" id="walletBalanceCurrency">tPLS</div>
+                <div class="wallet-balance-cloak">$CLOAK: <span id="walletCloakBalance">0.0</span> <span style="font-size:10px;color:var(--text-secondary);">(not deployed)</span></div>
+              </div>
+              <button class="wallet-btn wallet-btn-secondary wallet-btn-sm" id="walletRefreshBtn">&#8635; Refresh</button>
+            </div>
+
+            <!-- Send -->
+            <div class="wallet-section">
+              <div class="wallet-section-title">Send</div>
+              <div class="wallet-input-group">
+                <input class="wallet-input" id="walletSendTo" placeholder="Recipient address (0x...)" />
+                <input class="wallet-input" id="walletSendAmount" placeholder="Amount" type="number" step="0.0001" min="0" />
+                <button class="wallet-btn wallet-btn-primary" id="walletSendBtn">&#9889; Send</button>
+              </div>
+            </div>
+
+            <!-- Save / Disconnect -->
+            <div class="wallet-section">
+              <div class="wallet-input-group">
+                <input type="password" class="wallet-input" id="walletSavePassword" placeholder="Password to encrypt wallet..." />
+                <button class="wallet-btn wallet-btn-secondary wallet-btn-sm" id="walletSaveBtn">&#128190; Save Wallet</button>
+              </div>
+              <div style="margin-top:8px;">
+                <button class="wallet-btn wallet-btn-danger wallet-btn-sm" id="walletDisconnectBtn">&#128275; Disconnect</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mnemonic Display (shown after create) -->
+          <div class="wallet-section hidden" id="walletMnemonicPanel">
+            <div class="wallet-section-title">&#9888;&#65039; Backup Mnemonic</div>
+            <div class="wallet-mnemonic-display" id="walletMnemonicDisplay"></div>
+            <div class="wallet-mnemonic-warning">Write this down and store it safely. Never share it!</div>
+            <button class="wallet-btn wallet-btn-secondary wallet-btn-sm" id="walletMnemonicDoneBtn" style="margin-top:8px;">I've saved it</button>
+          </div>
+
+          <!-- Status Messages -->
+          <div class="wallet-status hidden" id="walletStatus"></div>
+        </div>
+      </aside>
     </div>
     <script src="./webui.js"></script>
   </body>

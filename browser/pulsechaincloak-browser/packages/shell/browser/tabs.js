@@ -19,6 +19,9 @@ class Tab {
     this.window = parentWindow
     this.webContents = this.view.webContents
     this.window.contentView.addChildView(this.view)
+
+    // Right sidebar (wallet) width - 0 when closed
+    this.walletSidebarWidth = 0
   }
 
   destroy() {
@@ -65,13 +68,18 @@ class Tab {
     this.view.webContents.reload()
   }
 
+  setWalletSidebarWidth(width) {
+    this.walletSidebarWidth = width
+    this.invalidateLayout()
+  }
+
   invalidateLayout() {
     const [width, height] = this.window.getSize()
     const padding = 2
     this.view.setBounds({
       x: sidebarWidth + padding,
       y: toolbarHeight,
-      width: width - sidebarWidth - padding * 2,
+      width: width - sidebarWidth - this.walletSidebarWidth - padding * 2,
       height: height - toolbarHeight - padding,
     })
     this.view.setBorderRadius(8)
@@ -148,6 +156,13 @@ class Tabs extends EventEmitter {
     tab.show()
     this.selected = tab
     this.emit('tab-selected', tab)
+  }
+
+  setWalletSidebarOpen(isOpen) {
+    const width = isOpen ? 340 : 0
+    this.tabList.forEach((tab) => {
+      tab.setWalletSidebarWidth(width)
+    })
   }
 }
 
