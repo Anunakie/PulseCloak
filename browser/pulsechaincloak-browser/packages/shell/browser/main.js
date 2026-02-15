@@ -6,7 +6,6 @@ const { ElectronChromeExtensions } = require('electron-chrome-extensions')
 const { setupMenu } = require('./menu')
 const { buildChromeContextMenu } = require('electron-chrome-context-menu')
 const { installChromeWebStore, loadAllExtensions } = require('electron-chrome-web-store')
-const { AdBlocker } = require('./adblocker')
 const { Wallet } = require('./wallet')
 
 // https://www.electronforge.io/config/plugins/webpack#main-process-code
@@ -93,7 +92,6 @@ class Browser {
   }
 
   constructor() {
-    this.adblocker = new AdBlocker()
     this.wallet = new Wallet()
 
     this.ready = new Promise((resolve) => {
@@ -262,8 +260,7 @@ class Browser {
       }),
     )
 
-    // Initialize ad blocker and wallet
-    await this.adblocker.init()
+    // Initialize wallet
     await this.wallet.init()
 
     // Setup IPC for wallet sidebar width changes
@@ -329,8 +326,6 @@ class Browser {
     })
     this.windows.push(win)
 
-    // Register webui webContents for adblocker updates
-    this.adblocker.addListener(win.webContents)
 
     if (process.env.SHELL_DEBUG) {
       win.webContents.openDevTools({ mode: 'detach' })
@@ -365,10 +360,10 @@ class Browser {
               : { x: 100, y: 100, width: 1400, height: 900 }
 
             const popupWin = new BrowserWindow({
-              width: 360,
-              height: 600,
-              x: parentBounds.x + parentBounds.width - 380,
-              y: parentBounds.y + 80,
+              width: 380,
+              height: 620,
+              x: parentBounds.x + parentBounds.width - 400,
+              y: parentBounds.y + 60,
               frame: true,
               resizable: true,
               minimizable: false,
@@ -379,19 +374,15 @@ class Browser {
               title: 'Extension',
               webPreferences: {
                 ...webPreferences,
-                nodeIntegration: false,
-                contextIsolation: true,
               },
             })
 
             popupWin.loadURL(details.url)
 
-            // Close popup when it loses focus (optional UX improvement)
-            popupWin.on('blur', () => {
-              if (!popupWin.isDestroyed() && !popupWin.webContents.isDevToolsOpened()) {
-                popupWin.close()
-              }
-            })
+            // Track popup with extensions system for proper API support
+            if (this.extensions) {
+              this.extensions.addTab(popupWin.webContents, popupWin)
+            }
 
             return popupWin.webContents
           },

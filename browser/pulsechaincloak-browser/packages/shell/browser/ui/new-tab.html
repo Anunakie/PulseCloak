@@ -146,6 +146,52 @@
         max-width: 100%;
       }
 
+      .ublock-tip {
+        margin-bottom: 32px;
+        padding: 12px 20px;
+        border-radius: 12px;
+        background: rgba(0, 229, 255, 0.06);
+        border: 1px solid rgba(0, 229, 255, 0.15);
+        text-align: center;
+        max-width: 580px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .ublock-tip a {
+        color: #00e5ff;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .ublock-tip a:hover {
+        text-decoration: underline;
+      }
+
+      .ublock-tip .tip-text {
+        font-size: 13px;
+        color: #94a3b8;
+      }
+
+      .ublock-tip .tip-dismiss {
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 8px;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+
+      .ublock-tip .tip-dismiss:hover {
+        color: #94a3b8;
+        background: rgba(255,255,255,0.05);
+      }
+
       .status-bar {
         position: fixed;
         bottom: 24px;
@@ -231,6 +277,15 @@
       </a>
     </div>
 
+    <div class="ublock-tip" id="ublockTip">
+      <span class="tip-text">
+        &#128737;&#65039; For ad blocking, install
+        <a href="https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm" id="ublockLink">uBlock Origin</a>
+        from the Chrome Web Store
+      </span>
+      <button class="tip-dismiss" id="ublockDismiss">&#10005;</button>
+    </div>
+
     <div class="status-bar">
       <div class="status-dot"></div>
       <span class="status-text">Connected to <strong>PulseCloak Network</strong></span>
@@ -238,7 +293,7 @@
 
     <script>
       function resolveNavigationUrl(input) {
-        const trimmed = (input || '').trim();
+        var trimmed = (input || '').trim();
         if (!trimmed) return null;
 
         // Already a full URL with protocol
@@ -262,33 +317,50 @@
         return 'https://www.google.com/search?q=' + encodeURIComponent(trimmed);
       }
 
-      document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      // Search bar: navigate this tab directly
+      document.getElementById('searchInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-          const url = resolveNavigationUrl(e.target.value);
+          var url = resolveNavigationUrl(e.target.value);
           if (url) {
-            // Use chrome.tabs.update to navigate within extension context
-            if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.update) {
-              chrome.tabs.update(undefined, { url: url });
-            } else {
-              // Fallback for non-extension context
-              window.location.href = url;
-            }
+            window.location.href = url;
           }
         }
       });
 
-      // Also handle quick-link clicks via chrome.tabs.update
-      document.querySelectorAll('.quick-link').forEach((link) => {
-        link.addEventListener('click', (e) => {
+      // Quick-link clicks: navigate this tab directly
+      document.querySelectorAll('.quick-link').forEach(function(link) {
+        link.addEventListener('click', function(e) {
           e.preventDefault();
-          const url = link.getAttribute('href');
-          if (url && typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.update) {
-            chrome.tabs.update(undefined, { url: url });
-          } else if (url) {
+          var url = link.getAttribute('href');
+          if (url) {
             window.location.href = url;
           }
         });
       });
+
+      // uBlock Origin tip dismiss
+      (function() {
+        var tip = document.getElementById('ublockTip');
+        var dismissBtn = document.getElementById('ublockDismiss');
+        var installLink = document.getElementById('ublockLink');
+
+        // Check if previously dismissed
+        try {
+          if (localStorage.getItem('ublockTipDismissed') === 'true') {
+            tip.style.display = 'none';
+          }
+        } catch(e) {}
+
+        dismissBtn.addEventListener('click', function() {
+          tip.style.display = 'none';
+          try { localStorage.setItem('ublockTipDismissed', 'true'); } catch(e) {}
+        });
+
+        installLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.location.href = 'https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm';
+        });
+      })();
     </script>
   </body>
 </html>

@@ -30,9 +30,6 @@ class WebUI {
       settingsButton: $('#settingsBtn'),
       profileButton: $('#profileBtn'),
 
-      // Shield / Ad Blocker
-      shieldBtn: $('#shieldBtn'),
-      shieldBadge: $('#shieldBadge'),
 
       // Wallet sidebar
       walletToggleBtn: $('#walletToggleBtn'),
@@ -99,8 +96,6 @@ class WebUI {
     // Sidebar controls
     this.initSidebar()
 
-    // Shield / Ad Blocker
-    this.initShield()
 
     // Wallet
     this.initWallet()
@@ -166,57 +161,6 @@ class WebUI {
     })
 
     spacesContainer.insertBefore(newSpace, addBtn)
-  }
-
-  // ===== SHIELD / AD BLOCKER =====
-
-  initShield() {
-    if (!window.pulseCloak || !window.pulseCloak.adblocker) {
-      console.warn('[WebUI] pulseCloak.adblocker API not available')
-      return
-    }
-
-    // Get initial state
-    window.pulseCloak.adblocker.getState().then((state) => {
-      this.updateShieldUI(state)
-    })
-
-    // Toggle on click
-    this.$.shieldBtn.addEventListener('click', () => {
-      window.pulseCloak.adblocker.toggle().then((state) => {
-        this.updateShieldUI(state)
-      })
-    })
-
-    // Listen for updates from main process
-    window.pulseCloak.adblocker.onUpdate((data) => {
-      this.updateShieldUI(data)
-    })
-  }
-
-  updateShieldUI(state) {
-    if (!state) return
-
-    const btn = this.$.shieldBtn
-    const badge = this.$.shieldBadge
-
-    if (state.enabled) {
-      btn.classList.add('active')
-      btn.classList.remove('inactive')
-      btn.title = `Privacy Shield: ON (${state.blockedCount} blocked)`
-    } else {
-      btn.classList.remove('active')
-      btn.classList.add('inactive')
-      btn.title = 'Privacy Shield: OFF'
-    }
-
-    // Update badge
-    if (state.blockedCount > 0) {
-      badge.textContent = state.blockedCount > 999 ? '999+' : state.blockedCount
-      badge.classList.add('visible')
-    } else {
-      badge.classList.remove('visible')
-    }
   }
 
   // ===== WALLET =====

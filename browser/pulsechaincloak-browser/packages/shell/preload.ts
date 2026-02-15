@@ -8,18 +8,6 @@ if (location.protocol === 'chrome-extension:' && location.pathname === '/webui.h
 
   // Expose PulseCloak APIs to the WebUI renderer
   contextBridge.exposeInMainWorld('pulseCloak', {
-    // Ad Blocker API
-    adblocker: {
-      getState: function() { return ipcRenderer.invoke('adblocker:getState') },
-      toggle: function(enabled) { return ipcRenderer.invoke('adblocker:toggle', enabled) },
-      resetCount: function() { return ipcRenderer.invoke('adblocker:resetCount') },
-      onUpdate: function(callback) {
-        var handler = function(_event, data) { callback(data) }
-        ipcRenderer.on('adblocker:update', handler)
-        return function() { ipcRenderer.removeListener('adblocker:update', handler) }
-      },
-    },
-
     // Wallet API
     wallet: {
       getState: function() { return ipcRenderer.invoke('wallet:getState') },

@@ -488,60 +488,6 @@
       }
 
       /* ===== SHIELD / AD BLOCKER BUTTON ===== */
-      .shield-btn {
-        position: relative;
-        background: none;
-        border: none;
-        width: 30px;
-        height: 30px;
-        padding: 0;
-        border-radius: 6px;
-        cursor: pointer;
-        color: var(--text-secondary);
-        font-size: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-      }
-
-      .shield-btn:hover {
-        background: var(--hover-cyan);
-      }
-
-      .shield-btn.active {
-        color: #22c55e;
-      }
-
-      .shield-btn.active:hover {
-        background: rgba(34, 197, 94, 0.1);
-      }
-
-      .shield-btn.inactive {
-        color: #ef4444;
-      }
-
-      .shield-badge {
-        position: absolute;
-        top: 1px;
-        right: 0px;
-        min-width: 14px;
-        height: 14px;
-        padding: 0 3px;
-        border-radius: 7px;
-        background: var(--accent-cyan);
-        color: #0a0e1a;
-        font-size: 9px;
-        font-weight: 700;
-        line-height: 14px;
-        text-align: center;
-        pointer-events: none;
-        display: none;
-      }
-
-      .shield-badge.visible {
-        display: block;
-      }
 
       browser-action-list {
         display: flex;
@@ -930,10 +876,6 @@
             </div>
             <div class="toolbar-right">
               <browser-action-list id="actions" alignment="bottom left"></browser-action-list>
-              <button class="shield-btn active" id="shieldBtn" title="Privacy Shield: ON">
-                &#128737;
-                <span class="shield-badge" id="shieldBadge">0</span>
-              </button>
               <button class="control" id="menuBtn" title="Menu">&#8942;</button>
             </div>
           </div>
