@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use ethabi;
 use futures::Future;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::MASQ_TOTAL_SUPPLY;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::PCLOAK_TOTAL_SUPPLY;
 use web3;
 use web3::contract::{Contract, Options};
 use web3::transports::Http;
@@ -105,7 +105,7 @@ where
 }
 
 #[test]
-fn masq_erc20_contract_exists_on_polygon_amoy_integration() {
+fn pulsecloak_erc20_contract_exists_on_polygon_amoy_integration() {
     let blockchain_urls = vec![
         "https://rpc-amoy.polygon.technology",
         "https://rpc.ankr.com/polygon_amoy",
@@ -113,12 +113,12 @@ fn masq_erc20_contract_exists_on_polygon_amoy_integration() {
     ];
     let chain = Chain::PolyAmoy;
 
-    let assertion_body = |url, chain| assert_contract_existence(url, chain, "tMASQ", 18);
+    let assertion_body = |url, chain| assert_contract_existence(url, chain, "tPulseCloak", 18);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }
 
 #[test]
-fn masq_erc20_contract_exists_on_polygon_mainnet_integration() {
+fn pulsecloak_erc20_contract_exists_on_polygon_mainnet_integration() {
     let blockchain_urls = vec![
         "https://polygon-rpc.com/",
         "https://rpc-mainnet.maticvigil.com",
@@ -127,21 +127,21 @@ fn masq_erc20_contract_exists_on_polygon_mainnet_integration() {
     ];
     let chain = Chain::PolyMainnet;
 
-    let assertion_body = |url, chain| assert_contract_existence(url, chain, "MASQ (PoS)", 18);
+    let assertion_body = |url, chain| assert_contract_existence(url, chain, "PulseCloak (PoS)", 18);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }
 
 #[test]
-fn masq_erc20_contract_exists_on_ethereum_mainnet_integration() {
+fn pulsecloak_erc20_contract_exists_on_ethereum_mainnet_integration() {
     let blockchain_urls = vec!["https://mainnet.infura.io/v3/0ead23143b174f6983c76f69ddcf4026"];
     let chain = Chain::EthMainnet;
 
-    let assertion_body = |url, chain| assert_contract_existence(url, chain, "MASQ", 18);
+    let assertion_body = |url, chain| assert_contract_existence(url, chain, "PulseCloak", 18);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }
 
 #[test]
-fn masq_erc20_contract_exists_on_base_mainnet_integration() {
+fn pulsecloak_erc20_contract_exists_on_base_mainnet_integration() {
     let blockchain_urls = vec![
         "https://base-rpc.publicnode.com",
         "https://base.drpc.org",
@@ -149,12 +149,12 @@ fn masq_erc20_contract_exists_on_base_mainnet_integration() {
     ];
     let chain = Chain::BaseMainnet;
 
-    let assertion_body = |url, chain| assert_contract_existence(url, chain, "MASQ", 18);
+    let assertion_body = |url, chain| assert_contract_existence(url, chain, "PulseCloak", 18);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }
 
 #[test]
-fn masq_erc20_contract_exists_on_base_sepolia_integration() {
+fn pulsecloak_erc20_contract_exists_on_base_sepolia_integration() {
     let blockchain_urls = vec![
         "https://rpc.ankr.com/base_sepolia",
         "https://base-sepolia-rpc.publicnode.com",
@@ -162,7 +162,7 @@ fn masq_erc20_contract_exists_on_base_sepolia_integration() {
     ];
     let chain = Chain::BaseSepolia;
 
-    let assertion_body = |url, chain| assert_contract_existence(url, chain, "tMASQ", 18);
+    let assertion_body = |url, chain| assert_contract_existence(url, chain, "tPulseCloak", 18);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }
 
@@ -210,6 +210,6 @@ fn max_token_supply_matches_corresponding_constant_integration() {
     let blockchain_urls = vec!["https://mainnet.infura.io/v3/0ead23143b174f6983c76f69ddcf4026"];
     let chain = Chain::EthMainnet;
 
-    let assertion_body = |url, chain| assert_total_supply(url, chain, MASQ_TOTAL_SUPPLY);
+    let assertion_body = |url, chain| assert_total_supply(url, chain, PCLOAK_TOTAL_SUPPLY);
     assert_contract(blockchain_urls, &chain, assertion_body)
 }

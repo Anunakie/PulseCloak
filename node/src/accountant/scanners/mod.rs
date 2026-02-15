@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod mid_scan_msg_handling;
 pub mod scanners_utils;
@@ -37,11 +37,11 @@ use crate::sub_lib::utils::{NotifyLaterHandle, NotifyLaterHandleReal};
 use crate::sub_lib::wallet::Wallet;
 use actix::{Context, Message};
 use itertools::{Either, Itertools};
-use masq_lib::logger::Logger;
-use masq_lib::logger::TIME_FORMATTING_STRING;
-use masq_lib::messages::{ScanType, ToMessageBody, UiScanResponse};
-use masq_lib::ui_gateway::{MessageTarget, NodeToUiMessage};
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::logger::TIME_FORMATTING_STRING;
+use pulsecloak_lib::messages::{ScanType, ToMessageBody, UiScanResponse};
+use pulsecloak_lib::ui_gateway::{MessageTarget, NodeToUiMessage};
+use pulsecloak_lib::utils::ExpectValue;
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
@@ -49,7 +49,7 @@ use std::time::{Duration, SystemTime};
 use time::format_description::parse;
 use time::OffsetDateTime;
 use web3::types::H256;
-use masq_lib::type_obfuscation::Obfuscated;
+use pulsecloak_lib::type_obfuscation::Obfuscated;
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::{PreparedAdjustment, MultistagePayableScanner, SolvencySensitivePaymentInstructor};
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::msgs::{BlockchainAgentWithContextMessage, QualifiedPayablesMessage};
 use crate::blockchain::blockchain_interface::blockchain_interface_web3::lower_level_interface_web3::{TransactionReceiptResult, TxStatus};
@@ -1105,9 +1105,9 @@ mod tests {
     use crate::test_utils::{make_paying_wallet, make_wallet};
     use actix::{Message, System};
     use ethereum_types::U64;
-    use masq_lib::logger::Logger;
-    use masq_lib::messages::ScanType;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::messages::ScanType;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use regex::Regex;
     use rusqlite::{ffi, ErrorCode};
     use std::cell::RefCell;

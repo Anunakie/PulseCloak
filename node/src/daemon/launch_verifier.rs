@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::daemon::launch_verifier::LaunchVerification::{
     CleanFailure, DirtyFailure, InterventionRequired, Launched,
 };
-use masq_lib::logger::Logger;
-use masq_lib::messages::NODE_UI_PROTOCOL;
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::NODE_UI_PROTOCOL;
+use pulsecloak_lib::utils::ExpectValue;
 use std::cell::RefCell;
 use std::net::TcpStream;
 use std::thread;
@@ -258,7 +258,7 @@ mod tests {
         CleanFailure, InterventionRequired, Launched,
     };
     use crate::daemon::mocks::{ClientBuilderWrapperMock, ClientWrapperMock, VerifierToolsMock};
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::utils::find_free_port;
     use std::process::{Child, Command};
     use std::sync::{Arc, Mutex};
     use std::time::Instant;

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::DEFAULT_PENDING_TOO_LONG_SEC;
 use crate::blockchain::bip32::Bip32EncryptionKeyProvider;
@@ -15,12 +15,12 @@ use crate::sub_lib::node_addr::NodeAddr;
 use crate::sub_lib::wallet::Wallet;
 use clap::{value_t, Error};
 use itertools::Itertools;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{DEFAULT_CHAIN, MASQ_URL_PREFIX};
-use masq_lib::logger::Logger;
-use masq_lib::multi_config::MultiConfig;
-use masq_lib::shared_schema::{ConfiguratorError, ParamError};
-use masq_lib::utils::{to_string, AutomapProtocol, ExpectValue};
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{DEFAULT_CHAIN, PCLOAK_URL_PREFIX};
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::multi_config::MultiConfig;
+use pulsecloak_lib::shared_schema::{ConfiguratorError, ParamError};
+use pulsecloak_lib::utils::{to_string, AutomapProtocol, ExpectValue};
 use rustc_hex::FromHex;
 use std::net::{IpAddr, Ipv4Addr};
 use std::str::FromStr;
@@ -421,7 +421,7 @@ fn validate_descriptors_from_user(
                     Err(ParamError::new(
                         "neighbors", &format!(
                             "Mismatched chains. You are requiring access to '{}' ({}{}:<public key>@<node address>) with descriptor belonging to '{}'",
-                            desired_chain, MASQ_URL_PREFIX,
+                            desired_chain, PCLOAK_URL_PREFIX,
                             desired_chain,
                             competence_from_descriptor.rec().literal_identifier
                         )
@@ -638,11 +638,11 @@ mod tests {
     };
     use crate::test_utils::ArgsBuilder;
     use lazy_static::lazy_static;
-    use masq_lib::constants::DEFAULT_GAS_PRICE;
-    use masq_lib::multi_config::{CommandLineVcl, NameValueVclArg, VclArg, VirtualCommandLine};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::utils::running_test;
+    use pulsecloak_lib::constants::DEFAULT_GAS_PRICE;
+    use pulsecloak_lib::multi_config::{CommandLineVcl, NameValueVclArg, VclArg, VirtualCommandLine};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::utils::running_test;
     use std::path::PathBuf;
     use std::str::FromStr;
     use std::sync::{Arc, Mutex};
@@ -657,7 +657,7 @@ mod tests {
     fn convert_ci_configs_handles_blockchain_mismatch() {
         let multi_config = make_simplified_multi_config([
             "--neighbors",
-            "masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@12.23.34.45:5678",
+            "pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@12.23.34.45:5678",
             "--chain",
             DEFAULT_CHAIN.rec().literal_identifier,
         ]);
@@ -668,7 +668,7 @@ mod tests {
             result,
             ConfiguratorError::required(
                 "neighbors",
-                &format!("Mismatched chains. You are requiring access to '{identifier}' (masq://{identifier}:<public key>@<node address>) with descriptor belonging to 'eth-ropsten'",identifier = DEFAULT_CHAIN.rec().literal_identifier)
+                &format!("Mismatched chains. You are requiring access to '{identifier}' (pulsecloak://{identifier}:<public key>@<node address>) with descriptor belonging to 'eth-ropsten'",identifier = DEFAULT_CHAIN.rec().literal_identifier)
             )
         )
     }
@@ -685,7 +685,7 @@ mod tests {
                     .param("--ip", "1.2.3.4")
                     .param(
                         "--neighbors",
-                        &format!("masq://{identifier}:mhtjjdMt7Gyoebtb1yiK0hdaUx6j84noHdaAHeDR1S4@1.2.3.4:1234/2345,masq://{identifier}:Si06R3ulkOjJOLw1r2R9GOsY87yuinHU_IHK2FJyGnk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                        &format!("pulsecloak://{identifier}:mhtjjdMt7Gyoebtb1yiK0hdaUx6j84noHdaAHeDR1S4@1.2.3.4:1234/2345,pulsecloak://{identifier}:Si06R3ulkOjJOLw1r2R9GOsY87yuinHU_IHK2FJyGnk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
                     )
                     .into(),
             ))]
@@ -707,12 +707,12 @@ mod tests {
                     vec![
                         NodeDescriptor::try_from((
                             &dummy_cryptde as &dyn CryptDE,
-                            format!("masq://{}:mhtjjdMt7Gyoebtb1yiK0hdaUx6j84noHdaAHeDR1S4@1.2.3.4:1234/2345",DEFAULT_CHAIN.rec().literal_identifier).as_str()
+                            format!("pulsecloak://{}:mhtjjdMt7Gyoebtb1yiK0hdaUx6j84noHdaAHeDR1S4@1.2.3.4:1234/2345",DEFAULT_CHAIN.rec().literal_identifier).as_str()
                         ))
                             .unwrap(),
                         NodeDescriptor::try_from((
                             &dummy_cryptde as &dyn CryptDE,
-                            format!("masq://{}:Si06R3ulkOjJOLw1r2R9GOsY87yuinHU_IHK2FJyGnk@2.3.4.5:3456/4567",DEFAULT_CHAIN.rec().literal_identifier).as_str()
+                            format!("pulsecloak://{}:Si06R3ulkOjJOLw1r2R9GOsY87yuinHU_IHK2FJyGnk@2.3.4.5:3456/4567",DEFAULT_CHAIN.rec().literal_identifier).as_str()
                         ))
                             .unwrap()
                     ],
@@ -758,7 +758,7 @@ mod tests {
                     .param("--neighborhood-mode", "standard")
                     .param(
                         "--neighbors",
-                        &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                        &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
                     )
                     .param("--fake-public-key", "booga")
                     .into(),
@@ -784,7 +784,7 @@ mod tests {
             .param("--neighborhood-mode", "standard")
             .param(
                 "--neighbors",
-                &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
             )
             .param("--fake-public-key", "booga")
             .opt("--min-hops");
@@ -809,7 +809,7 @@ mod tests {
             .param("--neighborhood-mode", "standard")
             .param(
                 "--neighbors",
-                &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
             )
             .param("--fake-public-key", "booga")
             .param("--min-hops", "100");
@@ -835,7 +835,7 @@ mod tests {
                     .param("--neighborhood-mode", "standard")
                     .param(
                         "--neighbors",
-                        &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                        &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
                     )
                     .param("--fake-public-key", "booga")
                     .into(),
@@ -870,7 +870,7 @@ mod tests {
                     .param("--neighborhood-mode", "originate-only")
                     .param(
                         "--neighbors",
-                        &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                        &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
                     )
                     .param("--fake-public-key", "booga")
                     .into(),
@@ -892,7 +892,7 @@ mod tests {
                     NodeDescriptor::try_from((
                         CRYPTDE_PAIR.main.as_ref(),
                         format!(
-                            "masq://{}:QmlsbA@1.2.3.4:1234/2345",
+                            "pulsecloak://{}:QmlsbA@1.2.3.4:1234/2345",
                             DEFAULT_CHAIN.rec().literal_identifier
                         )
                         .as_str()
@@ -901,7 +901,7 @@ mod tests {
                     NodeDescriptor::try_from((
                         CRYPTDE_PAIR.main.as_ref(),
                         format!(
-                            "masq://{}:VGVk@2.3.4.5:3456/4567",
+                            "pulsecloak://{}:VGVk@2.3.4.5:3456/4567",
                             DEFAULT_CHAIN.rec().literal_identifier
                         )
                         .as_str()
@@ -946,7 +946,7 @@ mod tests {
                     .param("--neighborhood-mode", "consume-only")
                     .param(
                         "--neighbors",
-                        &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                        &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
                     )
                     .param("--fake-public-key", "booga")
                     .into(),
@@ -967,7 +967,7 @@ mod tests {
                 NodeDescriptor::try_from((
                     CRYPTDE_PAIR.main.as_ref(),
                     format!(
-                        "masq://{}:QmlsbA@1.2.3.4:1234/2345",
+                        "pulsecloak://{}:QmlsbA@1.2.3.4:1234/2345",
                         DEFAULT_CHAIN.rec().literal_identifier
                     )
                     .as_str()
@@ -976,7 +976,7 @@ mod tests {
                 NodeDescriptor::try_from((
                     CRYPTDE_PAIR.main.as_ref(),
                     format!(
-                        "masq://{}:VGVk@2.3.4.5:3456/4567",
+                        "pulsecloak://{}:VGVk@2.3.4.5:3456/4567",
                         DEFAULT_CHAIN.rec().literal_identifier
                     )
                     .as_str()
@@ -1154,7 +1154,7 @@ mod tests {
             "--fake-public-key",
             "ABCDE",
             "--neighbors",
-            "masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@1.2.3.4:5555, masq://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542 , masq://eth-ropsten:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504",
+            "pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@1.2.3.4:5555, pulsecloak://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542 , pulsecloak://eth-ropsten:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504",
         ]);
         let public_key = PublicKey::new(b"ABCDE");
         let cryptde = CryptDENull::from(&public_key, Chain::EthRopsten);
@@ -1164,9 +1164,9 @@ mod tests {
 
         assert_eq!(result, Ok(Some(
             vec![
-                NodeDescriptor::try_from((cryptde_traitified, "masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@1.2.3.4:5555")).unwrap(),
-                NodeDescriptor::try_from((cryptde_traitified, "masq://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542")).unwrap(),
-                NodeDescriptor::try_from((cryptde_traitified, "masq://eth-ropsten:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504")).unwrap()])
+                NodeDescriptor::try_from((cryptde_traitified, "pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@1.2.3.4:5555")).unwrap(),
+                NodeDescriptor::try_from((cryptde_traitified, "pulsecloak://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542")).unwrap(),
+                NodeDescriptor::try_from((cryptde_traitified, "pulsecloak://eth-ropsten:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504")).unwrap()])
             )
         )
     }
@@ -1183,11 +1183,11 @@ mod tests {
             Some(ConfiguratorError::new(vec![
                 ParamError::new(
                     "neighbors",
-                    "Prefix or more missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'ooga'"
+                    "Prefix or more missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'ooga'"
                 ),
                 ParamError::new(
                     "neighbors",
-                    "Prefix or more missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'booga'"
+                    "Prefix or more missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'booga'"
                 ),
             ]))
         );
@@ -1196,7 +1196,7 @@ mod tests {
     #[test]
     fn convert_ci_configs_complains_about_descriptor_without_node_address_when_mainnet_required() {
         let descriptor = format!(
-            "masq://{}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:",
+            "pulsecloak://{}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:",
             DEFAULT_CHAIN.rec().literal_identifier
         );
         let multi_config = make_simplified_multi_config(["--neighbors", &descriptor]);
@@ -1213,12 +1213,12 @@ mod tests {
             "--chain",
             "eth-ropsten",
             "--neighbors",
-            "masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:",
+            "pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:",
         ]);
 
         let result = convert_ci_configs(&multi_config);
 
-        assert_eq!(result,Err(ConfiguratorError::new(vec![ParamError::new("neighbors", "Neighbors supplied without ip addresses and ports are not valid: 'masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@<N/A>:<N/A>")])))
+        assert_eq!(result,Err(ConfiguratorError::new(vec![ParamError::new("neighbors", "Neighbors supplied without ip addresses and ports are not valid: 'pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@<N/A>:<N/A>")])))
     }
 
     #[test]
@@ -1235,7 +1235,7 @@ mod tests {
             "--chain",
             "eth-ropsten",
             "--neighbors",
-            "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
             "--db-password",
             "password",
         ]);
@@ -1294,7 +1294,7 @@ mod tests {
             "--chain",
             "eth-ropsten",
             "--neighbors",
-            "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
             "--db-password",
             "password",
             exception_param.0,
@@ -1324,7 +1324,7 @@ mod tests {
             "--chain",
             "eth-ropsten",
             "--neighbors",
-            "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
             "--db-password",
             "password",
             "--neighborhood-mode",
@@ -1350,7 +1350,7 @@ mod tests {
             vec![(
                 Some(vec![NodeDescriptor::try_from((
                     CRYPTDE_PAIR.main.as_ref(),
-                    "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345"
+                    "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345"
                 ))
                 .unwrap()]),
                 "password".to_string()
@@ -1396,7 +1396,7 @@ mod tests {
         //no results prepared for set_past_neighbors() and no panic so it was not called
         let descriptor_list = vec![NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
         ))
         .unwrap()];
 
@@ -1419,7 +1419,7 @@ mod tests {
             .set_past_neighbors_result(Err(DatabaseError("Oh yeah".to_string())));
         let descriptor_list = vec![NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:UJNoZW5p-PDVqEjpr3b_8jZ_93yPG8i5dOAgE1bhK_A@2.3.4.5:2345",
         ))
         .unwrap()];
 
@@ -1482,7 +1482,7 @@ mod tests {
             .param("--dns-servers", "12.34.56.78,23.45.67.89")
             .param(
                 "--neighbors",
-                &format!("masq://{identifier}:QmlsbA@1.2.3.4:1234/2345,masq://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
+                &format!("pulsecloak://{identifier}:QmlsbA@1.2.3.4:1234/2345,pulsecloak://{identifier}:VGVk@2.3.4.5:3456/4567",identifier = DEFAULT_CHAIN.rec().literal_identifier),
             )
             .param("--ip", "34.56.78.90")
             .param("--clandestine-port", "1234")
@@ -1545,7 +1545,7 @@ mod tests {
                     NodeDescriptor::try_from((
                         CRYPTDE_PAIR.main.as_ref(),
                         format!(
-                            "masq://{}:QmlsbA@1.2.3.4:1234/2345",
+                            "pulsecloak://{}:QmlsbA@1.2.3.4:1234/2345",
                             DEFAULT_CHAIN.rec().literal_identifier
                         )
                         .as_str()
@@ -1554,7 +1554,7 @@ mod tests {
                     NodeDescriptor::try_from((
                         CRYPTDE_PAIR.main.as_ref(),
                         format!(
-                            "masq://{}:VGVk@2.3.4.5:3456/4567",
+                            "pulsecloak://{}:VGVk@2.3.4.5:3456/4567",
                             DEFAULT_CHAIN.rec().literal_identifier
                         )
                         .as_str()
@@ -1633,7 +1633,7 @@ mod tests {
                 None,
                 None,
                 Some(
-                    "masq://eth-ropsten:AQIDBA@1.2.3.4:1234,masq://eth-ropsten:AgMEBQ@2.3.4.5:2345",
+                    "pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234,pulsecloak://eth-ropsten:AgMEBQ@2.3.4.5:2345",
                 ),
                 None,
                 None,
@@ -1660,12 +1660,12 @@ mod tests {
             &[
                 NodeDescriptor::try_from((
                     CRYPTDE_PAIR.main.as_ref(),
-                    "masq://eth-ropsten:AQIDBA@1.2.3.4:1234"
+                    "pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234"
                 ))
                 .unwrap(),
                 NodeDescriptor::try_from((
                     CRYPTDE_PAIR.main.as_ref(),
-                    "masq://eth-ropsten:AgMEBQ@2.3.4.5:2345"
+                    "pulsecloak://eth-ropsten:AgMEBQ@2.3.4.5:2345"
                 ))
                 .unwrap(),
             ]
@@ -2052,7 +2052,7 @@ mod tests {
             "--rate-pack",
             "2|3|4|5",
             "--neighbors",
-            "masq://polygon-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342",
+            "pulsecloak://polygon-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342",
         ];
         let mut config = BootstrapperConfig::new();
         let multi_config = make_simplified_multi_config(args);

@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::comm_layer::igdp::IgdpTransactor;
 use crate::comm_layer::pcp::PcpTransactor;
@@ -7,7 +7,7 @@ use crate::comm_layer::{AutomapError, AutomapErrorCause, Transactor};
 use crate::control_layer::automap_control::AutomapChange;
 use crate::probe_researcher::request_probe;
 use log::{error, info, warn};
-use masq_lib::utils::{find_free_port, AutomapProtocol};
+use pulsecloak_lib::utils::{find_free_port, AutomapProtocol};
 use std::env::Args;
 use std::net::{IpAddr, SocketAddr};
 use std::str::FromStr;

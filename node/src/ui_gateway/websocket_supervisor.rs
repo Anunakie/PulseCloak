@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use actix::Recipient;
 use bytes::BytesMut;
 use futures::future::FutureResult;
@@ -8,15 +8,15 @@ use futures::stream::SplitSink;
 use futures::Future;
 use futures::Sink;
 use futures::Stream;
-use masq_lib::constants::UNMARSHAL_ERROR;
-use masq_lib::logger::Logger;
-use masq_lib::messages::{ToMessageBody, UiUnmarshalError, NODE_UI_PROTOCOL};
-use masq_lib::ui_gateway::MessagePath::Conversation;
-use masq_lib::ui_gateway::MessageTarget::ClientId;
-use masq_lib::ui_gateway::{MessageBody, MessageTarget, NodeFromUiMessage, NodeToUiMessage};
-use masq_lib::ui_traffic_converter::UiTrafficConverter;
-use masq_lib::ui_traffic_converter::UnmarshalError::{Critical, NonCritical};
-use masq_lib::utils::{localhost, ExpectValue};
+use pulsecloak_lib::constants::UNMARSHAL_ERROR;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::{ToMessageBody, UiUnmarshalError, NODE_UI_PROTOCOL};
+use pulsecloak_lib::ui_gateway::MessagePath::Conversation;
+use pulsecloak_lib::ui_gateway::MessageTarget::ClientId;
+use pulsecloak_lib::ui_gateway::{MessageBody, MessageTarget, NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::ui_traffic_converter::UiTrafficConverter;
+use pulsecloak_lib::ui_traffic_converter::UnmarshalError::{Critical, NonCritical};
+use pulsecloak_lib::utils::{localhost, ExpectValue};
 use std::any::Any;
 use std::collections::HashMap;
 use std::fmt::Debug;
@@ -595,18 +595,18 @@ mod tests {
     use actix::{Actor, Addr};
     use crossbeam_channel::bounded;
     use futures::lazy;
-    use masq_lib::constants::UNMARSHAL_ERROR;
-    use masq_lib::messages::{
+    use pulsecloak_lib::constants::UNMARSHAL_ERROR;
+    use pulsecloak_lib::messages::{
         FromMessageBody, UiDescriptorResponse, UiShutdownRequest, UiStartOrder, UiUnmarshalError,
         NODE_UI_PROTOCOL,
     };
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::test_utils::ui_connection::UiConnection;
-    use masq_lib::ui_gateway::MessagePath::FireAndForget;
-    use masq_lib::ui_gateway::NodeFromUiMessage;
-    use masq_lib::ui_traffic_converter::UiTrafficConverter;
-    use masq_lib::utils::{find_free_port, localhost};
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::ui_connection::UiConnection;
+    use pulsecloak_lib::ui_gateway::MessagePath::FireAndForget;
+    use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
+    use pulsecloak_lib::ui_traffic_converter::UiTrafficConverter;
+    use pulsecloak_lib::utils::{find_free_port, localhost};
     use std::cell::RefCell;
     use std::io::{Error, ErrorKind};
     use std::net::{IpAddr, Ipv4Addr, Shutdown};
@@ -882,11 +882,11 @@ mod tests {
         });
         wait_for_server(port);
 
-        make_client(port, "MASQNode-UI").err().unwrap();
+        make_client(port, "PulseCloakNode-UI").err().unwrap();
 
         let tlh = TestLogHandler::new();
         tlh.await_log_containing(
-            "UI attempted connection without protocol MASQNode-UIv2: [\"MASQNode-UI\"]",
+            "UI attempted connection without protocol PulseCloakNode-UIv2: [\"PulseCloakNode-UI\"]",
             1000,
         );
     }
@@ -1389,7 +1389,7 @@ mod tests {
             actix::spawn(subject);
             system.run();
         });
-        let mut client = await_value(None, || UiConnection::make(port, "MASQNode-UIv2")).unwrap();
+        let mut client = await_value(None, || UiConnection::make(port, "PulseCloakNode-UIv2")).unwrap();
         client.send(UiShutdownRequest {});
         {
             let writer = client.writer();

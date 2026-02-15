@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crossbeam_channel::{unbounded, Receiver, Sender};
-use masq_lib::utils::localhost;
+use pulsecloak_lib::utils::localhost;
 use std::io::Read;
 use std::io::Write;
 use std::net::{SocketAddr, TcpListener};

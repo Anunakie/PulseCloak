@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::proxy_client::stream_handler_pool::StreamSenders;
 use crate::proxy_client::stream_reader::StreamReader;
@@ -16,7 +16,7 @@ use crate::sub_lib::stream_key::StreamKey;
 use crate::sub_lib::tokio_wrappers::ReadHalfWrapper;
 use actix::Recipient;
 use crossbeam_channel::{unbounded, Receiver, Sender};
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::io;
 use std::net::IpAddr;
 use std::net::SocketAddr;

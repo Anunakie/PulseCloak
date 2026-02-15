@@ -1,7 +1,7 @@
 [package]
 name = "multinode_integration_tests"
 version = "0.9.0"
-authors = ["Dan Wiebe <dnwiebe@gmail.com>", "MASQ"]
+authors = ["Dan Wiebe <dnwiebe@gmail.com>", "PulseChainCloak"]
 license = "GPL-3.0-only"
 description = ""
 edition = "2021"
@@ -17,7 +17,7 @@ ip_country = { path = "../ip_country"}
 itertools = "0.10.1"
 lazy_static = "1.4.0"
 log = "0.4.14"
-masq_lib = { path = "../masq_lib" }
+pulsecloak_lib = { path = "../pulsecloak_lib" }
 native-tls = "0.2.8"
 node = { path = "../node" }
 pretty-hex = "0.2.1"

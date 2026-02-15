@@ -1,24 +1,24 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use clap::{crate_description, crate_version, App, AppSettings, Arg};
 use indoc::indoc;
 use lazy_static::lazy_static;
-use masq_lib::constants::{HIGHEST_USABLE_PORT, LOWEST_USABLE_INSECURE_PORT};
-use masq_lib::shared_schema::{
+use pulsecloak_lib::constants::{HIGHEST_USABLE_PORT, LOWEST_USABLE_INSECURE_PORT};
+use pulsecloak_lib::shared_schema::{
     chain_arg, data_directory_arg, db_password_arg, real_user_arg, shared_app, ui_port_arg,
     DATA_DIRECTORY_HELP, DB_PASSWORD_HELP,
 };
-use masq_lib::utils::DATA_DIRECTORY_DAEMON_HELP;
+use pulsecloak_lib::utils::DATA_DIRECTORY_DAEMON_HELP;
 
 pub fn app_head() -> App<'static, 'static> {
-    App::new("MASQNode")
+    App::new("PulseCloakNode")
         .global_settings(if cfg!(test) {
             &[AppSettings::ColorNever]
         } else {
             &[AppSettings::ColorAuto, AppSettings::ColoredHelp]
         })
         .version(crate_version!())
-        .author("MASQ")
+        .author("PulseCloak")
         .about(crate_description!())
 }
 
@@ -30,7 +30,7 @@ pub fn app_daemon() -> App<'static, 'static> {
                 .long("initialization")
                 .required(true)
                 .takes_value(false)
-                .help("Directs MASQ to start the Daemon that controls the Node, rather than the Node itself"),
+                .help("Directs PulseCloak to start the Daemon that controls the Node, rather than the Node itself"),
         )
         .arg(ui_port_arg(&DAEMON_UI_PORT_HELP))
 }
@@ -66,20 +66,20 @@ lazy_static! {
 }
 
 const DUMP_CONFIG_HELP: &str =
-    "Dump the configuration of MASQ Node to stdout in JSON. Used chiefly by UIs.";
+    "Dump the configuration of PulseCloak Node to stdout in JSON. Used chiefly by UIs.";
 
 const NODE_HELP_TEXT: &str = indoc!(
     r"ADDITIONAL HELP:
-    If you want to start the MASQ Daemon to manage the MASQ Node and the MASQ UIs, try:
+    If you want to start the PulseCloak Daemon to manage the PulseCloak Node and the PulseCloak UIs, try:
 
-        MASQNode --help --initialization
+        PulseCloakNode --help --initialization
 
     If you want to dump the contents of the configuration table in the database so that
     you can see what's in it, try:
 
-        MASQNode --help --dump-config
+        PulseCloakNode --help --dump-config
 
-    MASQ Node listens for connections from other Nodes using the computer's
+    PulseCloak Node listens for connections from other Nodes using the computer's
     network interface. Configuring the internet router for port forwarding is a necessary
     step for Node users to permit network communication between Nodes.
 
@@ -87,7 +87,7 @@ const NODE_HELP_TEXT: &str = indoc!(
     indicates the required port needing to be forwarded by the network router. The port is
     the last number in the descriptor, as shown below:
 
-        masq://eth-mainnet:6hXbJTZWUKboREQsEMl9iQxsjRz6LQxh-zGZmGCvA3k@86.75.30.9:1234
+        pulsecloak://eth-mainnet:6hXbJTZWUKboREQsEMl9iQxsjRz6LQxh-zGZmGCvA3k@86.75.30.9:1234
                                                                                   ^^^^
 
     Steps To Forwarding Ports In The Router
@@ -107,10 +107,10 @@ mod tests {
         let data_dir = data_local_dir().unwrap();
         let home_dir = home_dir().unwrap();
         let polygon_mainnet_dir = Path::new(&data_dir.to_str().unwrap())
-            .join("MASQ")
+            .join("PulseCloak")
             .join("polygon-mainnet");
         let polygon_amoy_dir = Path::new(&data_dir.to_str().unwrap())
-            .join("MASQ")
+            .join("PulseCloak")
             .join("polygon-amoy");
 
         assert_eq!(
@@ -123,9 +123,9 @@ mod tests {
             automatically changed to: '{}'.\n\n\
             You can specify your own data-directory to the Daemon in two different ways: \n\n\
             1. If you provide a path without the chain name on the end, the Daemon will automatically change \
-            your data-directory to correspond with the chain. For example: {}/masq_home will be automatically \
-            changed to: '{}/masq_home/polygon-mainnet'.\n\n\
-            2. If you provide your data directory with the corresponding chain name on the end, eg: {}/masq_home/polygon-mainnet, \
+            your data-directory to correspond with the chain. For example: {}/pulsecloak_home will be automatically \
+            changed to: '{}/pulsecloak_home/polygon-mainnet'.\n\n\
+            2. If you provide your data directory with the corresponding chain name on the end, eg: {}/pulsecloak_home/polygon-mainnet, \
             there will be no change until you set the chain parameter to a different value.",
             polygon_mainnet_dir.to_string_lossy().to_string().as_str(),
             polygon_amoy_dir.to_string_lossy().to_string().as_str(),
@@ -136,22 +136,22 @@ mod tests {
         );
         assert_eq!(
             DUMP_CONFIG_HELP,
-            "Dump the configuration of MASQ Node to stdout in JSON. Used chiefly by UIs."
+            "Dump the configuration of PulseCloak Node to stdout in JSON. Used chiefly by UIs."
         );
         assert_eq!(
             NODE_HELP_TEXT,
             indoc!(
                 r"ADDITIONAL HELP:
-                  If you want to start the MASQ Daemon to manage the MASQ Node and the MASQ UIs, try:
+                  If you want to start the PulseCloak Daemon to manage the PulseCloak Node and the PulseCloak UIs, try:
             
-                      MASQNode --help --initialization
+                      PulseCloakNode --help --initialization
             
                   If you want to dump the contents of the configuration table in the database so that
                   you can see what's in it, try:
             
-                      MASQNode --help --dump-config
+                      PulseCloakNode --help --dump-config
             
-                  MASQ Node listens for connections from other Nodes using the computer's
+                  PulseCloak Node listens for connections from other Nodes using the computer's
                   network interface. Configuring the internet router for port forwarding is a necessary
                   step for Node users to permit network communication between Nodes.
             
@@ -159,7 +159,7 @@ mod tests {
                   indicates the required port needing to be forwarded by the network router. The port is
                   the last number in the descriptor, as shown below:
             
-                      masq://eth-mainnet:6hXbJTZWUKboREQsEMl9iQxsjRz6LQxh-zGZmGCvA3k@86.75.30.9:1234
+                      pulsecloak://eth-mainnet:6hXbJTZWUKboREQsEMl9iQxsjRz6LQxh-zGZmGCvA3k@86.75.30.9:1234
                                                                                                 ^^^^
             
                   Steps To Forwarding Ports In The Router

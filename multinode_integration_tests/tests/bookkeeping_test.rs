@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
-use multinode_integration_tests_lib::masq_node::{MASQNode, NodeReference};
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
-    make_consuming_wallet_info, make_earning_wallet_info, MASQRealNode, NodeStartupConfigBuilder,
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
+use multinode_integration_tests_lib::pulsecloak_node::{PulseCloakNode, NodeReference};
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    make_consuming_wallet_info, make_earning_wallet_info, PulseCloakRealNode, NodeStartupConfigBuilder,
     STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use multinode_integration_tests_lib::utils::{payable_dao, receivable_dao};
@@ -17,13 +17,13 @@ use std::time::{Duration, SystemTime};
 
 #[test]
 fn provided_and_consumed_services_are_recorded_in_databases() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
 
     let originating_node = start_lonely_real_node(&mut cluster);
     let non_originating_nodes = (0..6)
         .into_iter()
         .map(|_| start_real_node(&mut cluster, originating_node.node_reference()))
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
 
     //TODO card #803 Create function wait_for_gossip
     thread::sleep(Duration::from_secs(10));
@@ -80,12 +80,12 @@ fn provided_and_consumed_services_are_recorded_in_databases() {
     });
 }
 
-fn non_pending_payables(node: &MASQRealNode) -> Vec<PayableAccount> {
+fn non_pending_payables(node: &PulseCloakRealNode) -> Vec<PayableAccount> {
     let payable_dao = payable_dao(node.name());
     payable_dao.non_pending_payables()
 }
 
-fn receivables(node: &MASQRealNode) -> Vec<ReceivableAccount> {
+fn receivables(node: &PulseCloakRealNode) -> Vec<ReceivableAccount> {
     let receivable_dao = receivable_dao(node.name());
     receivable_dao
         .custom_query(CustomQuery::RangeQuery {
@@ -98,7 +98,7 @@ fn receivables(node: &MASQRealNode) -> Vec<ReceivableAccount> {
         .unwrap_or_default()
 }
 
-pub fn start_lonely_real_node(cluster: &mut MASQNodeCluster) -> MASQRealNode {
+pub fn start_lonely_real_node(cluster: &mut PulseCloakNodeCluster) -> PulseCloakRealNode {
     let index = cluster.next_index();
     cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
@@ -109,7 +109,7 @@ pub fn start_lonely_real_node(cluster: &mut MASQNodeCluster) -> MASQRealNode {
     )
 }
 
-pub fn start_real_node(cluster: &mut MASQNodeCluster, neighbor: NodeReference) -> MASQRealNode {
+pub fn start_real_node(cluster: &mut PulseCloakNodeCluster, neighbor: NodeReference) -> PulseCloakRealNode {
     let index = cluster.next_index();
     cluster.start_real_node(
         NodeStartupConfigBuilder::standard()

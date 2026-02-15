@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #[macro_use]
 pub mod channel_wrapper_mocks;
@@ -35,7 +35,7 @@ use crate::sub_lib::wallet::Wallet;
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use ethsign_crypto::Keccak256;
 use futures::sync::mpsc::SendError;
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
 use rand::RngCore;
 use regex::Regex;
 use rustc_hex::ToHex;
@@ -527,13 +527,13 @@ pub mod unshared_test_utils {
     use crossbeam_channel::{unbounded, Receiver, Sender};
     use itertools::Either;
     use lazy_static::lazy_static;
-    use masq_lib::constants::HTTP_PORT;
-    use masq_lib::messages::{ToMessageBody, UiCrashRequest};
-    use masq_lib::multi_config::MultiConfig;
+    use pulsecloak_lib::constants::HTTP_PORT;
+    use pulsecloak_lib::messages::{ToMessageBody, UiCrashRequest};
+    use pulsecloak_lib::multi_config::MultiConfig;
     #[cfg(not(feature = "no_test_share"))]
-    use masq_lib::test_utils::utils::MutexIncrementInset;
-    use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
-    use masq_lib::utils::slice_of_strs_to_vec_of_strings;
+    use pulsecloak_lib::test_utils::utils::MutexIncrementInset;
+    use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+    use pulsecloak_lib::utils::slice_of_strs_to_vec_of_strings;
     use std::any::TypeId;
     use std::cell::RefCell;
     use std::collections::HashMap;
@@ -603,7 +603,7 @@ pub mod unshared_test_utils {
     }
 
     pub fn make_simplified_multi_config<'a, const T: usize>(args: [&str; T]) -> MultiConfig<'a> {
-        let mut app_args = vec!["MASQNode".to_string()];
+        let mut app_args = vec!["PulseCloakNode".to_string()];
         app_args.append(&mut slice_of_strs_to_vec_of_strings(&args));
         let arg_matches = app_node().get_matches_from_safe(app_args).unwrap();
         MultiConfig::new_test_only(arg_matches)

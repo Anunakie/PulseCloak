@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::socket_server::ConfiguredByPrivilege;
-use masq_lib::command::StdStreams;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::logger::Logger;
 use std::net::SocketAddr;
 use tokio::prelude::Async;
 use tokio::prelude::Future;
@@ -11,9 +11,9 @@ const DNS_PORT: u16 = 53;
 use crate::entry_dns::processing;
 use crate::sub_lib::udp_socket_wrapper::UdpSocketWrapperReal;
 use crate::sub_lib::udp_socket_wrapper::UdpSocketWrapperTrait;
-use masq_lib::multi_config::MultiConfig;
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::utils::localhost;
+use pulsecloak_lib::multi_config::MultiConfig;
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::utils::localhost;
 
 pub struct DnsSocketServer {
     socket_wrapper: Box<dyn UdpSocketWrapperTrait>,
@@ -94,9 +94,9 @@ mod tests {
     use super::*;
     use crate::sub_lib::udp_socket_wrapper::UdpSocketWrapperTrait;
     use crate::test_utils::unshared_test_utils::make_simplified_multi_config;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::borrow::Borrow;
     use std::borrow::BorrowMut;
     use std::clone::Clone;

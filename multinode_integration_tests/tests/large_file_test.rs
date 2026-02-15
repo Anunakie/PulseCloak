@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use multinode_integration_tests_lib::big_data_server::BigDataServer;
-use multinode_integration_tests_lib::masq_node_cluster::{DockerHostSocketAddr, MASQNodeCluster};
-use multinode_integration_tests_lib::masq_real_node::{
+use multinode_integration_tests_lib::pulsecloak_node_cluster::{DockerHostSocketAddr, PulseCloakNodeCluster};
+use multinode_integration_tests_lib::pulsecloak_real_node::{
     NodeStartupConfigBuilder, STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use node_lib::privilege_drop::{PrivilegeDropper, PrivilegeDropperReal};
@@ -16,7 +16,7 @@ fn downloading_a_file_larger_than_available_memory_doesnt_kill_node_but_makes_it
         eprintln!("Skipping big-data test because we can't start a server without root privilege");
         return;
     }
-    let mut cluster = MASQNodeCluster::start().expect("starting cluster");
+    let mut cluster = PulseCloakNodeCluster::start().expect("starting cluster");
     let maximum_kbytes_str = format!("{}", NODE_MEMORY_REQUIRED / 1024);
     let originating_node = cluster.start_real_node(
         NodeStartupConfigBuilder::zero_hop()

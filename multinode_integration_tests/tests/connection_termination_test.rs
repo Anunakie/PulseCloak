@@ -1,22 +1,22 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
-use masq_lib::utils::find_free_port;
-use multinode_integration_tests_lib::masq_mock_node::MASQMockNode;
-use multinode_integration_tests_lib::masq_node::{MASQNode, MASQNodeUtils, PortSelector};
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_node_server::MASQNodeServer;
-use multinode_integration_tests_lib::masq_real_node::{
-    MASQRealNode, STANDARD_CLIENT_TIMEOUT_MILLIS,
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
+use pulsecloak_lib::utils::find_free_port;
+use multinode_integration_tests_lib::pulsecloak_mock_node::PulseCloakMockNode;
+use multinode_integration_tests_lib::pulsecloak_node::{PulseCloakNode, PulseCloakNodeUtils, PortSelector};
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_node_server::PulseCloakNodeServer;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    PulseCloakRealNode, STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use multinode_integration_tests_lib::multinode_gossip::{parse_gossip, GossipType};
 use multinode_integration_tests_lib::neighborhood_constructor::{
     construct_neighborhood, do_not_modify_config,
 };
 use node_lib::hopper::live_cores_package::LiveCoresPackage;
-use node_lib::json_masquerader::JsonMasquerader;
-use node_lib::masquerader::Masquerader;
+use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
+use node_lib::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
 use node_lib::neighborhood::neighborhood_database::NeighborhoodDatabase;
 use node_lib::neighborhood::node_record::NodeRecord;
 use node_lib::sub_lib::cryptde::{decodex, CryptDE, PublicKey};
@@ -45,20 +45,20 @@ const HTTP_RESPONSE: &[u8] =
 // When: Client (browser?) drops connection to originating Node.
 // Then: Originating Node sends ClientRequestPayload to exit Node with empty SequencedPacket having last_data = true.
 fn actual_client_drop() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let (real_node, mock_node, exit_key) = create_neighborhood(&mut cluster);
     let exit_cryptde = CryptDENull::from(&exit_key, cluster.chain);
     let mut client = real_node.make_client(8080, STANDARD_CLIENT_TIMEOUT_MILLIS);
-    let masquerader = JsonMasquerader::new();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     client.send_chunk(HTTP_REQUEST);
     mock_node
-        .wait_for_package(&masquerader, Duration::from_secs(2))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(2))
         .unwrap();
 
     client.shutdown();
 
     let (_, _, lcp) = mock_node
-        .wait_for_package(&masquerader, Duration::from_secs(2))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(2))
         .unwrap();
     let payload = match decodex::<MessageType>(&exit_cryptde, &lcp.payload).unwrap() {
         MessageType::ClientRequest(vd) => vd
@@ -77,14 +77,14 @@ fn actual_client_drop() {
 // Then: Originating Node drops connection to client (browser?).
 // Then: Originating Node does _not_ send CORES package back to exit Node.
 fn reported_server_drop() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let (real_node, mock_node, exit_key) = create_neighborhood(&mut cluster);
     let exit_cryptde = CryptDENull::from(&exit_key, cluster.chain);
     let mut client = real_node.make_client(8080, STANDARD_CLIENT_TIMEOUT_MILLIS);
-    let masquerader = JsonMasquerader::new();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     client.send_chunk(HTTP_REQUEST);
     let (_, _, lcp) = mock_node
-        .wait_for_package(&masquerader, Duration::from_secs(2))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(2))
         .unwrap();
     let (stream_key, return_route_id) =
         context_from_request_lcp(lcp, real_node.main_cryptde_null().unwrap(), &exit_cryptde);
@@ -93,14 +93,14 @@ fn reported_server_drop() {
         .transmit_package(
             mock_node.port_list()[0],
             create_server_drop_report(&mock_node, &real_node, stream_key, return_route_id),
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             real_node.main_public_key(),
             real_node.socket_addr(PortSelector::First),
         )
         .unwrap();
 
     wait_for_client_shutdown(&real_node);
-    ensure_no_further_traffic(&mock_node, &masquerader);
+    ensure_no_further_traffic(&mock_node, &XYZPROTECT_XYZPROTECT_pulsecloakuerader);
 }
 
 #[ignore]
@@ -110,11 +110,11 @@ fn reported_server_drop() {
 // When: Server drops connection to exit Node.
 // Then: Exit Node sends ClientRequestPayload to originating Node with empty SequencedPacket having last_data = true.
 fn actual_server_drop() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let (real_node, mock_node, _) = create_neighborhood(&mut cluster);
     let server_port = find_free_port();
     let mut server = real_node.make_server(server_port);
-    let masquerader = JsonMasquerader::new();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     let (stream_key, return_route_id) = arbitrary_context();
     let index: u64 = 0;
     request_server_payload(
@@ -123,7 +123,7 @@ fn actual_server_drop() {
         &real_node,
         &mock_node,
         &mut server,
-        &masquerader,
+        &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
         stream_key,
         return_route_id,
     );
@@ -134,7 +134,7 @@ fn actual_server_drop() {
         &real_node,
         &mock_node,
         &mut server,
-        &masquerader,
+        &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
         stream_key,
         return_route_id,
     );
@@ -146,13 +146,13 @@ fn actual_server_drop() {
         .transmit_package(
             mock_node.port_list()[0],
             create_meaningless_icp(&mock_node, &real_node),
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             real_node.main_public_key(),
             real_node.socket_addr(PortSelector::First),
         )
         .unwrap();
     let (_, _, lcp) = mock_node
-        .wait_for_package(&masquerader, Duration::from_secs(1))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(1))
         .unwrap();
     let payload = match decodex::<MessageType>(mock_node.main_cryptde_null().unwrap(), &lcp.payload)
         .unwrap()
@@ -168,11 +168,11 @@ fn actual_server_drop() {
 
 fn request_server_payload(
     index: u64,
-    cluster: &MASQNodeCluster,
-    real_node: &MASQRealNode,
-    mock_node: &MASQMockNode,
-    server: &mut MASQNodeServer,
-    masquerader: &JsonMasquerader,
+    cluster: &PulseCloakNodeCluster,
+    real_node: &PulseCloakRealNode,
+    mock_node: &PulseCloakMockNode,
+    server: &mut PulseCloakNodeServer,
+    XYZPROTECT_XYZPROTECT_pulsecloakuerader: &JsonXYZPROTECT_PulseCloakuerader,
     stream_key: StreamKey,
     return_route_id: u32,
 ) {
@@ -188,7 +188,7 @@ fn request_server_payload(
                 &server,
                 cluster.chain,
             ),
-            masquerader,
+            XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             real_node.main_public_key(),
             real_node.socket_addr(PortSelector::First),
         )
@@ -196,7 +196,7 @@ fn request_server_payload(
     server.wait_for_chunk(Duration::from_secs(2)).unwrap();
     server.send_chunk(HTTP_RESPONSE);
     mock_node
-        .wait_for_package(masquerader, Duration::from_secs(2))
+        .wait_for_package(XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(2))
         .unwrap();
 }
 
@@ -207,11 +207,11 @@ fn request_server_payload(
 // Then: Exit Node drops connection to server.
 // Then: Exit Node does _not_ send CORES package back to originating Node.
 fn reported_client_drop() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let (real_node, mock_node, _) = create_neighborhood(&mut cluster);
     let server_port = find_free_port();
     let mut server = real_node.make_server(server_port);
-    let masquerader = JsonMasquerader::new();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     let (stream_key, return_route_id) = arbitrary_context();
     let index: u64 = 0;
     mock_node
@@ -226,7 +226,7 @@ fn reported_client_drop() {
                 &server,
                 cluster.chain,
             ),
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             real_node.main_public_key(),
             real_node.socket_addr(PortSelector::First),
         )
@@ -234,21 +234,21 @@ fn reported_client_drop() {
     server.wait_for_chunk(Duration::from_secs(1)).unwrap();
     server.send_chunk(HTTP_RESPONSE);
     mock_node
-        .wait_for_package(&masquerader, Duration::from_secs(1))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(1))
         .unwrap();
 
     mock_node
         .transmit_package(
             mock_node.port_list()[0],
             create_client_drop_report(&mock_node, &real_node, stream_key, return_route_id),
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             real_node.main_public_key(),
             real_node.socket_addr(PortSelector::First),
         )
         .unwrap();
 
     wait_for_server_shutdown(&real_node, server.local_addr());
-    ensure_no_further_traffic(&mock_node, &masquerader);
+    ensure_no_further_traffic(&mock_node, &XYZPROTECT_XYZPROTECT_pulsecloakuerader);
 }
 
 #[test]
@@ -263,8 +263,8 @@ fn downed_nodes_not_offered_in_passes_or_introductions() {
     db.add_arbitrary_full_neighbor(&desirable_but_down, &undesirable_but_up);
     db.add_arbitrary_full_neighbor(&desirable_but_down, &fictional);
 
-    let mut cluster = MASQNodeCluster::start().unwrap();
-    let (_, masq_real_node, mut node_map) =
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
+    let (_, pulsecloak_real_node, mut node_map) =
         construct_neighborhood(&mut cluster, db, vec![], do_not_modify_config());
     let desirable_but_down_node = node_map.remove(&desirable_but_down).unwrap();
     let undesirable_but_up_node = node_map.remove(&undesirable_but_up).unwrap();
@@ -274,7 +274,7 @@ fn downed_nodes_not_offered_in_passes_or_introductions() {
     // Kill desirable neighbor
     desirable_but_down_node.kill();
     // Debut a new Node
-    debuter_node.transmit_debut(&masq_real_node).unwrap();
+    debuter_node.transmit_debut(&pulsecloak_real_node).unwrap();
     // What's the return Gossip?
     let (gossip, ip_addr) = debuter_node
         .wait_for_gossip(Duration::from_secs(2))
@@ -291,7 +291,7 @@ fn downed_nodes_not_offered_in_passes_or_introductions() {
     }
 }
 
-fn create_neighborhood(cluster: &mut MASQNodeCluster) -> (MASQRealNode, MASQMockNode, PublicKey) {
+fn create_neighborhood(cluster: &mut PulseCloakNodeCluster) -> (PulseCloakRealNode, PulseCloakMockNode, PublicKey) {
     let mut real_node: NodeRecord = make_node_record(1234, true);
     let mut mock_node: NodeRecord = make_node_record(2345, true);
     let mut fictional_node_1: NodeRecord = make_node_record(3456, true);
@@ -304,12 +304,12 @@ fn create_neighborhood(cluster: &mut MASQNodeCluster) -> (MASQRealNode, MASQMock
     db.add_node(mock_node.clone()).unwrap();
     db.add_node(fictional_node_1.clone()).unwrap();
     db.add_node(fictional_node_2.clone()).unwrap();
-    let (_, masq_real_node, mut node_map) =
+    let (_, pulsecloak_real_node, mut node_map) =
         construct_neighborhood(cluster, db, vec![], do_not_modify_config());
-    let masq_mock_node = node_map.remove(mock_node.public_key()).unwrap();
+    let pulsecloak_mock_node = node_map.remove(mock_node.public_key()).unwrap();
     (
-        masq_real_node,
-        masq_mock_node,
+        pulsecloak_real_node,
+        pulsecloak_mock_node,
         fictional_node_2.public_key().clone(),
     )
 }
@@ -347,11 +347,11 @@ fn arbitrary_context() -> (StreamKey, u32) {
 
 fn create_request_icp(
     index: u64,
-    originating_node: &MASQMockNode,
-    exit_node: &MASQRealNode,
+    originating_node: &PulseCloakMockNode,
+    exit_node: &PulseCloakRealNode,
     stream_key: StreamKey,
     return_route_id: u32,
-    server: &MASQNodeServer,
+    server: &PulseCloakNodeServer,
     chain: Chain,
 ) -> IncipientCoresPackage {
     IncipientCoresPackage::new(
@@ -394,8 +394,8 @@ fn create_request_icp(
 }
 
 fn create_meaningless_icp(
-    originating_node: &MASQMockNode,
-    exit_node: &MASQRealNode,
+    originating_node: &PulseCloakMockNode,
+    exit_node: &PulseCloakRealNode,
 ) -> IncipientCoresPackage {
     let socket_addr = SocketAddr::from_str("3.2.1.0:7654").unwrap();
     let stream_key =
@@ -440,8 +440,8 @@ fn create_meaningless_icp(
 }
 
 fn create_server_drop_report(
-    exit_node: &MASQMockNode,
-    originating_node: &MASQRealNode,
+    exit_node: &PulseCloakMockNode,
+    originating_node: &PulseCloakRealNode,
     stream_key: StreamKey,
     return_route_id: u32,
 ) -> IncipientCoresPackage {
@@ -487,8 +487,8 @@ fn create_server_drop_report(
 }
 
 fn create_client_drop_report(
-    originating_node: &MASQMockNode,
-    exit_node: &MASQRealNode,
+    originating_node: &PulseCloakMockNode,
+    exit_node: &PulseCloakRealNode,
     stream_key: StreamKey,
     return_route_id: u32,
 ) -> IncipientCoresPackage {
@@ -534,8 +534,8 @@ fn create_client_drop_report(
     .unwrap()
 }
 
-fn ensure_no_further_traffic(mock_node: &MASQMockNode, masquerader: &dyn Masquerader) {
-    match mock_node.wait_for_package(masquerader, Duration::from_secs(1)) {
+fn ensure_no_further_traffic(mock_node: &PulseCloakMockNode, XYZPROTECT_XYZPROTECT_pulsecloakuerader: &dyn XYZPROTECT_PulseCloakuerader) {
+    match mock_node.wait_for_package(XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_secs(1)) {
         Ok((addr1, addr2, lcp)) => panic!(
             "Should not have received package, but: {:?} -> {:?}:\n{:?}",
             addr1, addr2, lcp
@@ -545,20 +545,20 @@ fn ensure_no_further_traffic(mock_node: &MASQMockNode, masquerader: &dyn Masquer
     }
 }
 
-fn wait_for_client_shutdown(real_node: &MASQRealNode) {
+fn wait_for_client_shutdown(real_node: &PulseCloakRealNode) {
     // This is a jury-rigged way to wait for a shutdown, since client.wait_for_shutdown() doesn't
     // work, but it serves the purpose.
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_node.name(),
         "Shutting down stream to client at 127.0.0.1",
         Duration::from_secs(1),
     );
 }
 
-fn wait_for_server_shutdown(real_node: &MASQRealNode, local_addr: SocketAddr) {
+fn wait_for_server_shutdown(real_node: &PulseCloakRealNode, local_addr: SocketAddr) {
     // This is a jury-rigged way to wait for a shutdown, since server.wait_for_shutdown() doesn't
     // work, but it serves the purpose.
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_node.name(),
         &format!(
             "Shutting down stream to server at {} in response to client-drop report",

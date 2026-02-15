@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::bootstrapper::CryptDEPair;
 use crate::neighborhood::gossip::Gossip_0v1;
 use crate::sub_lib::cryptde::encodex;
@@ -16,7 +16,7 @@ use crate::sub_lib::versioned_data::VersionedData;
 use crate::sub_lib::wallet::Wallet;
 use actix::Message;
 use actix::Recipient;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use serde_derive::{Deserialize, Serialize};
 use std::fmt::Debug;
 use std::net::SocketAddr;
@@ -58,7 +58,7 @@ impl NoLookupIncipientCoresPackage {
     }
 }
 
-/// New CORES package about to be sent to the Hopper and thence put on the MASQ Network
+/// New CORES package about to be sent to the Hopper and thence put on the PulseCloak Network
 #[derive(Clone, Debug, PartialEq, Eq, Message)]
 pub struct IncipientCoresPackage {
     pub route: Route,
@@ -115,7 +115,7 @@ impl IncipientCoresPackage {
     }
 }
 
-/// CORES package that has traversed the MASQ Network and is arriving at its destination
+/// CORES package that has traversed the PulseCloak Network and is arriving at its destination
 #[derive(Clone, Debug, PartialEq, Eq, Message)]
 pub struct ExpiredCoresPackage<T> {
     pub immediate_neighbor: SocketAddr,
@@ -177,7 +177,7 @@ mod tests {
     use crate::test_utils::{make_meaningless_message_type, make_paying_wallet};
     use actix::Actor;
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::net::IpAddr;
     use std::str::FromStr;
 

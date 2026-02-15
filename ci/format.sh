@@ -1,5 +1,5 @@
 #!/bin/bash -xv
-# Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 CI_DIR="$( cd "$( dirname "$0" )" && pwd )"
 
 final_exit_code=0
@@ -19,10 +19,10 @@ format() {
 }
 
 format "$CI_DIR"/../automap
-format "$CI_DIR"/../masq_lib
+format "$CI_DIR"/../pulsecloak_lib
 format "$CI_DIR"/../node
 format "$CI_DIR"/../dns_utility
-format "$CI_DIR"/../masq
+format "$CI_DIR"/../pulsecloak
 format "$CI_DIR"/../multinode_integration_tests
 format "$CI_DIR"/../port_exposer
 format "$CI_DIR"/../ip_country

@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::proxy_server::protocol_pack::{Host, ProtocolPack, ServerImpersonator};
 use crate::proxy_server::server_impersonator_http::ServerImpersonatorHttp;
 use crate::sub_lib::cryptde::PlainData;
 use crate::sub_lib::proxy_server::ProxyProtocol;
 use lazy_static::lazy_static;
-use masq_lib::constants::HTTP_PORT;
-use masq_lib::utils::index_of;
+use pulsecloak_lib::constants::HTTP_PORT;
+use pulsecloak_lib::utils::index_of;
 use regex::Regex;
 
 lazy_static! {

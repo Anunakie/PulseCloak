@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::apps::app_head;
 use crate::bootstrapper::{BootstrapperConfig, CryptDEPair};
@@ -29,16 +29,16 @@ use crate::sub_lib::neighborhood::{NeighborhoodMode as NeighborhoodModeEnum, DEF
 use crate::sub_lib::utils::make_new_multi_config;
 use clap::{value_t, App};
 use itertools::Itertools;
-use masq_lib::blockchains::chains::Chain as BlockChain;
-use masq_lib::constants::DEFAULT_CHAIN;
-use masq_lib::logger::Logger;
-use masq_lib::messages::UiSetupResponseValueStatus::{Blank, Configured, Default, Required, Set};
-use masq_lib::messages::{UiSetupRequestValue, UiSetupResponseValue, UiSetupResponseValueStatus};
-use masq_lib::multi_config::{
+use pulsecloak_lib::blockchains::chains::Chain as BlockChain;
+use pulsecloak_lib::constants::DEFAULT_CHAIN;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::UiSetupResponseValueStatus::{Blank, Configured, Default, Required, Set};
+use pulsecloak_lib::messages::{UiSetupRequestValue, UiSetupResponseValue, UiSetupResponseValueStatus};
+use pulsecloak_lib::multi_config::{
     CommandLineVcl, ConfigFileVcl, EnvironmentVcl, MultiConfig, VirtualCommandLine,
 };
-use masq_lib::shared_schema::{data_directory_arg, shared_app, ConfiguratorError};
-use masq_lib::utils::{
+use pulsecloak_lib::shared_schema::{data_directory_arg, shared_app, ConfiguratorError};
+use pulsecloak_lib::utils::{
     add_chain_specific_directory, to_string, ExpectValue, DATA_DIRECTORY_DAEMON_HELP,
 };
 use std::collections::HashMap;
@@ -284,7 +284,7 @@ impl SetupReporterReal {
         existing_setup_dir: Option<&UiSetupResponseValue>,
         incoming_setup_dir: Option<&UiSetupResponseValue>,
         all_but_configured: &SetupCluster,
-        chain: masq_lib::blockchains::chains::Chain,
+        chain: pulsecloak_lib::blockchains::chains::Chain,
         real_user: crate::bootstrapper::RealUser,
         data_directory_opt: Option<PathBuf>,
     ) -> (PathBuf, UiSetupResponseValueStatus) {
@@ -541,10 +541,10 @@ impl SetupReporterReal {
         // instead of Null, so that the key length is correct.
         bootstrapper_config.cryptde_pair = CryptDEPair::new(
             Box::new(CryptDEReal::new(
-                masq_lib::blockchains::chains::Chain::PolyMainnet,
+                pulsecloak_lib::blockchains::chains::Chain::PolyMainnet,
             )),
             Box::new(CryptDEReal::new(
-                masq_lib::blockchains::chains::Chain::PolyMainnet,
+                pulsecloak_lib::blockchains::chains::Chain::PolyMainnet,
             )),
         );
         bootstrapper_config.data_directory = data_directory.to_path_buf();
@@ -1254,14 +1254,14 @@ mod tests {
     };
     use crate::test_utils::{assert_string_contains, rate_pack};
     use core::option::Option;
-    use masq_lib::blockchains::chains::Chain as Blockchain;
-    use masq_lib::blockchains::chains::Chain::PolyAmoy;
-    use masq_lib::constants::{DEFAULT_CHAIN, DEFAULT_GAS_PRICE};
-    use masq_lib::messages::UiSetupResponseValueStatus::{Blank, Configured, Required, Set};
-    use masq_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::utils::{add_chain_specific_directory, AutomapProtocol};
+    use pulsecloak_lib::blockchains::chains::Chain as Blockchain;
+    use pulsecloak_lib::blockchains::chains::Chain::PolyAmoy;
+    use pulsecloak_lib::constants::{DEFAULT_CHAIN, DEFAULT_GAS_PRICE};
+    use pulsecloak_lib::messages::UiSetupResponseValueStatus::{Blank, Configured, Required, Set};
+    use pulsecloak_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::utils::{add_chain_specific_directory, AutomapProtocol};
     use std::cell::RefCell;
     use std::convert::TryFrom;
     #[cfg(not(target_os = "windows"))]
@@ -1451,7 +1451,7 @@ mod tests {
             ("neighborhood-mode", "standard", Default),
             (
                 "neighbors",
-                "masq://eth-mainnet:QUJDRDU2Nzg5MDEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://eth-mainnet:RUZHSDU2Nzg5MDEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678",
+                "pulsecloak://eth-mainnet:QUJDRDU2Nzg5MDEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://eth-mainnet:RUZHSDU2Nzg5MDEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678",
                 Configured,
             ),
             (
@@ -1516,7 +1516,7 @@ mod tests {
             ("mapping-protocol", "pmp", Set),
             ("min-hops", "2", Set),
             ("neighborhood-mode", "originate-only", Set),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
             ("payment-thresholds","1234|50000|1000|1000|20000|20000",Set),
             ("rate-pack","1|3|3|8",Set),
             #[cfg(not(target_os = "windows"))]
@@ -1546,7 +1546,7 @@ mod tests {
             ("mapping-protocol", "pmp", Set),
             ("min-hops", "2", Set),
             ("neighborhood-mode", "originate-only", Set),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
             ("payment-thresholds","1234|50000|1000|1000|20000|20000",Set),
             ("rate-pack","1|3|3|8",Set),
             #[cfg(not(target_os = "windows"))]
@@ -1586,7 +1586,7 @@ mod tests {
             ("mapping-protocol", "igdp"),
             ("min-hops", "2"),
             ("neighborhood-mode", "originate-only"),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
             ("payment-thresholds","1234|50000|1000|1000|15000|15000"),
             ("rate-pack","1|3|3|8"),
             #[cfg(not(target_os = "windows"))]
@@ -1621,7 +1621,7 @@ mod tests {
             ("mapping-protocol", "igdp", Set),
             ("min-hops", "2", Set),
             ("neighborhood-mode", "originate-only", Set),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Set),
             ("payment-thresholds","1234|50000|1000|1000|15000|15000",Set),
             ("rate-pack","1|3|3|8",Set),
             #[cfg(not(target_os = "windows"))]
@@ -1647,28 +1647,28 @@ mod tests {
             "get_modified_setup_database_nonexistent_nothing_set_everything_in_environment",
         );
         vec![
-            ("MASQ_BLOCKCHAIN_SERVICE_URL", "https://example3.com"),
-            ("MASQ_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
-            ("MASQ_CLANDESTINE_PORT", "1234"),
-            ("MASQ_CONSUMING_PRIVATE_KEY", "0011223344556677001122334455667700112233445566770011223344556677"),
-            ("MASQ_CRASH_POINT", "Error"),
-            ("MASQ_DATA_DIRECTORY", home_dir.to_str().unwrap()),
-            ("MASQ_DB_PASSWORD", "password"),
-            ("MASQ_DNS_SERVERS", "8.8.8.8"),
-            ("MASQ_EARNING_WALLET", "0x0123456789012345678901234567890123456789"),
-            ("MASQ_GAS_PRICE", "50"),
-            ("MASQ_IP", "4.3.2.1"),
-            ("MASQ_LOG_LEVEL", "error"),
-            ("MASQ_MAPPING_PROTOCOL", "pmp"),
-            ("MASQ_MIN_HOPS", "2"),
-            ("MASQ_NEIGHBORHOOD_MODE", "originate-only"),
-            ("MASQ_NEIGHBORS", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
-            ("MASQ_PAYMENT_THRESHOLDS","12345|50000|1000|1234|19000|20000"),
-            ("MASQ_RATE_PACK","1|3|3|8"),
+            ("PCLOAK_BLOCKCHAIN_SERVICE_URL", "https://example3.com"),
+            ("PCLOAK_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
+            ("PCLOAK_CLANDESTINE_PORT", "1234"),
+            ("PCLOAK_CONSUMING_PRIVATE_KEY", "0011223344556677001122334455667700112233445566770011223344556677"),
+            ("PCLOAK_CRASH_POINT", "Error"),
+            ("PCLOAK_DATA_DIRECTORY", home_dir.to_str().unwrap()),
+            ("PCLOAK_DB_PASSWORD", "password"),
+            ("PCLOAK_DNS_SERVERS", "8.8.8.8"),
+            ("PCLOAK_EARNING_WALLET", "0x0123456789012345678901234567890123456789"),
+            ("PCLOAK_GAS_PRICE", "50"),
+            ("PCLOAK_IP", "4.3.2.1"),
+            ("PCLOAK_LOG_LEVEL", "error"),
+            ("PCLOAK_MAPPING_PROTOCOL", "pmp"),
+            ("PCLOAK_MIN_HOPS", "2"),
+            ("PCLOAK_NEIGHBORHOOD_MODE", "originate-only"),
+            ("PCLOAK_NEIGHBORS", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
+            ("PCLOAK_PAYMENT_THRESHOLDS","12345|50000|1000|1234|19000|20000"),
+            ("PCLOAK_RATE_PACK","1|3|3|8"),
             #[cfg(not(target_os = "windows"))]
-            ("MASQ_REAL_USER", "9999:9999:booga"),
-            ("MASQ_SCANS", "off"),
-            ("MASQ_SCAN_INTERVALS","133|133|111")
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_SCANS", "off"),
+            ("PCLOAK_SCAN_INTERVALS","133|133|111")
         ].into_iter()
             .for_each (|(name, value)| std::env::set_var (name, value));
         let dirs_wrapper = Box::new(DirsWrapperReal::default());
@@ -1694,7 +1694,7 @@ mod tests {
             ("mapping-protocol", "pmp", Configured),
             ("min-hops", "2", Configured),
             ("neighborhood-mode", "originate-only", Configured),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Configured),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Configured),
             ("payment-thresholds","12345|50000|1000|1234|19000|20000",Configured),
             ("rate-pack","1|3|3|8",Configured),
             #[cfg(not(target_os = "windows"))]
@@ -1724,7 +1724,7 @@ mod tests {
         );
         let data_root = home_dir.join("data_root");
         let mainnet_dir = data_root
-            .join("MASQ")
+            .join("PulseCloak")
             .join(DEFAULT_CHAIN.rec().literal_identifier);
         {
             create_dir_all(mainnet_dir.clone()).unwrap();
@@ -1765,7 +1765,7 @@ mod tests {
                 .unwrap()
         }
         let base_sepolia_dir = data_root
-            .join("MASQ")
+            .join("PulseCloak")
             .join(TEST_DEFAULT_CHAIN.rec().literal_identifier);
         {
             create_dir_all(base_sepolia_dir.clone()).unwrap();
@@ -1899,26 +1899,26 @@ mod tests {
             "get_modified_setup_database_nonexistent_all_but_requireds_cleared",
         );
         vec![
-            ("MASQ_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
-            ("MASQ_BLOCKCHAIN_SERVICE_URL", "https://booga.com"),
-            ("MASQ_CLANDESTINE_PORT", "1234"),
-            ("MASQ_CONSUMING_PRIVATE_KEY", "0011223344556677001122334455667700112233445566770011223344556677"),
-            ("MASQ_CRASH_POINT", "Panic"),
-            ("MASQ_DATA_DIRECTORY", home_dir.to_str().unwrap()),
-            ("MASQ_DNS_SERVERS", "8.8.8.8"),
-            ("MASQ_EARNING_WALLET", "0x0123456789012345678901234567890123456789"),
-            ("MASQ_GAS_PRICE", "50"),
-            ("MASQ_LOG_LEVEL", "error"),
-            ("MASQ_MAPPING_PROTOCOL", "pcp"),
-            ("MASQ_MIN_HOPS", "2"),
-            ("MASQ_NEIGHBORHOOD_MODE", "originate-only"),
-            ("MASQ_NEIGHBORS", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
-            ("MASQ_PAYMENT_THRESHOLDS","1234|50000|1000|1000|20000|20000"),
-            ("MASQ_RATE_PACK","1|3|3|8"),
+            ("PCLOAK_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
+            ("PCLOAK_BLOCKCHAIN_SERVICE_URL", "https://booga.com"),
+            ("PCLOAK_CLANDESTINE_PORT", "1234"),
+            ("PCLOAK_CONSUMING_PRIVATE_KEY", "0011223344556677001122334455667700112233445566770011223344556677"),
+            ("PCLOAK_CRASH_POINT", "Panic"),
+            ("PCLOAK_DATA_DIRECTORY", home_dir.to_str().unwrap()),
+            ("PCLOAK_DNS_SERVERS", "8.8.8.8"),
+            ("PCLOAK_EARNING_WALLET", "0x0123456789012345678901234567890123456789"),
+            ("PCLOAK_GAS_PRICE", "50"),
+            ("PCLOAK_LOG_LEVEL", "error"),
+            ("PCLOAK_MAPPING_PROTOCOL", "pcp"),
+            ("PCLOAK_MIN_HOPS", "2"),
+            ("PCLOAK_NEIGHBORHOOD_MODE", "originate-only"),
+            ("PCLOAK_NEIGHBORS", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678"),
+            ("PCLOAK_PAYMENT_THRESHOLDS","1234|50000|1000|1000|20000|20000"),
+            ("PCLOAK_RATE_PACK","1|3|3|8"),
             #[cfg(not(target_os = "windows"))]
-            ("MASQ_REAL_USER", "9999:9999:booga"),
-            ("MASQ_SCANS", "off"),
-            ("MASQ_SCAN_INTERVALS","150|150|155"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_SCANS", "off"),
+            ("PCLOAK_SCAN_INTERVALS","150|150|155"),
         ].into_iter()
             .for_each (|(name, value)| std::env::set_var (name, value));
         let params = vec![
@@ -1973,7 +1973,7 @@ mod tests {
             ("neighborhood-mode", "consume-only", Set),
             (
                 "neighbors",
-                "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@9.10.11.12:9101",
+                "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@9.10.11.12:9101",
                 Set,
             ),
             ("payment-thresholds", "4321|66666|777|987|123456|124444", Set),
@@ -2009,7 +2009,7 @@ mod tests {
             ("mapping-protocol", "pcp", Configured),
             ("min-hops", "2", Configured),
             ("neighborhood-mode", "originate-only", Configured),
-            ("neighbors", "masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,masq://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Configured),
+            ("neighbors", "pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@1.2.3.4:1234,pulsecloak://base-sepolia:MTIzNDU2Nzg5MTEyMzQ1Njc4OTIxMjM0NTY3ODkzMTI@5.6.7.8:5678", Configured),
             ("payment-thresholds","1234|50000|1000|1000|20000|20000",Configured),
             ("rate-pack","1|3|3|8",Configured),
             #[cfg(not(target_os = "windows"))]
@@ -2055,7 +2055,7 @@ mod tests {
             .collect_vec();
 
         let expected_data_directory = data_dir
-            .join("MASQ")
+            .join("PulseCloak")
             .join(TEST_DEFAULT_CHAIN.rec().literal_identifier);
         let dirs_wrapper = Box::new(
             DirsWrapperMock::new()
@@ -2080,8 +2080,8 @@ mod tests {
             "get_modified_setup_handles_tilde_in_config_file_and_data_directory_path",
         );
         let data_dir = base_dir.join("data_dir");
-        std::fs::create_dir_all(base_dir.join("masqhome")).unwrap();
-        let config_file_path = base_dir.join("masqhome").join("config.toml");
+        std::fs::create_dir_all(base_dir.join("pulsecloakhome")).unwrap();
+        let config_file_path = base_dir.join("pulsecloakhome").join("config.toml");
         let mut config_file = File::create(&config_file_path).unwrap();
         config_file
             .write_all(b"blockchain-service-url = \"https://www.mainnet.com\"\n")
@@ -2096,8 +2096,8 @@ mod tests {
             ),
         ]);
         let incoming_setup = vec![
-            ("data-directory", "~/masqhome"),
-            ("config-file", "~/masqhome/config.toml"),
+            ("data-directory", "~/pulsecloakhome"),
+            ("config-file", "~/pulsecloakhome/config.toml"),
         ]
         .into_iter()
         .map(|(name, value)| UiSetupRequestValue::new(name, value))
@@ -2225,7 +2225,7 @@ mod tests {
             "get_modified_setup_data_directory_depends_on_new_chain_on_error",
         );
         let current_data_dir = base_dir
-            .join("MASQ")
+            .join("PulseCloak")
             .join(DEFAULT_CHAIN.rec().literal_identifier);
         let existing_setup = setup_cluster_from(vec![
             ("blockchain-service-url", "", Required),
@@ -2256,7 +2256,7 @@ mod tests {
             .map(|(name, value)| UiSetupRequestValue::new(name, value))
             .collect_vec();
         let expected_data_directory = base_dir
-            .join("MASQ")
+            .join("PulseCloak")
             .join(TEST_DEFAULT_CHAIN.rec().literal_identifier);
         let dirs_wrapper = Box::new(
             DirsWrapperMock::new()
@@ -2284,7 +2284,7 @@ mod tests {
         );
         let current_data_dir = base_dir
             .join("data_dir")
-            .join("MASQ")
+            .join("PulseCloak")
             .join(BlockChain::PolyAmoy.rec().literal_identifier); //not a default
         let existing_setup = setup_cluster_from(vec![
             ("blockchain-service-url", "", Required),
@@ -2389,7 +2389,7 @@ mod tests {
             ("neighborhood-mode", "originate-only", Set),
             (
                 "neighbors",
-                "masq://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542",
+                "pulsecloak://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542",
                 Set,
             ),
         ]);
@@ -2406,7 +2406,7 @@ mod tests {
             result.0.get("neighbors").unwrap().clone(),
             UiSetupResponseValue::new(
                 "neighbors",
-                "masq://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542",
+                "pulsecloak://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542",
                 Set
             )
         );
@@ -2498,9 +2498,9 @@ mod tests {
     fn calculate_fundamentals_with_only_environment() {
         let _guard = EnvironmentGuard::new();
         vec![
-            ("MASQ_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
-            ("MASQ_DATA_DIRECTORY", "env_dir"),
-            ("MASQ_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
+            ("PCLOAK_DATA_DIRECTORY", "env_dir"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
         ]
         .into_iter()
         .for_each(|(name, value)| std::env::set_var(name, value));
@@ -2525,9 +2525,9 @@ mod tests {
     fn calculate_fundamentals_with_environment_and_obsolete_setup() {
         let _guard = EnvironmentGuard::new();
         vec![
-            ("MASQ_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
-            ("MASQ_DATA_DIRECTORY", "env_dir"),
-            ("MASQ_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
+            ("PCLOAK_DATA_DIRECTORY", "env_dir"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
         ]
         .into_iter()
         .for_each(|(name, value)| std::env::set_var(name, value));
@@ -2556,9 +2556,9 @@ mod tests {
     fn calculate_fundamentals_with_environment_and_overriding_setup() {
         let _guard = EnvironmentGuard::new();
         vec![
-            ("MASQ_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
-            ("MASQ_DATA_DIRECTORY", "env_dir"),
-            ("MASQ_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_CHAIN", TEST_DEFAULT_CHAIN.rec().literal_identifier),
+            ("PCLOAK_DATA_DIRECTORY", "env_dir"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
         ]
         .into_iter()
         .for_each(|(name, value)| std::env::set_var(name, value));
@@ -2671,17 +2671,17 @@ mod tests {
             ("real-user", "1111:1111:/home/booga", Default),
             ("blockchain-service-url", "https://booga.com", Set),
         ]);
-        let masqhome = Path::new("/home/booga/masqhome");
+        let pulsecloakhome = Path::new("/home/booga/pulsecloakhome");
         let incoming_setup = vec![UiSetupRequestValue::new(
             "data-directory",
-            &masqhome.to_str().unwrap(),
+            &pulsecloakhome.to_str().unwrap(),
         )];
         let dirs_wrapper = Box::new(DirsWrapperReal::default());
         let subject = SetupReporterReal::new(dirs_wrapper);
 
         let result = subject.get_modified_setup(existing_setup, incoming_setup);
 
-        let expected = masqhome.join("base-mainnet");
+        let expected = pulsecloakhome.join("base-mainnet");
         assert_eq!(
             result.unwrap().get("data-directory").unwrap().value,
             expected.to_str().unwrap()
@@ -2698,7 +2698,7 @@ mod tests {
         let incoming_setup = vec![UiSetupRequestValue::new("chain", "polygon-amoy")];
         let home_directory = Path::new("/home/booga");
         let data_directory = home_directory.join("data");
-        let expected = data_directory.join("MASQ").join("polygon-amoy");
+        let expected = data_directory.join("PulseCloak").join("polygon-amoy");
         let dirs_wrapper = Box::new(
             DirsWrapperMock::new()
                 .data_dir_result(Some(data_directory))
@@ -2793,7 +2793,7 @@ mod tests {
         {
             let config_file_path = data_directory.join("config.toml");
             create_dir_all(&data_directory)
-                .expect("Could not create chain directory inside config_file_not_specified_but_exists home/MASQ directory");
+                .expect("Could not create chain directory inside config_file_not_specified_but_exists home/PulseCloak directory");
             let mut config_file = File::create(config_file_path).unwrap();
             config_file.write_all(b"gas-price = \"10\"\n").unwrap();
         }
@@ -2930,7 +2930,7 @@ mod tests {
         let data_directory = wrapper
             .data_dir()
             .unwrap()
-            .join("MASQ")
+            .join("PulseCloak")
             .join(DEFAULT_CHAIN.rec().literal_identifier);
         let setup = vec![
             // no config-file setting
@@ -3292,19 +3292,19 @@ mod tests {
 
     #[test]
     fn neighbors_computed_default_persistent_config_present_password_present_values_present() {
-        let cryptde = CryptDEReal::new(masq_lib::blockchains::chains::Chain::Dev);
+        let cryptde = CryptDEReal::new(pulsecloak_lib::blockchains::chains::Chain::Dev);
         let past_neighbors_params_arc = Arc::new(Mutex::new(vec![]));
         let persistent_config = PersistentConfigurationMock::new()
             .past_neighbors_params(&past_neighbors_params_arc)
             .past_neighbors_result(Ok(Some(vec![
                 NodeDescriptor::try_from((
                     &cryptde as &dyn CryptDE,
-                    "masq://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234",
+                    "pulsecloak://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234",
                 ))
                 .unwrap(),
                 NodeDescriptor::try_from((
                     &cryptde as &dyn CryptDE,
-                    "masq://eth-mainnet:ODg3NzY2NTU0NDMzMjIxMTg4Nzc2NjU1NDQzMzIyMTE@4.3.2.1:4321",
+                    "pulsecloak://eth-mainnet:ODg3NzY2NTU0NDMzMjIxMTg4Nzc2NjU1NDQzMzIyMTE@4.3.2.1:4321",
                 ))
                 .unwrap(),
             ])));
@@ -3316,7 +3316,7 @@ mod tests {
             &Some("password".to_string()),
         );
 
-        assert_eq! (result, Some (("masq://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234,masq://eth-mainnet:ODg3NzY2NTU0NDMzMjIxMTg4Nzc2NjU1NDQzMzIyMTE@4.3.2.1:4321".to_string(), Configured)));
+        assert_eq! (result, Some (("pulsecloak://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234,pulsecloak://eth-mainnet:ODg3NzY2NTU0NDMzMjIxMTg4Nzc2NjU1NDQzMzIyMTE@4.3.2.1:4321".to_string(), Configured)));
         let past_neighbors_params = past_neighbors_params_arc.lock().unwrap();
         assert_eq!(*past_neighbors_params, vec!["password".to_string()])
     }

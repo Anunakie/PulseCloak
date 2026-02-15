@@ -1,13 +1,13 @@
-# Engineering Practices for the MASQ Node Project
+# Engineering Practices for the PulseCloak Node Project
 In order to maintain and improve the quality of the project, we have certain engineering disciplines that developers
-and QA testers follow when contributing to MASQ Node and its affiliated codebases.
+and QA testers follow when contributing to PulseCloak Node and its affiliated codebases.
 
 ## Development
 We look forward to accepting contributions of source code from the community, and we strive to maintain
 high development standards.
 
 ### Test-Driven Development
-The MASQ project is test-driven, which means all or almost all of our production code is driven
+The PulseCloak project is test-driven, which means all or almost all of our production code is driven
 by automated tests that are written to fail (because the production code to make them pass doesn't exist
 yet), and then made to pass.
 
@@ -26,7 +26,7 @@ fundamentally untestable way. Second, that will leave segments of your code unco
 Third, your code won't pass review, and either you or someone else will need to rewrite it anyway.
 
 #### Tests
-In the MASQ Node project, we have three sets of tests.
+In the PulseCloak Node project, we have three sets of tests.
 
 * __Unit Tests:__ This is the most numerous kind of test. These tests have the lowest-level access to the
 production code, and test it in comparatively small units. In Rust, the convention is to write the unit 
@@ -62,8 +62,8 @@ Our production Rust code is currently in these directories:
 
 * `automap` - code for working with the local LAN router
 * `dns_utility` - code for subverting and reverting the machine's DNS configuration
-* `masq` - a command-line interface to the Daemon and the Node
-* `masq_lib` - code that is used in two or more subprojects
+* `pulsecloak` - a command-line interface to the Daemon and the Node
+* `pulsecloak_lib` - code that is used in two or more subprojects
 * `node` - code providing functionality for the Daemon and the Node
 
 Other top-level directories, such as `multinode_integration_tests` and `port_exposer`,
@@ -104,7 +104,7 @@ ownership, which is especially important on a volunteer project where devs are e
 and out. It's a bad thing for only one dev to know how a particular piece of code works.
 
 Therefore, some projects decree that no line of code may be merged into the master branch unless it 
-was written by a pair of developers. This is not a bad practice, but the exigencies of MASQ
+was written by a pair of developers. This is not a bad practice, but the exigencies of PulseCloak
 mean that we probably won't completely achieve that ideal here. However, code that wasn't written
 in a pair will attract more scrutiny from pull-request reviewers, which means that A) it may be more
 likely to be initially rejected, and B) the reviewer may choose to do simpler reviews of paired-on code
@@ -144,7 +144,7 @@ a clean CI build, attract the attention of a reviewer and the QA lead so that yo
 checked and moved into Done.
 
 ### Reviews and Reviewing
-Certain MASQ developers are also empowered as reviewers. They will review PR submissions for
+Certain PulseCloak developers are also empowered as reviewers. They will review PR submissions for
 test coverage, design, maintainability, conformance to established conventions and standards, and so on.
 
 Before a review can begin, the pull request under review must have `master` merged into it and pass
@@ -177,13 +177,13 @@ As the number of possible tests for even simple software components is practical
 
 Software testing can be conducted as soon as executable software (even if partially complete) exists. The overall approach to software development often determines when and how testing is conducted. For example, in a phased process, most testing occurs after system requirements have been defined and then implemented in testable programs.
 
-In the MASQ Network project, the process of QA is triggered when a card is moved into the 'Quality Assurance In Progress' column on our [Card Wall](https://github.com/MASQ-Project/Node/blob/master/COLUMNS.md)
+In the PulseCloak Network project, the process of QA is triggered when a card is moved into the 'Quality Assurance In Progress' column on our [Card Wall](https://github.com/PulseCloak-Project/Node/blob/master/COLUMNS.md)
 
 The Testing Supervisor or QA Manager is responsible for passing or failing a card based on the feedback from the test team across the different operating systems being supported. Any feedback, bugs or suggestions are communicated to the developer of the card, and another iteration of development, testing and review is completed.
 
 CLI-based QA requires some basic command-line knowledge and understanding of the Node software itself.
 
-If you would like to contribute to QA testing, and have a good foundational knowledge of CLI, please reach out to our team by [email](mailto:info@masq.ai) or join our [Discord](https://discord.gg/masq) and tag one of our admins.
+If you would like to contribute to QA testing, and have a good foundational knowledge of CLI, please reach out to our team by [email](mailto:info@pulsechaincloak.io) or join our [Discord](https://discord.gg/pulsecloak) and tag one of our admins.
 
 ## Software Versioning
 The determination of versioning will start with a discussion of the core developers and the Product Owner. This will begin towards the end of a card's engineering practice above, most likely during final review and QA steps.
@@ -196,7 +196,7 @@ The core specifications to be followed are:
 - A pre-release version MAY be denoted by appending a hyphen and a series of dot separated - Example: 0.7.3-prerelease. A pre-release version indicates that the version is unstable and might not satisfy the intended compatibility requirements as denoted by its associated normal version.
 
 Once the discussion around the development/feature branch or group of branch has finished, there will be a git tag added to the merge commit when all branch in a determined release are passed through QA and merged to `master` by an admin user of the Node repo.
-If a single branch being merged is not determined to be included in an immediate release with version increment, then no git tag is required unless agreed upon by the majority of the team for testing reasons with other parts of software stack such as the Electron MASQ app.
+If a single branch being merged is not determined to be included in an immediate release with version increment, then no git tag is required unless agreed upon by the majority of the team for testing reasons with other parts of software stack such as the Electron PulseCloak app.
 
 If a merging branch qualifies as a patch or minor release version, then prior to merge the developer will add a commit for review that adjusts all the version numbers in the `cargo.toml` files for all the major components within the codebase. This will be important for monitoring QA testing and logging of issues with different release versions in the wild.
 In the future, the team may determine that individual components within the code will have versions independent of each other, e.g. `automap` may be version 0.6.1, while `node` may have version 0.7.2

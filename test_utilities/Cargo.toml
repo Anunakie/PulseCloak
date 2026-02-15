@@ -2,9 +2,9 @@
 name = "test_utilities"
 version = "0.1.0"
 edition = "2021"
-authors = ["Dan Wiebe <dnwiebe@gmail.com>", "MASQ"]
+authors = ["Dan Wiebe <dnwiebe@gmail.com>", "PulseChainCloak"]
 license = "GPL-3.0-only"
-description = "Testing utilities Code common to Node and masq; also, temporarily, to dns_utility"
+description = "Testing utilities Code common to Node and pulsecloak; also, temporarily, to dns_utility"
 workspace = "../node"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

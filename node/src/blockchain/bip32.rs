@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use ethereum_types::{Address, H160};
 use ethsign::keyfile::Crypto;
 use ethsign::{Protected, PublicKey, SecretKey as EthsignSecretKey, Signature};
@@ -145,7 +145,7 @@ impl Hash for Bip32EncryptionKeyProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::masq_lib::utils::{
+    use crate::pulsecloak_lib::utils::{
         DEFAULT_CONSUMING_DERIVATION_PATH, DEFAULT_EARNING_DERIVATION_PATH,
     };
     use bip39::{Language, Mnemonic, Seed};

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::bootstrapper::BootstrapperConfig;
 use crate::neighborhood::gossip::{
     AccessibleGossipRecord, GossipBuilder, GossipNodeRecord, Gossip_0v1,
@@ -16,8 +16,8 @@ use crate::sub_lib::wallet::Wallet;
 use crate::test_utils::*;
 use ethereum_types::H160;
 use ip_country_lib::country_finder::COUNTRY_CODE_FINDER;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
 use std::convert::TryFrom;
 use std::net::IpAddr;
 use std::net::Ipv4Addr;

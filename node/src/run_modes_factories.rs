@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::daemon::daemon_initializer::{
     DaemonInitializerReal, RecipientsFactory, RecipientsFactoryReal, Rerunner, RerunnerReal,
@@ -12,9 +12,9 @@ use crate::node_configurator::{DirsWrapper, DirsWrapperReal, NodeConfigurator};
 use crate::server_initializer::{
     LoggerInitializerWrapper, LoggerInitializerWrapperReal, ServerInitializerReal,
 };
-use masq_lib::command::StdStreams;
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::utils::ExpectValue;
 use std::cell::RefCell;
 
 pub type RunModeResult = Result<(), ConfiguratorError>;
@@ -141,8 +141,8 @@ mod tests {
         ServerInitializerFactoryReal,
     };
     use crate::server_initializer::ServerInitializerReal;
-    use masq_lib::shared_schema::ConfiguratorError;
-    use masq_lib::utils::slice_of_strs_to_vec_of_strings;
+    use pulsecloak_lib::shared_schema::ConfiguratorError;
+    use pulsecloak_lib::utils::slice_of_strs_to_vec_of_strings;
     use std::cell::RefCell;
     use std::sync::{Arc, Mutex};
 
@@ -250,9 +250,9 @@ pub mod mocks {
         make_pre_populated_mocked_directory_wrapper, ChannelFactoryMock,
     };
     use futures::{Async, Future};
-    use masq_lib::command::StdStreams;
-    use masq_lib::multi_config::MultiConfig;
-    use masq_lib::shared_schema::ConfiguratorError;
+    use pulsecloak_lib::command::StdStreams;
+    use pulsecloak_lib::multi_config::MultiConfig;
+    use pulsecloak_lib::shared_schema::ConfiguratorError;
     use std::cell::RefCell;
     use std::sync::{Arc, Mutex};
 

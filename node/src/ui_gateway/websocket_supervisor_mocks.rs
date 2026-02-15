@@ -1,9 +1,9 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai). All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io). All rights reserved.
 #![cfg(test)]
 
 use crate::ui_gateway::websocket_supervisor::{WebSocketSupervisor, WebSocketSupervisorFactory};
 use actix::Recipient;
-use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
 use std::cell::RefCell;
 use std::sync::{Arc, Mutex};
 

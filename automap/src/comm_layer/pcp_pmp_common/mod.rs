@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod linux_specific;
 mod macos_specific;
@@ -17,7 +17,7 @@ use crate::comm_layer::pcp_pmp_common::windows_specific::{
     windows_find_routers, WindowsFindRoutersCommand,
 };
 use crate::comm_layer::AutomapError;
-use masq_lib::utils::find_free_port;
+use pulsecloak_lib::utils::find_free_port;
 use std::io;
 pub use std::net::UdpSocket;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
@@ -174,7 +174,7 @@ pub fn make_local_socket_address(is_ipv4: bool, free_port: u16) -> SocketAddr {
 #[cfg(test)]
 pub mod tests {
     use super::*;
-    use masq_lib::utils::localhost;
+    use pulsecloak_lib::utils::localhost;
 
     #[test]
     fn change_handler_config_next_lifetime_secs_handles_greater_than_one_second() {

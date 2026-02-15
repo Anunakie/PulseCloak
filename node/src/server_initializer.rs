@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use super::bootstrapper::Bootstrapper;
 use super::privilege_drop::{PrivilegeDropper, PrivilegeDropperReal};
 use crate::bootstrapper::RealUser;
@@ -15,10 +15,10 @@ use flexi_logger::{
 use futures::try_ready;
 use lazy_static::lazy_static;
 use log::{log, Level};
-use masq_lib::command::StdStreams;
-use masq_lib::logger;
-use masq_lib::logger::{real_format_function, POINTER_TO_FORMAT_FUNCTION};
-use masq_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::logger;
+use pulsecloak_lib::logger::{real_format_function, POINTER_TO_FORMAT_FUNCTION};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
 use std::any::Any;
 use std::io;
 use std::panic::{Location, PanicInfo};
@@ -170,7 +170,7 @@ impl LoggerInitializerWrapper for LoggerInitializerWrapperReal {
         logger.start().expect("Logging subsystem failed to start");
         let privilege_dropper = PrivilegeDropperReal::new();
         let logfile_name = file_path.join(format!(
-            "MASQNode_{}rCURRENT.log",
+            "PulseCloakNode_{}rCURRENT.log",
             match discriminant_opt {
                 Some(discriminant) => format!("{}_", discriminant),
                 None => "".to_string(),
@@ -255,7 +255,7 @@ fn panic_hook(panic_info: AltPanicInfo) {
     } else {
         "<message indecipherable>".to_string()
     };
-    let logger = masq_lib::logger::Logger::new("PanicHandler");
+    let logger = pulsecloak_lib::logger::Logger::new("PanicHandler");
     error!(logger, "{} - {}", location, message);
     let backtrace = Backtrace::new();
     error!(logger, "{:?}", backtrace);
@@ -392,13 +392,13 @@ pub mod tests {
     use crate::server_initializer::test_utils::PrivilegeDropperMock;
     use crate::test_utils::logfile_name_guard::LogfileNameGuard;
     use crate::test_utils::unshared_test_utils::make_pre_populated_mocked_directory_wrapper;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::crash_point::CrashPoint;
-    use masq_lib::multi_config::MultiConfig;
-    use masq_lib::shared_schema::{ConfiguratorError, ParamError};
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::utils::slice_of_strs_to_vec_of_strings;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::crash_point::CrashPoint;
+    use pulsecloak_lib::multi_config::MultiConfig;
+    use pulsecloak_lib::shared_schema::{ConfiguratorError, ParamError};
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::utils::slice_of_strs_to_vec_of_strings;
     use std::cell::RefCell;
     use std::ops::Not;
     use std::sync::{Arc, Mutex};
@@ -701,7 +701,7 @@ pub mod tests {
             stderr,
         };
         subject
-            .go(streams, &slice_of_strs_to_vec_of_strings(&["MASQNode"]))
+            .go(streams, &slice_of_strs_to_vec_of_strings(&["PulseCloakNode"]))
             .unwrap();
         let res = subject.wait();
 
@@ -813,7 +813,7 @@ pub mod tests {
         let result = subject.go(
             streams,
             &slice_of_strs_to_vec_of_strings(&[
-                "MASQNode",
+                "PulseCloakNode",
                 "--real-user",
                 "123:456:/home/alice",
                 "--dns-servers",
@@ -828,7 +828,7 @@ pub mod tests {
             *chown_params,
             vec![(
                 PathBuf::from(format!(
-                    "/home/alice/mock_directory/MASQ/{}",
+                    "/home/alice/mock_directory/PulseCloak/{}",
                     DEFAULT_CHAIN.rec().literal_identifier
                 )),
                 real_user.clone()
@@ -882,7 +882,7 @@ pub mod tests {
             dirs_wrapper: Box::new(make_pre_populated_mocked_directory_wrapper()),
         };
         let args =
-            slice_of_strs_to_vec_of_strings(&["MASQNode", "--real-user", "123:123:/home/alice"]);
+            slice_of_strs_to_vec_of_strings(&["PulseCloakNode", "--real-user", "123:123:/home/alice"]);
         let stderr = ByteArrayWriter::new();
         let mut holder = FakeStreamHolder::new();
         holder.stderr = stderr;

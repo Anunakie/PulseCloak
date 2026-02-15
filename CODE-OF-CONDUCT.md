@@ -1,4 +1,4 @@
-# MASQ Network Code of Conduct
+# PulseCloak Network Code of Conduct
 
 ## Our Pledge
 

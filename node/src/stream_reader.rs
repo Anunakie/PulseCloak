@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
 use crate::proxy_server::http_protocol_pack::HttpProtocolPack;
@@ -9,7 +9,7 @@ use crate::sub_lib::sequencer::Sequencer;
 use crate::sub_lib::tokio_wrappers::ReadHalfWrapper;
 use crate::sub_lib::utils::indicates_dead_stream;
 use actix::Recipient;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::net::SocketAddr;
 use std::time::SystemTime;
 use tokio::prelude::Async;
@@ -141,7 +141,7 @@ impl StreamReaderReal {
                         Some(self.sequencer.next_sequence_number())
                     } else if is_connect {
                         // This case needs to explicitly be Some(0) instead of None so that the StreamHandlerPool does
-                        // not masquerade it.
+                        // not XYZPROTECT_pulsecloakuerade it.
                         Some(0)
                     } else {
                         None
@@ -211,8 +211,8 @@ mod tests {
     use super::*;
     use crate::http_request_start_finder::HttpRequestDiscriminatorFactory;
     use crate::json_discriminator_factory::JsonDiscriminatorFactory;
-    use crate::json_masquerader::JsonMasquerader;
-    use crate::masquerader::Masquerader;
+    use crate::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
+    use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
     use crate::node_test_utils::{check_timestamp, make_stream_handler_pool_subs_from_recorder};
     use crate::stream_handler_pool::StreamHandlerPoolSubs;
     use crate::stream_messages::RemovedStreamType::NonClandestine;
@@ -226,9 +226,9 @@ mod tests {
     use actix::Actor;
     use actix::Addr;
     use actix::System;
-    use masq_lib::constants::HTTP_PORT;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::constants::HTTP_PORT;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::io;
     use std::io::ErrorKind;
     use std::net::SocketAddr;
@@ -667,9 +667,9 @@ mod tests {
         let local_addr = SocketAddr::from_str("1.2.3.5:6789").unwrap();
         let discriminator_factories: Vec<Box<dyn DiscriminatorFactory>> =
             vec![Box::new(JsonDiscriminatorFactory::new())];
-        let json_masquerader = JsonMasquerader::new();
+        let json_XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
         let request = Vec::from(
-            json_masquerader
+            json_XYZPROTECT_XYZPROTECT_pulsecloakuerader
                 .mask("GET http://here.com HTTP/1.1\r\n\r\n".as_bytes())
                 .unwrap(),
         );

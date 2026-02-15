@@ -1,10 +1,10 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::blockchain::blockchain_interface::blockchain_interface_web3::{
     BlockchainInterfaceWeb3, REQUESTS_IN_PARALLEL,
 };
 use crate::blockchain::blockchain_interface::BlockchainInterface;
-use masq_lib::blockchains::chains::Chain;
+use pulsecloak_lib::blockchains::chains::Chain;
 use web3::transports::Http;
 
 pub(in crate::blockchain) struct BlockchainInterfaceInitializer {}
@@ -44,7 +44,7 @@ impl BlockchainInterfaceInitializer {
 #[cfg(test)]
 mod tests {
     use crate::blockchain::blockchain_interface_initializer::BlockchainInterfaceInitializer;
-    use masq_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::blockchains::chains::Chain;
 
     use futures::Future;
     use std::net::Ipv4Addr;
@@ -55,9 +55,9 @@ mod tests {
     };
     use crate::blockchain::blockchain_interface::BlockchainInterface;
     use crate::test_utils::make_wallet;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+    use pulsecloak_lib::utils::find_free_port;
 
     #[test]
     fn initialize_web3_interface_works() {

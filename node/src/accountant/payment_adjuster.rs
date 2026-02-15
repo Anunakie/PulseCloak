@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::msgs::BlockchainAgentWithContextMessage;
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::PreparedAdjustment;
 use crate::sub_lib::blockchain_bridge::OutboundPaymentsInstructions;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::time::SystemTime;
 
 pub trait PaymentAdjuster {
@@ -60,7 +60,7 @@ impl Default for PaymentAdjusterReal {
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Adjustment {
-    MasqToken,
+    PulseCloakToken,
     TransactionFeeCurrency { limiting_count: u16 },
     Both,
 }
@@ -75,8 +75,8 @@ mod tests {
     use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::test_utils::BlockchainAgentMock;
     use crate::accountant::scanners::test_utils::protect_payables_in_test;
     use crate::accountant::test_utils::make_payable_account;
-    use masq_lib::logger::Logger;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
 
     #[test]
     fn search_for_indispensable_adjustment_always_returns_none() {

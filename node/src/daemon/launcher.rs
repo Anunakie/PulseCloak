@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::daemon::crash_notification::CrashNotification;
 use crate::daemon::launch_verifier::LaunchVerification::{
@@ -9,8 +9,8 @@ use crate::daemon::{LaunchSuccess, Launcher};
 use actix::Recipient;
 use crossbeam_channel::Sender;
 use itertools::Itertools;
-use masq_lib::logger::Logger;
-use masq_lib::utils::find_free_port;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::find_free_port;
 use std::collections::HashMap;
 use std::path::PathBuf;
 use std::process::{Child, Command, Output};
@@ -198,8 +198,8 @@ mod tests {
     use actix::Actor;
     use actix::System;
     use crossbeam_channel::unbounded;
-    use masq_lib::constants::DEFAULT_UI_PORT;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::constants::DEFAULT_UI_PORT;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::cell::RefCell;
     use std::io::ErrorKind;
     use std::iter::FromIterator;

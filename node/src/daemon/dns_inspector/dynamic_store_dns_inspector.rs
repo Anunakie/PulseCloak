@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(target_os = "macos")]
 use crate::daemon::dns_inspector::dns_inspector::DnsInspector;
 use regex::Regex;
@@ -41,7 +41,7 @@ impl DnsInspector for DynamicStoreDnsInspector {
 impl Default for DynamicStoreDnsInspector {
     fn default() -> Self {
         Self {
-            store: Box::new(StoreWrapperReal::new("MASQNode")),
+            store: Box::new(StoreWrapperReal::new("PulseCloakNode")),
         }
     }
 }

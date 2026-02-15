@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::sub_lib::accountant::{PaymentThresholds, ScanIntervals};
 use crate::sub_lib::combined_parameters::CombinedParamsDataTypes::U64;
 use crate::sub_lib::combined_parameters::InitializationState::{Initialized, Uninitialized};
 use crate::sub_lib::neighborhood::RatePack;
-use masq_lib::constants::COMBINED_PARAMETERS_DELIMITER;
-use masq_lib::utils::{to_string, ExpectValue};
+use pulsecloak_lib::constants::COMBINED_PARAMETERS_DELIMITER;
+use pulsecloak_lib::utils::{to_string, ExpectValue};
 use paste::paste;
 use std::any::Any;
 use std::collections::HashMap;

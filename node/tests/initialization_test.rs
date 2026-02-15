@@ -1,16 +1,16 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
-use masq_lib::constants::{DEFAULT_CHAIN, NODE_NOT_RUNNING_ERROR};
-use masq_lib::messages::{
+use pulsecloak_lib::constants::{DEFAULT_CHAIN, NODE_NOT_RUNNING_ERROR};
+use pulsecloak_lib::messages::{
     ToMessageBody, UiFinancialsResponse, UiSetupRequest, UiSetupResponse, UiShutdownRequest,
     NODE_UI_PROTOCOL,
 };
-use masq_lib::messages::{UiFinancialsRequest, UiRedirect, UiStartOrder, UiStartResponse};
-use masq_lib::test_utils::ui_connection::UiConnection;
-use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, node_home_directory};
-use masq_lib::utils::find_free_port;
+use pulsecloak_lib::messages::{UiFinancialsRequest, UiRedirect, UiStartOrder, UiStartResponse};
+use pulsecloak_lib::test_utils::ui_connection::UiConnection;
+use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, node_home_directory};
+use pulsecloak_lib::utils::find_free_port;
 use node_lib::daemon::launch_verifier::{VerifierTools, VerifierToolsReal};
 use node_lib::database::db_initializer::DATABASE_FILE;
 #[cfg(not(target_os = "windows"))]
@@ -21,7 +21,7 @@ use std::io::Read;
 use std::ops::Add;
 use std::time::{Duration, SystemTime};
 use utils::CommandConfig;
-use utils::MASQNode;
+use utils::PulseCloakNode;
 
 #[cfg(not(target_os = "windows"))]
 #[test]
@@ -40,7 +40,7 @@ fn clap_help_does_not_initialize_database_integration() {
         Err(ref e) => panic!("{:?}", e),
     }
 
-    let mut node = MASQNode::start_standard(
+    let mut node = PulseCloakNode::start_standard(
         "clap_help_does_not_initialize_database_integration",
         Some(
             CommandConfig::new().opt("--help"), // We don't specify --data-directory because the --help logic doesn't evaluate it
@@ -59,7 +59,7 @@ fn clap_help_does_not_initialize_database_integration() {
 #[test]
 fn initialization_sequence_integration() {
     let daemon_port = find_free_port();
-    let mut daemon = MASQNode::start_daemon(
+    let mut daemon = PulseCloakNode::start_daemon(
         "initialization_sequence_integration",
         Some(CommandConfig::new().pair("--ui-port", format!("{}", daemon_port).as_str())),
         true,
@@ -153,13 +153,13 @@ fn wait_for_process_end(process_id: u32) {
 #[test]
 fn incomplete_node_descriptor_is_refused_integration() {
     let chain_identifier = DEFAULT_CHAIN.rec().literal_identifier;
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         "incomplete_node_descriptor_is_refused_integration",
         Some(
             CommandConfig::new()
                 .pair(
                     "--neighbors",
-                    &format!("masq://{chain_identifier}:12345vhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@12.23.34.45:5678,masq://{chain_identifier}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:")
+                    &format!("pulsecloak://{chain_identifier}:12345vhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@12.23.34.45:5678,pulsecloak://{chain_identifier}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@:")
                 ),
         ),
         true,
@@ -177,7 +177,7 @@ fn incomplete_node_descriptor_is_refused_integration() {
                 stdout
             );
             let stderr = String::from_utf8_lossy(&output.stderr);
-            assert!(stderr.contains(&format!("neighbors - Neighbors supplied without ip addresses and ports are not valid: 'masq://{chain_identifier}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@<N/A>:<N/A>")
+            assert!(stderr.contains(&format!("neighbors - Neighbors supplied without ip addresses and ports are not valid: 'pulsecloak://{chain_identifier}:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg_PzRNnWQxFw@<N/A>:<N/A>")
             ), "instead we got: {}",stderr)
         }
     };
@@ -195,12 +195,12 @@ fn started_without_explicit_chain_parameter_runs_fine_integration() {
         .pair(
             "--neighbors",
             &format!(
-                "masq://{}:UJNoZW5p_PDVqEjpr3b-8jZ_93yPG8i5dOAgE1bhK-A@12.23.34.45:5678",
+                "pulsecloak://{}:UJNoZW5p_PDVqEjpr3b-8jZ_93yPG8i5dOAgE1bhK-A@12.23.34.45:5678",
                 DEFAULT_CHAIN.rec().literal_identifier
             ),
         );
 
-    let mut node = MASQNode::start_with_blank_config(
+    let mut node = PulseCloakNode::start_with_blank_config(
         "started_without_explicit_chain_parameter_runs_fine_integration",
         Some(config),
         true,
@@ -220,7 +220,7 @@ fn requested_chain_meets_different_db_chain_and_panics_integration() {
     {
         //running Node just in order to create a new database which we can do testing on
         let port = find_free_port();
-        let mut node = utils::MASQNode::start_standard(
+        let mut node = utils::PulseCloakNode::start_standard(
             test_name,
             Some(
                 CommandConfig::new()
@@ -250,7 +250,7 @@ fn requested_chain_meets_different_db_chain_and_panics_integration() {
         [],
     )
     .unwrap();
-    let mut node = MASQNode::start_standard(
+    let mut node = PulseCloakNode::start_standard(
         test_name,
         Some(CommandConfig::new().pair("--chain", &chain_literal)),
         false,
@@ -274,12 +274,12 @@ fn node_creates_log_file_with_heading_integration() {
         .pair(
             "--neighbors",
             &format!(
-                "masq://{}:UJNoZW5p_PDVqEjpr3b-8jZ_93yPG8i5dOAgE1bhK-A@12.23.34.45:5678",
+                "pulsecloak://{}:UJNoZW5p_PDVqEjpr3b-8jZ_93yPG8i5dOAgE1bhK-A@12.23.34.45:5678",
                 DEFAULT_CHAIN.rec().literal_identifier
             ),
         );
 
-    let mut node = MASQNode::start_standard(
+    let mut node = PulseCloakNode::start_standard(
         "node_creates_log_file_with_heading",
         Some(config),
         true,
@@ -310,9 +310,9 @@ fn node_creates_log_file_with_heading_integration() {
 }
 
 fn descriptor_from_logfile(test_name: &str, sterile_database: bool) -> String {
-    let descriptor_log_pattern = r"INFO: Bootstrapper: MASQ Node local descriptor: (masq://.*@:)";
+    let descriptor_log_pattern = r"INFO: Bootstrapper: PulseCloak Node local descriptor: (pulsecloak://.*@:)";
     let mut log_data = Vec::new();
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         test_name,
         Some(CommandConfig::new().pair("--db-password", "test-password")),
         sterile_database,
@@ -321,7 +321,7 @@ fn descriptor_from_logfile(test_name: &str, sterile_database: bool) -> String {
         true,
     );
     node.wait_for_log(descriptor_log_pattern, Some(5000));
-    let path_to_logfile = MASQNode::path_to_logfile(&node.data_dir);
+    let path_to_logfile = PulseCloakNode::path_to_logfile(&node.data_dir);
     let mut logfile = std::fs::File::open(path_to_logfile).unwrap();
     logfile.read_to_end(&mut log_data).unwrap();
     let log_string = String::from_utf8(log_data).unwrap();

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::accountant::DEFAULT_PENDING_TOO_LONG_SEC;
 use crate::actor_system_factory::ActorSystemFactory;
 use crate::actor_system_factory::ActorSystemFactoryReal;
@@ -41,15 +41,15 @@ use crate::sub_lib::wallet::Wallet;
 use futures::try_ready;
 use itertools::Itertools;
 use log::LevelFilter;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::command::StdStreams;
-use masq_lib::constants::DEFAULT_UI_PORT;
-use masq_lib::crash_point::CrashPoint;
-use masq_lib::logger::Logger;
-use masq_lib::multi_config::MultiConfig;
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::constants::DEFAULT_UI_PORT;
+use pulsecloak_lib::crash_point::CrashPoint;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::multi_config::MultiConfig;
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::utils::AutomapProtocol;
 use std::collections::HashMap;
 use std::env::var;
 use std::fmt;
@@ -597,7 +597,7 @@ impl Bootstrapper {
 
     pub fn report_local_descriptor(cryptde: &dyn CryptDE, descriptor: &NodeDescriptor) {
         let descriptor_msg = format!(
-            "MASQ Node local descriptor: {}",
+            "PulseCloak Node local descriptor: {}",
             descriptor.to_string(cryptde)
         );
         info!(Logger::new("Bootstrapper"), "{}", descriptor_msg);
@@ -722,14 +722,14 @@ mod tests {
     use lazy_static::lazy_static;
     use log::LevelFilter;
     use log::LevelFilter::Off;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::logger::Logger;
-    use masq_lib::logger::TEST_LOG_RECIPIENT_GUARD;
-    use masq_lib::test_utils::environment_guard::ClapGuard;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLog, TestLogHandler};
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::utils::{find_free_port, to_string};
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::logger::TEST_LOG_RECIPIENT_GUARD;
+    use pulsecloak_lib::test_utils::environment_guard::ClapGuard;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLog, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::utils::{find_free_port, to_string};
     use sodiumoxide::crypto::box_::curve25519xsalsa20poly1305 as cxsp;
     use sodiumoxide::crypto::sign as signing;
     use std::cell::RefCell;
@@ -1177,7 +1177,7 @@ mod tests {
                 &[5123]
             ))
         );
-        TestLogHandler::new().exists_log_matching("INFO: Bootstrapper: MASQ Node local descriptor: masq://base-sepolia:.+@1\\.2\\.3\\.4:5123");
+        TestLogHandler::new().exists_log_matching("INFO: Bootstrapper: PulseCloak Node local descriptor: pulsecloak://base-sepolia:.+@1\\.2\\.3\\.4:5123");
     }
 
     #[test]
@@ -1307,7 +1307,7 @@ mod tests {
             config.cryptde_pair.alias.public_key().as_slice(),
             &[0u8; cxsp::PUBLICKEYBYTES + signing::PUBLICKEYBYTES]
         );
-        TestLogHandler::new().exists_log_matching("INFO: Bootstrapper: MASQ Node local descriptor: masq://base-sepolia:.+@1\\.2\\.3\\.4:5123");
+        TestLogHandler::new().exists_log_matching("INFO: Bootstrapper: PulseCloak Node local descriptor: pulsecloak://base-sepolia:.+@1\\.2\\.3\\.4:5123");
     }
 
     #[test]
@@ -1543,12 +1543,12 @@ mod tests {
             CRYPTDE_PAIR.main.as_ref()
         };
         let expected_descriptor = format!(
-            "masq://base-sepolia:{}@2.3.4.5:3456/4567",
+            "pulsecloak://base-sepolia:{}@2.3.4.5:3456/4567",
             cryptde_ref.public_key_to_descriptor_fragment(cryptde_ref.public_key())
         );
         TestLogHandler::new().exists_log_containing(
             format!(
-                "INFO: Bootstrapper: MASQ Node local descriptor: {}",
+                "INFO: Bootstrapper: PulseCloak Node local descriptor: {}",
                 expected_descriptor
             )
             .as_str(),
@@ -1585,14 +1585,14 @@ mod tests {
             CRYPTDE_PAIR.clone()
         };
         let expected_descriptor = format!(
-            "masq://base-sepolia:{}@:",
+            "pulsecloak://base-sepolia:{}@:",
             cryptdes
                 .main
                 .public_key_to_descriptor_fragment(cryptdes.main.public_key())
         );
         TestLogHandler::new().exists_log_containing(
             format!(
-                "INFO: Bootstrapper: MASQ Node local descriptor: {}",
+                "INFO: Bootstrapper: PulseCloak Node local descriptor: {}",
                 expected_descriptor
             )
             .as_str(),

@@ -1,13 +1,13 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(test)]
 
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
 use crate::discriminator::UnmaskedChunk;
-use crate::masquerader::MasqueradeError;
-use crate::masquerader::Masquerader;
+use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::PulseCloakueradeError;
+use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
 use crate::node_configurator::DirsWrapper;
-use crate::null_masquerader::NullMasquerader;
+use crate::XYZPROTECT_null_XYZPROTECT_XYZPROTECT_pulsecloakuerader::NullXYZPROTECT_PulseCloakuerader;
 use crate::privilege_drop::IdWrapper;
 use crate::stream_handler_pool::StreamHandlerPoolSubs;
 use crate::stream_messages::*;
@@ -19,8 +19,8 @@ use crate::sub_lib::utils::MessageScheduler;
 use crate::test_utils::recorder::Recorder;
 use actix::Actor;
 use actix::Addr;
-use masq_lib::test_utils::logging::TestLog;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::test_utils::logging::TestLog;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use std::cell::RefCell;
 use std::path::PathBuf;
 use std::str::FromStr;
@@ -146,14 +146,14 @@ impl DirsWrapperMock {
     }
 }
 
-pub struct MasqueraderMock {
+pub struct XYZPROTECT_PulseCloakueraderMock {
     log: Arc<Mutex<TestLog>>,
-    try_unmask_results: RefCell<Vec<Result<UnmaskedChunk, MasqueradeError>>>,
-    mask_results: RefCell<Vec<Result<Vec<u8>, MasqueradeError>>>,
+    try_unmask_results: RefCell<Vec<Result<UnmaskedChunk, PulseCloakueradeError>>>,
+    mask_results: RefCell<Vec<Result<Vec<u8>, PulseCloakueradeError>>>,
 }
 
-impl Masquerader for MasqueraderMock {
-    fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, MasqueradeError> {
+impl XYZPROTECT_PulseCloakuerader for XYZPROTECT_PulseCloakueraderMock {
+    fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, PulseCloakueradeError> {
         self.log.lock().unwrap().log(format!(
             "try_unmask (\"{}\")",
             String::from_utf8(Vec::from(item)).unwrap()
@@ -161,7 +161,7 @@ impl Masquerader for MasqueraderMock {
         self.try_unmask_results.borrow_mut().remove(0)
     }
 
-    fn mask(&self, data: &[u8]) -> Result<Vec<u8>, MasqueradeError> {
+    fn mask(&self, data: &[u8]) -> Result<Vec<u8>, PulseCloakueradeError> {
         self.log.lock().unwrap().log(format!(
             "mask (\"{}\")",
             String::from_utf8(Vec::from(data)).unwrap()
@@ -170,16 +170,16 @@ impl Masquerader for MasqueraderMock {
     }
 }
 
-impl TestLogOwner for MasqueraderMock {
+impl TestLogOwner for XYZPROTECT_PulseCloakueraderMock {
     fn get_test_log(&self) -> Arc<Mutex<TestLog>> {
         self.log.clone()
     }
 }
 
-impl MasqueraderMock {
+impl XYZPROTECT_PulseCloakueraderMock {
     #[allow(dead_code)]
-    pub fn new() -> MasqueraderMock {
-        MasqueraderMock {
+    pub fn new() -> XYZPROTECT_PulseCloakueraderMock {
+        XYZPROTECT_PulseCloakueraderMock {
             log: Arc::new(Mutex::new(TestLog::new())),
             try_unmask_results: RefCell::new(Vec::new()),
             mask_results: RefCell::new(Vec::new()),
@@ -187,12 +187,12 @@ impl MasqueraderMock {
     }
 
     #[allow(dead_code)]
-    pub fn try_unmask_result(&mut self, result: Result<UnmaskedChunk, MasqueradeError>) {
+    pub fn try_unmask_result(&mut self, result: Result<UnmaskedChunk, PulseCloakueradeError>) {
         self.try_unmask_results.borrow_mut().push(result);
     }
 
     #[allow(dead_code)]
-    pub fn mask_result(&mut self, result: Result<Vec<u8>, MasqueradeError>) {
+    pub fn mask_result(&mut self, result: Result<Vec<u8>, PulseCloakueradeError>) {
         self.mask_results.borrow_mut().push(result);
     }
 }
@@ -249,8 +249,8 @@ impl Framer for NullFramer {
 
 pub fn make_null_discriminator(data: Vec<Vec<u8>>) -> Discriminator {
     let framer = NullFramer { data };
-    let masquerader = NullMasquerader::new();
-    Discriminator::new(Box::new(framer), vec![Box::new(masquerader)])
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = NullXYZPROTECT_PulseCloakuerader::new();
+    Discriminator::new(Box::new(framer), vec![Box::new(XYZPROTECT_XYZPROTECT_pulsecloakuerader)])
 }
 
 #[derive(Debug, Clone)]
@@ -304,15 +304,15 @@ pub fn make_stream_handler_pool_subs_from_recorder(addr: &Addr<Recorder>) -> Str
     }
 }
 
-pub struct FailingMasquerader {}
+pub struct FailingXYZPROTECT_PulseCloakuerader {}
 
-impl Masquerader for FailingMasquerader {
-    fn try_unmask(&self, _item: &[u8]) -> Result<UnmaskedChunk, MasqueradeError> {
+impl XYZPROTECT_PulseCloakuerader for FailingXYZPROTECT_PulseCloakuerader {
+    fn try_unmask(&self, _item: &[u8]) -> Result<UnmaskedChunk, PulseCloakueradeError> {
         unimplemented!()
     }
 
-    fn mask(&self, _data: &[u8]) -> Result<Vec<u8>, MasqueradeError> {
-        Err(MasqueradeError::LowLevelDataError(
+    fn mask(&self, _data: &[u8]) -> Result<Vec<u8>, PulseCloakueradeError> {
+        Err(PulseCloakueradeError::LowLevelDataError(
             String::from_str("don't care").unwrap(),
         ))
     }

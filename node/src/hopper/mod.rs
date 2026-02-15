@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 mod consuming_service;
 pub mod live_cores_package;
@@ -17,8 +17,8 @@ use actix::Addr;
 use actix::Context;
 use actix::Handler;
 use consuming_service::ConsumingService;
-use masq_lib::logger::Logger;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use routing_service::RoutingService;
 
 pub const CRASH_KEY: &str = "HOPPER";
@@ -156,7 +156,7 @@ mod tests {
     use actix::Actor;
     use actix::System;
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::net::SocketAddr;
     use std::str::FromStr;
     use std::time::SystemTime;

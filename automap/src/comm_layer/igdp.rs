@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::comm_layer::pcp_pmp_common::MappingConfig;
 use crate::comm_layer::{
@@ -10,12 +10,12 @@ use igd::{
     search_gateway, AddPortError, Gateway, GetExternalIpError, PortMappingProtocol,
     RemovePortError, SearchError, SearchOptions,
 };
-use masq_lib::debug;
-use masq_lib::error;
-use masq_lib::info;
-use masq_lib::logger::Logger;
-use masq_lib::utils::{AutomapProtocol, ExpectValue};
-use masq_lib::warning;
+use pulsecloak_lib::debug;
+use pulsecloak_lib::error;
+use pulsecloak_lib::info;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::{AutomapProtocol, ExpectValue};
+use pulsecloak_lib::warning;
 use std::any::Any;
 use std::net::{IpAddr, Ipv4Addr, SocketAddrV4};
 use std::ops::Add;
@@ -583,7 +583,7 @@ mod tests {
     use crate::mocks::LocalIpFinderMock;
     use core::ptr::addr_of;
     use igd::RequestError;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::cell::RefCell;
     use std::net::Ipv6Addr;
     use std::ops::Sub;

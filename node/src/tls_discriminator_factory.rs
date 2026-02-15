@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
-use crate::null_masquerader::NullMasquerader;
+use crate::XYZPROTECT_null_XYZPROTECT_XYZPROTECT_pulsecloakuerader::NullXYZPROTECT_PulseCloakuerader;
 use crate::sub_lib::tls_framer::TlsFramer;
 
 #[derive(Debug, Default)]
@@ -11,7 +11,7 @@ impl DiscriminatorFactory for TlsDiscriminatorFactory {
     fn make(&self) -> Discriminator {
         Discriminator::new(
             Box::new(TlsFramer::new()),
-            vec![Box::new(NullMasquerader::new())],
+            vec![Box::new(NullXYZPROTECT_PulseCloakuerader::new())],
         )
     }
 

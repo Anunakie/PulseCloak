@@ -3,8 +3,8 @@ name = "ip_country"
 version = "0.1.0"
 edition = "2021"
 license = "GPL-3.0-only"
-authors = ["Dan Wiebe <dnwiebe@gmail.com>", "MASQ"]
-description = "Handle embedding IP-address-to-country data in MASQ Node"
+authors = ["Dan Wiebe <dnwiebe@gmail.com>", "PulseChainCloak"]
+description = "Handle embedding IP-address-to-country data in PulseCloak Node"
 workspace = "../node"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

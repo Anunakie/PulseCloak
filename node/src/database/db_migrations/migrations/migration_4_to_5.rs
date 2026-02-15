@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::utils::VigilantRusqliteFlatten;
 use crate::database::db_migrations::db_migrator::DatabaseMigration;
@@ -91,9 +91,9 @@ mod tests {
     use crate::test_utils::make_wallet;
     use ethereum_types::BigEndianHash;
     use itertools::Itertools;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::utils::NeighborhoodModeLight;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::utils::NeighborhoodModeLight;
     use rusqlite::types::Value::Null;
     use rusqlite::ToSql;
     use std::collections::HashMap;

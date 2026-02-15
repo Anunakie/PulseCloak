@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::payable_dao::PayableAccount;
 use crate::accountant::db_access_objects::receivable_dao::ReceivableAccount;
@@ -9,8 +9,8 @@ use crate::database::db_initializer::{
 };
 use crate::database::rusqlite_wrappers::ConnectionWrapper;
 use crate::sub_lib::accountant::PaymentThresholds;
-use masq_lib::constants::WEIS_IN_GWEI;
-use masq_lib::messages::{
+use pulsecloak_lib::constants::WEIS_IN_GWEI;
+use pulsecloak_lib::messages::{
     RangeQuery, TopRecordsConfig, TopRecordsOrdering, UiPayableAccount, UiReceivableAccount,
 };
 use rusqlite::{Row, Statement, ToSql};
@@ -23,7 +23,7 @@ use std::time::SystemTime;
 
 pub fn to_time_t(system_time: SystemTime) -> i64 {
     match system_time.duration_since(SystemTime::UNIX_EPOCH) {
-        Ok(d) => sign_conversion::<u64, i64>(d.as_secs()).expect("MASQNode has expired"),
+        Ok(d) => sign_conversion::<u64, i64>(d.as_secs()).expect("PulseCloakNode has expired"),
         Err(e) => panic!(
             "Must be wrong, moment way far in the past: {:?}, {}",
             system_time, e
@@ -439,9 +439,9 @@ mod tests {
     use crate::sub_lib::accountant::DEFAULT_PAYMENT_THRESHOLDS;
     use crate::test_utils::make_wallet;
     use itertools::Itertools;
-    use masq_lib::constants::MASQ_TOTAL_SUPPLY;
-    use masq_lib::messages::TopRecordsOrdering::Balance;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::constants::PCLOAK_TOTAL_SUPPLY;
+    use pulsecloak_lib::messages::TopRecordsOrdering::Balance;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::types::{ToSqlOutput, Value};
     use rusqlite::{Connection, OpenFlags};
     use std::collections::HashMap;
@@ -780,14 +780,14 @@ mod tests {
     }
 
     #[test]
-    fn slope_has_loose_enough_limitations_to_allow_work_with_number_bigger_than_masq_token_max_supply(
+    fn slope_has_loose_enough_limitations_to_allow_work_with_number_bigger_than_pulsecloak_token_max_supply(
     ) {
-        //max masq token supply by August 2022: 37,500,000
+        //max pulsecloak token supply by August 2022: 37,500,000
         let payment_thresholds = PaymentThresholds {
             maturity_threshold_sec: 20,
             payment_grace_period_sec: 33,
             permanent_debt_allowed_gwei: 1,
-            debt_threshold_gwei: MASQ_TOTAL_SUPPLY * WEIS_IN_GWEI as u64,
+            debt_threshold_gwei: PCLOAK_TOTAL_SUPPLY * WEIS_IN_GWEI as u64,
             threshold_interval_sec: 1,
             unban_below_gwei: 0,
         };

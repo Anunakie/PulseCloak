@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::utils::VigilantRusqliteFlatten;
 use crate::accountant::db_big_integer::big_int_divider::BigIntDivider;
@@ -241,8 +241,8 @@ mod tests {
         assert_table_created_as_strict, bring_db_0_back_to_life_and_return_connection,
         make_external_data, retrieve_config_row,
     };
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::Row;
     use std::str::FromStr;
 

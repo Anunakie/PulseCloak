@@ -1,13 +1,13 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::bootstrapper::{BootstrapperConfig, CryptDEPair};
 use crate::node_configurator::{initialize_database, DirsWrapper, FieldPair, NodeConfigurator};
 use crate::node_configurator::{ConfigInitializationData, DirsWrapperReal};
-use masq_lib::crash_point::CrashPoint;
-use masq_lib::logger::Logger;
-use masq_lib::multi_config::{MultiConfig, VirtualCommandLine};
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::utils::NeighborhoodModeLight;
+use pulsecloak_lib::crash_point::CrashPoint;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::multi_config::{MultiConfig, VirtualCommandLine};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::utils::NeighborhoodModeLight;
 use std::net::SocketAddr;
 use std::net::{IpAddr, Ipv4Addr};
 
@@ -31,9 +31,9 @@ use crate::sub_lib::cryptde_null::CryptDENull;
 use crate::sub_lib::cryptde_real::CryptDEReal;
 use crate::sub_lib::utils::make_new_multi_config;
 use crate::tls_discriminator_factory::TlsDiscriminatorFactory;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{DEFAULT_UI_PORT, HTTP_PORT, TLS_PORT};
-use masq_lib::multi_config::{CommandLineVcl, ConfigFileVcl, EnvironmentVcl};
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{DEFAULT_UI_PORT, HTTP_PORT, TLS_PORT};
+use pulsecloak_lib::multi_config::{CommandLineVcl, ConfigFileVcl, EnvironmentVcl};
 use std::str::FromStr;
 
 pub struct NodeConfiguratorStandardPrivileged {
@@ -421,13 +421,13 @@ mod tests {
     };
     use crate::test_utils::{assert_string_contains, ArgsBuilder};
     use lazy_static::lazy_static;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::multi_config::VirtualCommandLine;
-    use masq_lib::shared_schema::ParamError;
-    use masq_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::utils::running_test;
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::multi_config::VirtualCommandLine;
+    use pulsecloak_lib::shared_schema::ParamError;
+    use pulsecloak_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::utils::running_test;
     use rustc_hex::FromHex;
     use std::convert::TryFrom;
     use std::env::current_dir;
@@ -449,7 +449,7 @@ mod tests {
         );
         let neighbor = vec![NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234",
+            "pulsecloak://eth-mainnet:MTEyMjMzNDQ1NTY2Nzc4ODExMjIzMzQ0NTU2Njc3ODg@1.2.3.4:1234",
         ))
         .unwrap()];
         {
@@ -932,14 +932,14 @@ mod tests {
         #[cfg(target_os = "linux")]
         assert_eq!(
             config.data_directory,
-            PathBuf::from("/home/booga/.local/share/MASQ")
+            PathBuf::from("/home/booga/.local/share/PulseCloak")
                 .join(DEFAULT_CHAIN.rec().literal_identifier)
         );
 
         #[cfg(target_os = "macos")]
         assert_eq!(
             config.data_directory,
-            PathBuf::from("/home/booga/Library/Application Support/MASQ")
+            PathBuf::from("/home/booga/Library/Application Support/PulseCloak")
                 .join(DEFAULT_CHAIN.rec().literal_identifier)
         );
     }
@@ -1051,7 +1051,7 @@ mod tests {
         let config_file_relative = File::create(PathBuf::from("./generated/test/node_configurator_standard/server_initializer_collected_params_handle_dot_config_file_path_and_reads_arguments_from_cf").join("config.toml")).unwrap();
         fill_up_config_file(config_file_relative);
         let env_vec_array = vec![
-            ("MASQ_CONFIG_FILE", "./generated/test/node_configurator_standard/server_initializer_collected_params_handle_dot_config_file_path_and_reads_arguments_from_cf/config.toml"),
+            ("PCLOAK_CONFIG_FILE", "./generated/test/node_configurator_standard/server_initializer_collected_params_handle_dot_config_file_path_and_reads_arguments_from_cf/config.toml"),
         ];
         env_vec_array
             .clone()
@@ -1084,7 +1084,7 @@ mod tests {
         #[cfg(target_os = "windows")]
         assert_eq!(
             value_m!(env_multiconfig, "data-directory", String).unwrap(),
-            "generated/test/node_configurator_standard/server_initializer_collected_params_handle_dot_config_file_path_and_reads_arguments_from_cf/home\\data_dir\\MASQ\\base-mainnet".to_string()
+            "generated/test/node_configurator_standard/server_initializer_collected_params_handle_dot_config_file_path_and_reads_arguments_from_cf/home\\data_dir\\PulseCloak\\base-mainnet".to_string()
         );
     }
 
@@ -1156,7 +1156,7 @@ mod tests {
         let data_dir = &home_dir.join("data_dir");
         let config_file_relative = File::create(home_dir.join("config.toml")).unwrap();
         fill_up_config_file(config_file_relative);
-        let env_vec_array = vec![("MASQ_CONFIG_FILE", home_dir.join("config.toml"))];
+        let env_vec_array = vec![("PCLOAK_CONFIG_FILE", home_dir.join("config.toml"))];
         env_vec_array
             .clone()
             .into_iter()
@@ -1195,7 +1195,7 @@ mod tests {
         #[cfg(target_os = "windows")]
         assert_eq!(
             value_m!(env_multiconfig, "data-directory", String).unwrap(),
-            "/home/booga\\data_dir\\MASQ\\base-mainnet".to_string()
+            "/home/booga\\data_dir\\PulseCloak\\base-mainnet".to_string()
         );
     }
 
@@ -1214,15 +1214,15 @@ mod tests {
         fill_up_config_file(config_file);
         let env_vec_array = vec![
             (
-                "MASQ_CONFIG_FILE",
+                "PCLOAK_CONFIG_FILE",
                 home_dir.clone().join("config.toml").display().to_string(),
             ),
             (
-                "MASQ_BLOCKCHAIN_SERVICE_URL",
+                "PCLOAK_BLOCKCHAIN_SERVICE_URL",
                 "https://www.mainnet0.com".to_string(),
             ),
-            ("MASQ_REAL_USER", "9999:9999:/home/booga".to_string()),
-            ("MASQ_IP", "8.5.7.6".to_string()),
+            ("PCLOAK_REAL_USER", "9999:9999:/home/booga".to_string()),
+            ("PCLOAK_IP", "8.5.7.6".to_string()),
         ];
         env_vec_array
             .into_iter()
@@ -1256,7 +1256,7 @@ mod tests {
         #[cfg(target_os = "windows")]
         assert_eq!(
             value_m!(env_multiconfig, "data-directory", String).unwrap(),
-            "/home/booga\\data_dir\\MASQ\\base-mainnet".to_string()
+            "/home/booga\\data_dir\\PulseCloak\\base-mainnet".to_string()
         );
     }
 
@@ -1269,14 +1269,14 @@ mod tests {
             "node_configurator_standard",
             "tilde_in_config_file_path_from_commandline_and_args_uploaded_from_config_file",
         );
-        let data_dir = home_dir.join("masqhome");
+        let data_dir = home_dir.join("pulsecloakhome");
         let _dir = create_dir_all(&data_dir);
         let config_file_relative = File::create(data_dir.join("config.toml")).unwrap();
         fill_up_config_file(config_file_relative);
         let env_vec_array = vec![
-            ("MASQ_BLOCKCHAIN_SERVICE_URL", "https://www.mainnet2.com"),
+            ("PCLOAK_BLOCKCHAIN_SERVICE_URL", "https://www.mainnet2.com"),
             #[cfg(not(target_os = "windows"))]
-            ("MASQ_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
         ];
         env_vec_array
             .clone()
@@ -1285,13 +1285,13 @@ mod tests {
         #[cfg(not(target_os = "windows"))]
         let args = ArgsBuilder::new()
             .param("--blockchain-service-url", "https://www.mainnet1.com")
-            .param("--config-file", "~/masqhome/config.toml")
-            .param("--data-directory", "~/masqhome");
+            .param("--config-file", "~/pulsecloakhome/config.toml")
+            .param("--data-directory", "~/pulsecloakhome");
         #[cfg(target_os = "windows")]
         let args = ArgsBuilder::new()
             .param("--blockchain-service-url", "https://www.mainnet1.com")
-            .param("--config-file", "~\\masqhome\\config.toml")
-            .param("--data-directory", "~\\masqhome");
+            .param("--config-file", "~\\pulsecloakhome\\config.toml")
+            .param("--data-directory", "~\\pulsecloakhome");
         let args_vec: Vec<String> = args.into();
         let dir_wrapper = DirsWrapperMock {
             data_dir_result: Some(PathBuf::from(current_dir().unwrap().join(&data_dir))),
@@ -1344,10 +1344,10 @@ mod tests {
         let config_file_relative = File::create(&home_dir.join("config/config.toml")).unwrap();
         fill_up_config_file(config_file_relative);
         vec![
-            ("MASQ_CONFIG_FILE", "config/config.toml"),
-            ("MASQ_DATA_DIRECTORY", "/unexistent/directory"),
+            ("PCLOAK_CONFIG_FILE", "config/config.toml"),
+            ("PCLOAK_DATA_DIRECTORY", "/unexistent/directory"),
             #[cfg(not(target_os = "windows"))]
-            ("MASQ_REAL_USER", "999:999:/home/malooga"),
+            ("PCLOAK_REAL_USER", "999:999:/home/malooga"),
         ]
         .into_iter()
         .for_each(|(name, value)| std::env::set_var(name, value));
@@ -1384,7 +1384,7 @@ mod tests {
         let _clap_guard = ClapGuard::new();
         let home_dir = ensure_node_home_directory_exists( "node_configurator_standard","server_initializer_collected_params_fails_on_naked_dir_config_file_without_data_directory");
         let data_dir = &home_dir.join("data_dir");
-        vec![("MASQ_CONFIG_FILE", "config/config.toml")]
+        vec![("PCLOAK_CONFIG_FILE", "config/config.toml")]
             .into_iter()
             .for_each(|(name, value)| std::env::set_var(name, value));
         let args = ArgsBuilder::new();
@@ -1409,12 +1409,12 @@ mod tests {
         let config_file = File::create(&home_dir.join("booga.toml")).unwrap();
         fill_up_config_file(config_file);
         let env_vec_array = vec![
-            ("MASQ_CONFIG_FILE", "booga.toml"),
-            ("MASQ_CLANDESTINE_PORT", "8888"),
-            ("MASQ_DNS_SERVERS", "1.2.3.4"),
-            ("MASQ_DATA_DIRECTORY", "/nonexistent/directory/home"),
+            ("PCLOAK_CONFIG_FILE", "booga.toml"),
+            ("PCLOAK_CLANDESTINE_PORT", "8888"),
+            ("PCLOAK_DNS_SERVERS", "1.2.3.4"),
+            ("PCLOAK_DATA_DIRECTORY", "/nonexistent/directory/home"),
             #[cfg(not(target_os = "windows"))]
-            ("MASQ_REAL_USER", "9999:9999:booga"),
+            ("PCLOAK_REAL_USER", "9999:9999:booga"),
         ];
         env_vec_array
             .clone()
@@ -1658,7 +1658,7 @@ mod tests {
             NeighborhoodMode::ConsumeOnly(vec![NodeDescriptor::try_from((
                 cryptde_pair.main.as_ref(),
                 format!(
-                    "masq://{}:AQIDBA@1.2.3.4:1234/2345",
+                    "pulsecloak://{}:AQIDBA@1.2.3.4:1234/2345",
                     TEST_DEFAULT_CHAIN.rec().literal_identifier
                 )
                 .as_str(),
@@ -1832,8 +1832,8 @@ mod tests {
         let _clap_guard = ClapGuard::new();
         running_test();
         let home_dir = Path::new("/home/cooga");
-        let home_dir_poly_main = home_dir.join(".local").join("MASQ").join("base-mainnet");
-        let home_dir_poly_amoy = home_dir.join(".local").join("MASQ").join("polygon-amoy");
+        let home_dir_poly_main = home_dir.join(".local").join("PulseCloak").join("base-mainnet");
+        let home_dir_poly_amoy = home_dir.join(".local").join("PulseCloak").join("polygon-amoy");
         vec![
             (None, None, Some(home_dir_poly_main.to_str().unwrap())),
             (

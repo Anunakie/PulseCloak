@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::route::RouteError;
 use ethsign_crypto::Keccak256;
-use masq_lib::blockchains::chains::Chain;
+use pulsecloak_lib::blockchains::chains::Chain;
 use rustc_hex::{FromHex, ToHex};
 use serde::de::Visitor;
 use serde::Deserialize;
@@ -634,7 +634,7 @@ mod tests {
     use crate::bootstrapper::CryptDEPair;
     use crate::sub_lib::cryptde_null::CryptDENull;
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use rustc_hex::{FromHex, FromHexError};
     use serde::de;
     use serde::ser;

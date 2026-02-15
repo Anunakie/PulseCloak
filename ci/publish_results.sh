@@ -1,5 +1,5 @@
 #!/bin/bash -xev
-# Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 CI_DIR="$( cd "$( dirname "$0" )" && pwd )"
 STATUS=$1
 
@@ -49,8 +49,8 @@ cat README.md.clean | sed -n '/\(Results Marker\)/,$p' | tail -n+2 >> README.md
 
 mkdir -p "results/$RESULTS_LABEL"
 cp ../generated.tar.gz "results/$RESULTS_LABEL/$GENERATED_NAME.tar.gz"
-git config user.email "developers@masq.ai"
-git config user.name "MASQ"
+git config user.email "developers@pulsechaincloak.io"
+git config user.name "PulseCloak"
 git checkout --orphan new-master
 git add README.md results
 git commit -m "Latest results for $RESULTS_LABEL ($GENERATED_TYPE) - $STATUS"

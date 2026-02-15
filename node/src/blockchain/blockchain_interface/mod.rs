@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod blockchain_interface_web3;
 pub mod data_structures;
@@ -12,9 +12,9 @@ use crate::blockchain::blockchain_interface::data_structures::{ProcessedPayableF
 use crate::blockchain::blockchain_interface::lower_level_interface::LowBlockchainInt;
 use crate::sub_lib::wallet::Wallet;
 use futures::Future;
-use masq_lib::blockchains::chains::Chain;
+use pulsecloak_lib::blockchains::chains::Chain;
 use web3::types::Address;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use crate::accountant::db_access_objects::payable_dao::PayableAccount;
 use crate::blockchain::blockchain_bridge::{BlockMarker, BlockScanRange, PendingPayableFingerprintSeeds};
 use crate::blockchain::blockchain_interface::blockchain_interface_web3::lower_level_interface_web3::TransactionReceiptResult;

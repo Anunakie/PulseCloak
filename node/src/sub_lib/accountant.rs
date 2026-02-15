@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::accountant::db_access_objects::banned_dao::BannedDaoFactory;
 use crate::accountant::db_access_objects::payable_dao::PayableDaoFactory;
 use crate::accountant::db_access_objects::pending_payable_dao::PendingPayableDaoFactory;
@@ -17,7 +17,7 @@ use crate::sub_lib::wallet::Wallet;
 use actix::Recipient;
 use actix::{Addr, Message};
 use lazy_static::lazy_static;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use std::fmt::{Debug, Formatter};
 use std::str::FromStr;
 use std::sync::atomic::{AtomicU32, Ordering};

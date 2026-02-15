@@ -1,13 +1,13 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
 use crate::utils::CommandConfig;
-use masq_lib::constants::{CURRENT_SCHEMA_VERSION, DEFAULT_CHAIN};
-use masq_lib::messages::{UiShutdownRequest, NODE_UI_PROTOCOL};
-use masq_lib::test_utils::environment_guard::EnvironmentGuard;
-use masq_lib::test_utils::ui_connection::UiConnection;
-use masq_lib::utils::find_free_port;
+use pulsecloak_lib::constants::{CURRENT_SCHEMA_VERSION, DEFAULT_CHAIN};
+use pulsecloak_lib::messages::{UiShutdownRequest, NODE_UI_PROTOCOL};
+use pulsecloak_lib::test_utils::environment_guard::EnvironmentGuard;
+use pulsecloak_lib::test_utils::ui_connection::UiConnection;
+use pulsecloak_lib::utils::find_free_port;
 use node_lib::test_utils::assert_string_contains;
 
 #[test]
@@ -17,7 +17,7 @@ fn dump_configuration_with_an_existing_database_integration() {
     {
         //running Node in order to create a new database which cannot be made by --dump-config itself
         let port = find_free_port();
-        let mut node = utils::MASQNode::start_standard(
+        let mut node = utils::PulseCloakNode::start_standard(
             test_name,
             Some(
                 CommandConfig::new()
@@ -36,7 +36,7 @@ fn dump_configuration_with_an_existing_database_integration() {
         node.wait_for_exit();
     }
 
-    let mut node = utils::MASQNode::run_dump_config(
+    let mut node = utils::PulseCloakNode::run_dump_config(
         test_name,
         Some(CommandConfig::new().pair("--chain", "polygon-amoy")),
         false,
@@ -61,7 +61,7 @@ fn dump_configuration_with_an_existing_database_integration() {
 fn dump_configuration_and_no_preexisting_database_integration() {
     let _eg = EnvironmentGuard::new();
 
-    let mut node = utils::MASQNode::run_dump_config(
+    let mut node = utils::PulseCloakNode::run_dump_config(
         "dump_configuration_and_no_preexisting_database_integration",
         Some(CommandConfig::new().pair("--chain", DEFAULT_CHAIN.rec().literal_identifier)),
         true,

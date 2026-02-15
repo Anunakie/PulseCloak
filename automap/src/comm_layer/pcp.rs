@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::any::Any;
 use std::convert::TryFrom;
@@ -12,11 +12,11 @@ use std::{io, thread};
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use rand::RngCore;
 
-use masq_lib::error;
-use masq_lib::info;
-use masq_lib::logger::Logger;
-use masq_lib::utils::AutomapProtocol;
-use masq_lib::{debug, warning};
+use pulsecloak_lib::error;
+use pulsecloak_lib::info;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::AutomapProtocol;
+use pulsecloak_lib::{debug, warning};
 
 use crate::comm_layer::pcp_pmp_common::{
     find_routers, make_local_socket_address, FreePortFactory, FreePortFactoryReal, MappingConfig,
@@ -574,8 +574,8 @@ mod tests {
     use std::time::Duration;
     use std::{io, thread};
 
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::utils::localhost;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::utils::localhost;
 
     use crate::comm_layer::pcp_pmp_common::ROUTER_PORT;
     use crate::comm_layer::{AutomapErrorCause, LocalIpFinder};

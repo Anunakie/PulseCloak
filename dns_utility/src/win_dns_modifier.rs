@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::dns_modifier::DnsModifier;
 use crate::ipconfig_wrapper::{IpconfigWrapper, IpconfigWrapperReal};
 use crate::netsh::{Netsh, NetshCommand, NetshError};
-use masq_lib::utils::plus;
+use pulsecloak_lib::utils::plus;
 use std::collections::HashSet;
 use std::fmt::Debug;
 use std::io;
@@ -461,7 +461,7 @@ mod tests {
     use crate::ipconfig_wrapper::test_utils::IpconfigWrapperMock;
     use crate::netsh::tests_utils::NetshMock;
     use crate::utils::get_parameters_from;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
     use std::cell::RefCell;
     use std::collections::HashMap;
     use std::io::Error;
@@ -475,21 +475,21 @@ mod tests {
     }
 
     #[test]
-    fn is_subverted_says_no_if_masq_dns_appears_too_late() {
+    fn is_subverted_says_no_if_pulsecloak_dns_appears_too_late() {
         let result = WinDnsModifier::is_subverted(&"1.1.1.1,127.0.0.1".to_string());
 
         assert_eq!(result, false)
     }
 
     #[test]
-    fn is_subverted_says_no_if_first_dns_is_only_masq_like() {
+    fn is_subverted_says_no_if_first_dns_is_only_pulsecloak_like() {
         let result = WinDnsModifier::is_subverted(&"127.0.0.11".to_string());
 
         assert_eq!(result, false)
     }
 
     #[test]
-    fn is_subverted_says_yes_if_first_dns_is_masq() {
+    fn is_subverted_says_yes_if_first_dns_is_pulsecloak() {
         let result = WinDnsModifier::is_subverted(&"127.0.0.1,1.1.1.1".to_string());
 
         assert_eq!(result, true)
@@ -948,10 +948,10 @@ mod tests {
                 "DhcpDefaultGateway",
                 Err(Error::from_raw_os_error(NOT_FOUND)),
             )
-            .get_value_result("NameServer", Ok("Not MASQ".to_string()))
+            .get_value_result("NameServer", Ok("Not PulseCloak".to_string()))
             .set_value_result("NameServerBak", Ok(()))
             .delete_value_parameters(&delete_value_parameters_arc)
-            .get_value_result("NameServerBak", Ok("Not MASQ".to_string()))
+            .get_value_result("NameServerBak", Ok("Not PulseCloak".to_string()))
             .delete_value_result("NameServerBak", Ok(()));
         let interfaces = RegKeyMock::default()
             .enum_keys_result(vec![Ok("interface")])

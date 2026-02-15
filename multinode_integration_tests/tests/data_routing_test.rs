@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use itertools::Itertools;
-use masq_lib::utils::index_of;
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
-    default_consuming_wallet_info, make_consuming_wallet_info, MASQRealNode,
+use pulsecloak_lib::utils::index_of;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    default_consuming_wallet_info, make_consuming_wallet_info, PulseCloakRealNode,
     NodeStartupConfigBuilder, STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use native_tls::HandshakeError;
@@ -22,7 +22,7 @@ use std::time::Duration;
 
 #[test]
 fn http_end_to_end_routing_test() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -38,7 +38,7 @@ fn http_end_to_end_routing_test() {
                     .build(),
             )
         })
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
 
     thread::sleep(Duration::from_millis(500 * (nodes.len() as u64)));
 
@@ -71,7 +71,7 @@ fn http_end_to_end_routing_test() {
 
 #[test]
 fn http_end_to_end_routing_test_with_consume_and_originate_only_nodes() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -118,7 +118,7 @@ fn http_end_to_end_routing_test_with_consume_and_originate_only_nodes() {
 #[test]
 #[should_panic(expected = "extracting node reference")]
 fn consume_only_mode_rejects_dns_servers_parameter() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -135,7 +135,7 @@ fn consume_only_mode_rejects_dns_servers_parameter() {
 
 #[test]
 fn tls_end_to_end_routing_test() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -152,7 +152,7 @@ fn tls_end_to_end_routing_test() {
                     .build(),
             )
         })
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
 
     thread::sleep(Duration::from_millis(500 * (nodes.len() as u64)));
 
@@ -218,7 +218,7 @@ fn tls_end_to_end_routing_test() {
 
 #[test]
 fn http_routing_failure_produces_internal_error_response() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let neighbor_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -252,7 +252,7 @@ fn http_routing_failure_produces_internal_error_response() {
 
 #[test]
 fn tls_routing_failure_produces_internal_error_response() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let neighbor = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .chain(cluster.chain)
@@ -305,7 +305,7 @@ fn tls_routing_failure_produces_internal_error_response() {
 
 #[test]
 fn multiple_stream_zero_hop_test() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let zero_hop_node = cluster.start_real_node(
         NodeStartupConfigBuilder::zero_hop()
             .consuming_wallet_info(default_consuming_wallet_info())

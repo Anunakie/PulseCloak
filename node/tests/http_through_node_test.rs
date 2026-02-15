@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
@@ -9,10 +9,10 @@ use std::net::TcpStream;
 use std::str::FromStr;
 use std::time::Duration;
 
-// 'node' below must not be named '_' alone or disappear, or the MASQNode will be immediately reclaimed.
+// 'node' below must not be named '_' alone or disappear, or the PulseCloakNode will be immediately reclaimed.
 #[test]
 fn http_through_node_integration() {
-    let _node = utils::MASQNode::start_standard(
+    let _node = utils::PulseCloakNode::start_standard(
         "http_through_node_integration",
         None,
         true,

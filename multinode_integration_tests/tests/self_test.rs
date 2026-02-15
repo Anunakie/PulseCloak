@@ -1,15 +1,15 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
 use multinode_integration_tests_lib::command::Command;
 use multinode_integration_tests_lib::main::CONTROL_STREAM_PORT;
-use multinode_integration_tests_lib::masq_cores_client::MASQCoresClient;
-use multinode_integration_tests_lib::masq_cores_server::MASQCoresServer;
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node::PortSelector;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::NodeStartupConfigBuilder;
-use node_lib::json_masquerader::JsonMasquerader;
+use multinode_integration_tests_lib::pulsecloak_cores_client::PulseCloakCoresClient;
+use multinode_integration_tests_lib::pulsecloak_cores_server::PulseCloakCoresServer;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node::PortSelector;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::NodeStartupConfigBuilder;
+use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
 use node_lib::sub_lib::cryptde::PublicKey;
 use node_lib::sub_lib::cryptde_null::CryptDENull;
 use node_lib::sub_lib::dispatcher::Component;
@@ -27,8 +27,8 @@ use std::str::FromStr;
 use std::time::Duration;
 
 #[test]
-fn establishes_masq_node_cluster_from_nothing() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+fn establishes_pulsecloak_node_cluster_from_nothing() {
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     assert_eq!(network_is_running(), true);
     let real_node_name = "test_node_1";
     let mock_node_name = "mock_node_2";
@@ -64,11 +64,11 @@ fn establishes_masq_node_cluster_from_nothing() {
 
 #[test]
 fn server_relays_cores_package() {
-    let cluster = MASQNodeCluster::start().unwrap();
-    let masquerader = JsonMasquerader::new();
-    let server = MASQCoresServer::new(cluster.chain);
+    let cluster = PulseCloakNodeCluster::start().unwrap();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let server = PulseCloakCoresServer::new(cluster.chain);
     let cryptde = server.main_cryptde();
-    let mut client = MASQCoresClient::new(server.local_addr(), cryptde);
+    let mut client = PulseCloakCoresClient::new(server.local_addr(), cryptde);
     let mut route = Route::one_way(
         RouteSegment::new(
             vec![&cryptde.public_key(), &cryptde.public_key()],
@@ -87,7 +87,7 @@ fn server_relays_cores_package() {
     )
     .unwrap();
 
-    client.transmit_package(incipient, &masquerader, cryptde.public_key().clone());
+    client.transmit_package(incipient, &XYZPROTECT_XYZPROTECT_pulsecloakuerader, cryptde.public_key().clone());
     let package = server.wait_for_package(Duration::from_millis(1000));
     let expired = package
         .to_expired(
@@ -104,8 +104,8 @@ fn server_relays_cores_package() {
 
 #[test]
 fn one_mock_node_talks_to_another() {
-    let masquerader = JsonMasquerader::new();
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     cluster.start_mock_node_with_public_key(vec![5550], &PublicKey::new(&[1, 2, 3, 4]));
     cluster.start_mock_node_with_public_key(vec![5551], &PublicKey::new(&[2, 3, 4, 5]));
     let mock_node_1 = cluster.get_mock_node_by_name("mock_node_1").unwrap();
@@ -136,13 +136,13 @@ fn one_mock_node_talks_to_another() {
         .transmit_package(
             5550,
             incipient_cores_package,
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             &mock_node_2.main_public_key(),
             mock_node_2.socket_addr(PortSelector::First),
         )
         .unwrap();
     let (package_from, package_to, package) = mock_node_2
-        .wait_for_package(&masquerader, Duration::from_millis(1000))
+        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_millis(1000))
         .unwrap();
     let expired_cores_package = package
         .to_expired(
@@ -160,7 +160,7 @@ fn one_mock_node_talks_to_another() {
     );
 }
 
-fn check_node(cluster: &MASQNodeCluster, name: &str, ip_address: &str, port: u16) {
+fn check_node(cluster: &PulseCloakNodeCluster, name: &str, ip_address: &str, port: u16) {
     let node = cluster
         .get_node_by_name(name)
         .expect(format!("Couldn't find node {} to check", name).as_str());

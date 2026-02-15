@@ -1,11 +1,11 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::path::PathBuf;
 use std::str::FromStr;
 
 use actix::{Actor, Context, Handler, Recipient};
 
-use masq_lib::messages::{
+use pulsecloak_lib::messages::{
     FromMessageBody, ToMessageBody, UiChangePasswordRequest, UiChangePasswordResponse,
     UiCheckPasswordRequest, UiCheckPasswordResponse, UiConfigurationRequest,
     UiConfigurationResponse, UiGenerateSeedSpec, UiGenerateWalletsRequest,
@@ -13,8 +13,8 @@ use masq_lib::messages::{
     UiRecoverWalletsRequest, UiRecoverWalletsResponse, UiScanIntervals, UiSetConfigurationRequest,
     UiSetConfigurationResponse, UiWalletAddressesRequest, UiWalletAddressesResponse,
 };
-use masq_lib::ui_gateway::MessageTarget::ClientId;
-use masq_lib::ui_gateway::{
+use pulsecloak_lib::ui_gateway::MessageTarget::ClientId;
+use pulsecloak_lib::ui_gateway::{
     MessageBody, MessagePath, MessageTarget, NodeFromUiMessage, NodeToUiMessage,
 };
 
@@ -32,13 +32,13 @@ use crate::sub_lib::peer_actors::{BindMessage, ConfigChangeSubs};
 use crate::sub_lib::utils::{db_connection_launch_panic, handle_ui_crash_request};
 use crate::sub_lib::wallet::Wallet;
 use bip39::{Language, Mnemonic, MnemonicType, Seed};
-use masq_lib::constants::{
+use pulsecloak_lib::constants::{
     BAD_PASSWORD_ERROR, CONFIGURATOR_READ_ERROR, CONFIGURATOR_WRITE_ERROR, DERIVATION_PATH_ERROR,
     ILLEGAL_MNEMONIC_WORD_COUNT_ERROR, MISSING_DATA, MNEMONIC_PHRASE_ERROR, NON_PARSABLE_VALUE,
     UNKNOWN_ERROR, UNRECOGNIZED_MNEMONIC_LANGUAGE_ERROR, UNRECOGNIZED_PARAMETER,
 };
-use masq_lib::logger::Logger;
-use masq_lib::utils::{derivation_path, to_string};
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::{derivation_path, to_string};
 use rustc_hex::{FromHex, ToHex};
 use tiny_hderive::bip32::ExtendedPrivKey;
 
@@ -883,12 +883,12 @@ impl Configurator {
 #[cfg(test)]
 mod tests {
     use actix::System;
-    use masq_lib::messages::{
+    use pulsecloak_lib::messages::{
         ToMessageBody, UiCheckPasswordRequest, UiCheckPasswordResponse, UiGenerateSeedSpec,
         UiGenerateWalletsResponse, UiPaymentThresholds, UiRatePack, UiRecoverSeedSpec,
         UiScanIntervals, UiStartOrder, UiWalletAddressesRequest, UiWalletAddressesResponse,
     };
-    use masq_lib::ui_gateway::{MessagePath, MessageTarget};
+    use pulsecloak_lib::ui_gateway::{MessagePath, MessageTarget};
     use std::path::Path;
     use std::str::FromStr;
     use std::sync::{Arc, Mutex};
@@ -899,7 +899,7 @@ mod tests {
     };
     use crate::test_utils::persistent_configuration_mock::PersistentConfigurationMock;
     use crate::test_utils::recorder::{make_recorder, peer_actors_builder};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
 
     use super::*;
     use crate::blockchain::bip32::Bip32EncryptionKeyProvider;
@@ -920,10 +920,10 @@ mod tests {
     use crate::test_utils::{make_paying_wallet, make_wallet};
     use bip39::{Language, Mnemonic};
     use lazy_static::lazy_static;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::constants::MISSING_DATA;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::{derivation_path, AutomapProtocol, NeighborhoodModeLight};
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::constants::MISSING_DATA;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::{derivation_path, AutomapProtocol, NeighborhoodModeLight};
     use rustc_hex::FromHex;
     use tiny_hderive::bip32::ExtendedPrivKey;
 

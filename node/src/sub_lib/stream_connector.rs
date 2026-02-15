@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::tokio_wrappers::ReadHalfWrapper;
 use crate::sub_lib::tokio_wrappers::ReadHalfWrapperReal;
 use crate::sub_lib::tokio_wrappers::WriteHalfWrapper;
 use crate::sub_lib::tokio_wrappers::WriteHalfWrapperReal;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::io::ErrorKind;
 use std::net::IpAddr;
 use std::net::SocketAddr;
@@ -157,9 +157,9 @@ mod tests {
     use crossbeam_channel::unbounded;
     use futures::future::lazy;
     use futures::future::ok;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::utils::{find_free_port, localhost};
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::utils::{find_free_port, localhost};
     use std::net::{IpAddr, Shutdown};
     use std::str::FromStr;
     use std::sync::Arc;

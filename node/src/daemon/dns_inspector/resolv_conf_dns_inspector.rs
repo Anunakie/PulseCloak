@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(target_os = "linux")]
 use crate::daemon::dns_inspector::dns_inspector::DnsInspector;
 use crate::daemon::dns_inspector::DnsInspectionError;
@@ -174,7 +174,7 @@ impl ResolvConfDnsInspector {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use std::fs;
     use std::io::{Seek, SeekFrom, Write};
     use std::net::IpAddr;

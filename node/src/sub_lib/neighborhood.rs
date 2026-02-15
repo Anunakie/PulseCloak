@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::neighborhood::gossip::Gossip_0v1;
 use crate::neighborhood::node_record::NodeRecord;
@@ -20,11 +20,11 @@ use actix::Recipient;
 use core::fmt;
 use itertools::Itertools;
 use lazy_static::lazy_static;
-use masq_lib::blockchains::blockchain_records::CHAINS;
-use masq_lib::blockchains::chains::{chain_from_chain_identifier_opt, Chain};
-use masq_lib::constants::{CENTRAL_DELIMITER, CHAIN_IDENTIFIER_DELIMITER, MASQ_URL_PREFIX};
-use masq_lib::ui_gateway::NodeFromUiMessage;
-use masq_lib::utils::NeighborhoodModeLight;
+use pulsecloak_lib::blockchains::blockchain_records::CHAINS;
+use pulsecloak_lib::blockchains::chains::{chain_from_chain_identifier_opt, Chain};
+use pulsecloak_lib::constants::{CENTRAL_DELIMITER, CHAIN_IDENTIFIER_DELIMITER, PCLOAK_URL_PREFIX};
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::utils::NeighborhoodModeLight;
 use serde_derive::{Deserialize, Serialize};
 use std::convert::TryFrom;
 use std::fmt::{Debug, Display, Formatter};
@@ -239,7 +239,7 @@ impl NodeDescriptor {
         let chain_identifier = self.blockchain.rec().literal_identifier;
         format!(
             "{}{}{}{}{}{}",
-            MASQ_URL_PREFIX,
+            PCLOAK_URL_PREFIX,
             chain_identifier,
             CHAIN_IDENTIFIER_DELIMITER,
             contact_public_key_string,
@@ -285,7 +285,7 @@ fn second_dividing<'a>(front: &'a str, descriptor: &str) -> Result<(Chain, &'a s
 }
 
 fn strip_prefix(str_descriptor: &str) -> Result<&str, String> {
-    if let Some(str) = str_descriptor.strip_prefix(MASQ_URL_PREFIX) {
+    if let Some(str) = str_descriptor.strip_prefix(PCLOAK_URL_PREFIX) {
         Ok(str)
     } else {
         Err(DescriptorParsingError::PrefixMissing(str_descriptor).to_string())
@@ -350,17 +350,17 @@ impl Display for DescriptorParsingError<'_> {
         }
         match self{
             Self::CentralDelimiterProbablyMissing(descriptor) =>
-                write!(f, "Delimiter '@' probably missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
+                write!(f, "Delimiter '@' probably missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
             Self::CentralDelimOrNodeAddr(descriptor,tail) =>
-                write!(f, "Either '@' delimiter position or format of node address is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not '{}'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '{}'", descriptor,tail),
+                write!(f, "Either '@' delimiter position or format of node address is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not '{}'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '{}'", descriptor,tail),
             Self::CentralDelimOrIdentifier(descriptor) =>
-                write!(f, "Either '@' delimiter position or format of chain identifier is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
+                write!(f, "Either '@' delimiter position or format of chain identifier is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
             Self::ChainIdentifierDelimiter(descriptor) =>
-                write!(f, "Chain identifier delimiter mismatch. Should be 'masq://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
+                write!(f, "Chain identifier delimiter mismatch. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not '{}'", descriptor),
             Self::PrefixMissing(descriptor) =>
-                write!(f,"Prefix or more missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not '{}'",descriptor),
+                write!(f,"Prefix or more missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not '{}'",descriptor),
             Self::WrongChainIdentifier(identifier) =>
-                write!(f, "Chain identifier '{}' is not valid; possible values are '{}' while formatted as 'masq://<chain identifier>:<public key>@<node address>'",
+                write!(f, "Chain identifier '{}' is not valid; possible values are '{}' while formatted as 'pulsecloak://<chain identifier>:<public key>@<node address>'",
                                              identifier, only_user_intended()
 
             )
@@ -624,9 +624,9 @@ mod tests {
     use crate::sub_lib::utils::NotifyLaterHandleReal;
     use crate::test_utils::recorder::Recorder;
     use actix::Actor;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-    use masq_lib::utils::{localhost, NeighborhoodModeLight};
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::utils::{localhost, NeighborhoodModeLight};
     use std::str::FromStr;
 
     lazy_static! {
@@ -690,7 +690,7 @@ mod tests {
 
     #[test]
     fn parse_works_for_ethereum_mainnet() {
-        let descriptor = "masq://eth-mainnet:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://eth-mainnet:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor).unwrap();
 
@@ -699,7 +699,7 @@ mod tests {
 
     #[test]
     fn parse_works_for_ropsten() {
-        let descriptor = "masq://eth-ropsten:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://eth-ropsten:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor).unwrap();
 
@@ -708,7 +708,7 @@ mod tests {
 
     #[test]
     fn parse_works_for_dev_chain() {
-        let descriptor = "masq://dev:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://dev:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor).unwrap();
 
@@ -717,7 +717,7 @@ mod tests {
 
     #[test]
     fn parse_works_for_polygon_mainnet() {
-        let descriptor = "masq://polygon-mainnet:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://polygon-mainnet:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor).unwrap();
 
@@ -726,7 +726,7 @@ mod tests {
 
     #[test]
     fn parse_works_for_amoy() {
-        let descriptor = "masq://polygon-amoy:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://polygon-amoy:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor).unwrap();
 
@@ -742,7 +742,7 @@ mod tests {
         assert_eq!(
             result,
             Err(
-                "Prefix or more missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'https://eth-mainnet:as45cs5c5@1.2.3.4:4444'"
+                "Prefix or more missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'https://eth-mainnet:as45cs5c5@1.2.3.4:4444'"
                     .to_string()
             )
         );
@@ -750,14 +750,14 @@ mod tests {
 
     #[test]
     fn parse_complains_about_unknown_chain_identifier() {
-        let descriptor = "masq://bitcoin:as45cs5c5@1.2.3.4:4444";
+        let descriptor = "pulsecloak://bitcoin:as45cs5c5@1.2.3.4:4444";
 
         let result = NodeDescriptor::parse_url(descriptor);
 
         assert_eq!(
             result,
             Err(
-                "Chain identifier 'bitcoin' is not valid; possible values are 'polygon-mainnet', 'eth-mainnet', 'base-mainnet', 'base-sepolia', 'polygon-amoy', 'eth-ropsten' while formatted as 'masq://<chain identifier>:<public key>@<node address>'"
+                "Chain identifier 'bitcoin' is not valid; possible values are 'polygon-mainnet', 'eth-mainnet', 'base-mainnet', 'base-sepolia', 'polygon-amoy', 'eth-ropsten' while formatted as 'pulsecloak://<chain identifier>:<public key>@<node address>'"
                     .to_string()
             )
         );
@@ -765,25 +765,25 @@ mod tests {
 
     #[test]
     fn parse_complains_about_str_which_it_does_not_know_how_to_halve_because_no_at_sign() {
-        let descriptor = "masq://dev.as45cs5c5/1.4.4.5;4545";
+        let descriptor = "pulsecloak://dev.as45cs5c5/1.4.4.5;4545";
 
         let result = NodeDescriptor::parse_url(descriptor);
 
         assert_eq!(
             result,
-            Err("Delimiter '@' probably missing. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'masq://dev.as45cs5c5/1.4.4.5;4545'".to_string())
+            Err("Delimiter '@' probably missing. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'pulsecloak://dev.as45cs5c5/1.4.4.5;4545'".to_string())
         );
     }
 
     #[test]
     fn parse_complains_about_unclear_identifier_delimiter() {
-        let descriptor = "masq://dev.as45cs5c5@1.4.4.5:4545";
+        let descriptor = "pulsecloak://dev.as45cs5c5@1.4.4.5:4545";
 
         let result = NodeDescriptor::parse_url(descriptor);
 
         assert_eq!(
             result,
-            Err("Chain identifier delimiter mismatch. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'masq://dev.as45cs5c5@1.4.4.5:4545'".to_string())
+            Err("Chain identifier delimiter mismatch. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'pulsecloak://dev.as45cs5c5@1.4.4.5:4545'".to_string())
         );
     }
 
@@ -804,7 +804,7 @@ mod tests {
 
         let result = approx_position_assertion(would_be_descriptor, halves);
 
-        assert_eq!(result,Err("Either '@' delimiter position or format of node address is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as 'a1.bf3.4.5:4565/9898'".to_string()))
+        assert_eq!(result,Err("Either '@' delimiter position or format of node address is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as 'a1.bf3.4.5:4565/9898'".to_string()))
     }
 
     #[test]
@@ -824,7 +824,7 @@ mod tests {
 
         let result = approx_position_assertion(would_be_descriptor, halves);
 
-        assert_eq!(result,Err("Either '@' delimiter position or format of node address is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '2000:ab.4.5a.10:4565'".to_string()))
+        assert_eq!(result,Err("Either '@' delimiter position or format of node address is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '2000:ab.4.5a.10:4565'".to_string()))
     }
 
     #[test]
@@ -834,7 +834,7 @@ mod tests {
 
         let result = approx_position_assertion(would_be_descriptor, halves);
 
-        assert_eq!(result, Err("Either '@' delimiter position or format of node address is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '2000:qd3:88r:4565/9898'".to_string()))
+        assert_eq!(result, Err("Either '@' delimiter position or format of node address is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as '2000:qd3:88r:4565/9898'".to_string()))
     }
 
     #[test]
@@ -844,7 +844,7 @@ mod tests {
 
         let result = approx_position_assertion(would_be_descriptor, halves);
 
-        assert_eq!(result, Err("Either '@' delimiter position or format of chain identifier is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'".to_string()))
+        assert_eq!(result, Err("Either '@' delimiter position or format of chain identifier is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'whole_descriptor'".to_string()))
     }
 
     #[test]
@@ -856,14 +856,14 @@ mod tests {
 
         let result = DescriptorParsingError::WrongChainIdentifier("blah").to_string();
 
-        assert_eq!(result, "Chain identifier 'blah' is not valid; possible values are 'polygon-mainnet', 'eth-mainnet', 'base-mainnet', 'base-sepolia', 'polygon-amoy', 'eth-ropsten' while formatted as 'masq://<chain identifier>:<public key>@<node address>'")
+        assert_eq!(result, "Chain identifier 'blah' is not valid; possible values are 'polygon-mainnet', 'eth-mainnet', 'base-mainnet', 'base-sepolia', 'polygon-amoy', 'eth-ropsten' while formatted as 'pulsecloak://<chain identifier>:<public key>@<node address>'")
     }
 
     #[test]
     fn from_str_complains_about_bad_base_64() {
         let result = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:bad_key@1.2.3.4:1234;2345",
+            "pulsecloak://eth-mainnet:bad_key@1.2.3.4:1234;2345",
         ));
 
         assert_eq!(
@@ -876,7 +876,7 @@ mod tests {
     fn from_str_complains_about_slash_in_the_key() {
         let result = NodeDescriptor::try_from((
             &CryptDEReal::new(TEST_DEFAULT_CHAIN) as &dyn CryptDE,
-            "masq://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg/PzRNnWQxFw@12.23.34.45:5678",
+            "pulsecloak://eth-ropsten:abJ5XvhVbmVyGejkYUkmftF09pmGZGKg/PzRNnWQxFw@12.23.34.45:5678",
         ));
 
         assert_eq!(
@@ -891,7 +891,7 @@ mod tests {
     fn from_str_complains_about_plus_in_the_key() {
         let result = NodeDescriptor::try_from((
             &CryptDEReal::new(DEFAULT_CHAIN) as &dyn CryptDE,
-            "masq://eth-ropsten:abJ5XvhVbmVy+GejkYUmftF09pmGZGKgkPzRNnWQxFw@12.23.34.45:5678",
+            "pulsecloak://eth-ropsten:abJ5XvhVbmVy+GejkYUmftF09pmGZGKgkPzRNnWQxFw@12.23.34.45:5678",
         ));
 
         assert_eq!(
@@ -905,7 +905,7 @@ mod tests {
     #[test]
     fn from_str_complains_about_blank_public_key() {
         let result =
-            NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "masq://dev:@1.2.3.4:1234/2345"));
+            NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "pulsecloak://dev:@1.2.3.4:1234/2345"));
 
         assert_eq!(result, Err(String::from("Public key cannot be empty")));
     }
@@ -914,17 +914,17 @@ mod tests {
     fn from_str_complains_about_bad_node_addr() {
         let result = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:R29vZEtleQ==@BadNodeAddr",
+            "pulsecloak://eth-mainnet:R29vZEtleQ==@BadNodeAddr",
         ));
 
-        assert_eq!(result, Err(String::from("Either '@' delimiter position or format of node address is wrong. Should be 'masq://<chain identifier>:<public key>@<node address>', not 'masq://eth-mainnet:R29vZEtleQ==@BadNodeAddr'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as 'BadNodeAddr'")));
+        assert_eq!(result, Err(String::from("Either '@' delimiter position or format of node address is wrong. Should be 'pulsecloak://<chain identifier>:<public key>@<node address>', not 'pulsecloak://eth-mainnet:R29vZEtleQ==@BadNodeAddr'\nNodeAddr should be expressed as '<IP address>:<port>/<port>/...', probably not as 'BadNodeAddr'")));
     }
 
     #[test]
     fn from_str_handles_the_happy_path_with_node_addr() {
         let result = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:R29vZEtleQ@1.2.3.4:1234/2345/3456",
+            "pulsecloak://eth-ropsten:R29vZEtleQ@1.2.3.4:1234/2345/3456",
         ));
 
         assert_eq!(
@@ -944,7 +944,7 @@ mod tests {
     fn from_str_handles_the_happy_path_without_node_addr() {
         let result = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:R29vZEtleQ@:",
+            "pulsecloak://eth-mainnet:R29vZEtleQ@:",
         ));
 
         assert_eq!(
@@ -1014,7 +1014,7 @@ mod tests {
 
         assert_eq!(
             result,
-            "masq://eth-mainnet:AQIDBAUGBwg@123.45.67.89:2345/3456".to_string()
+            "pulsecloak://eth-mainnet:AQIDBAUGBwg@123.45.67.89:2345/3456".to_string()
         );
     }
 
@@ -1029,7 +1029,7 @@ mod tests {
 
         assert_eq!(
             result,
-            "masq://eth-ropsten:AQIDBAUGBwg@123.45.67.89:2345/3456".to_string()
+            "pulsecloak://eth-ropsten:AQIDBAUGBwg@123.45.67.89:2345/3456".to_string()
         );
     }
 
@@ -1047,7 +1047,7 @@ mod tests {
         let string_descriptor = descriptor.to_string(cryptde);
 
         let result = string_descriptor
-            .strip_prefix(MASQ_URL_PREFIX)
+            .strip_prefix(PCLOAK_URL_PREFIX)
             .unwrap()
             .chars()
             .skip_while(|char| char != &CHAIN_IDENTIFIER_DELIMITER)
@@ -1078,12 +1078,12 @@ mod tests {
     fn standard_mode_results() {
         let one_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:AQIDBA@1.2.3.4:1234",
+            "pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234",
         ))
         .unwrap();
         let another_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:AgMEBQ@2.3.4.5:2345",
+            "pulsecloak://eth-mainnet:AgMEBQ@2.3.4.5:2345",
         ))
         .unwrap();
         let subject = NeighborhoodMode::Standard(
@@ -1113,12 +1113,12 @@ mod tests {
     fn originate_only_mode_results() {
         let one_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:AQIDBA@1.2.3.4:1234",
+            "pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234",
         ))
         .unwrap();
         let another_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:AgMEBQ@2.3.4.5:2345",
+            "pulsecloak://eth-ropsten:AgMEBQ@2.3.4.5:2345",
         ))
         .unwrap();
         let subject = NeighborhoodMode::OriginateOnly(
@@ -1144,12 +1144,12 @@ mod tests {
     fn consume_only_mode_results() {
         let one_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:AQIDBA@1.2.3.4:1234",
+            "pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234",
         ))
         .unwrap();
         let another_neighbor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:AgMEBQ@2.3.4.5:2345",
+            "pulsecloak://eth-mainnet:AgMEBQ@2.3.4.5:2345",
         ))
         .unwrap();
         let subject =

@@ -1,13 +1,13 @@
 # `neighborhood`
-Route generation for MASQ Node
+Route generation for PulseCloak Node
 
 It probably isn't the most interesting place to begin digging into our code;
-[node](https://github.com/MASQ-Project/Node/tree/master/node)
+[node](https://github.com/PulseCloak-Project/Node/tree/master/node)
 is a better place to start.
 
 ## About the Neighborhood
 
-Each MASQ Node in the MASQ Network contains a subsystem that we call the Neighborhood. The Neighborhood is
+Each PulseCloak Node in the PulseCloak Network contains a subsystem that we call the Neighborhood. The Neighborhood is
 responsible for keeping track of other Nodes in the network, remembering how (and whether) they're connected to one
 another, and storing other information about them as well. Our current plan for the future is that we'll also remember 
 things like how fast they have proven to be and whether they're acting suspiciously. Also, whenever a consuming Node
@@ -18,7 +18,7 @@ determining what route the CORES package should take.
 
 At certain times, the Neighborhood will trigger a round of Gossip. When this happens, the Neighborhood will send a
 CORES package to each of the Nodes to which your Node has a direct TCP connection. (Note: this will not cost you any 
-routing MASQ, because since each of these Nodes is right next to you, no Node but your own sends any data on your 
+routing PulseCloak, because since each of these Nodes is right next to you, no Node but your own sends any data on your 
 behalf, and therefore there's nobody to pay.) This CORES package will contain part of what your Node knows about the 
 current state of the network, including what it has learned from other Nodes when they have sent Gossip to it. When 
 you start a decentralized Node, it needs to know how to locate just one other Node in the network; but these Gossip 
@@ -50,7 +50,7 @@ of another access point with a different public IP address. We have plans to mak
 survivable, but currently none are. If your public IP address changes, your Node traffic will drop to zero and stay
 there; you'll need to kill your Node and restart it to get it back on the Network.
 
-As a matter of fact, the best computer on which to run a MASQ Node is one whose public IP _never_ changes: one
+As a matter of fact, the best computer on which to run a PulseCloak Node is one whose public IP _never_ changes: one
 whose ISP has granted a static IP address. Failing that, the best way to run a Node is on a non-portable computer that
 is using a wired Ethernet connection. (Sending data over a wire keeps it far more secure than broadcasting it through
 the air.) Failing _that,_ the best way would be on a WiFi-connected computer that may move around in the territory of a
@@ -203,4 +203,4 @@ There are three or four types of Gossip, depending on how you count them.
   to everyone it knows. Instead, it makes a list of all its half neighbors and custom-builds a special Gossip package 
   for each one.
 
-Copyright (c) 2022, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+Copyright (c) 2022, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.

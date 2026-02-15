@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::payable_dao::PayableAccount;
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::blockchain_agent::BlockchainAgent;
@@ -8,8 +8,8 @@ use crate::blockchain::blockchain_bridge::RetrieveTransactions;
 use crate::sub_lib::peer_actors::BindMessage;
 use actix::Message;
 use actix::Recipient;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use std::fmt;
 use std::fmt::{Debug, Formatter};
 use web3::types::U256;
@@ -69,14 +69,14 @@ impl SkeletonOptHolder for OutboundPaymentsInstructions {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ConsumingWalletBalances {
     pub transaction_fee_balance_in_minor_units: U256,
-    pub masq_token_balance_in_minor_units: U256,
+    pub pulsecloak_token_balance_in_minor_units: U256,
 }
 
 impl ConsumingWalletBalances {
-    pub fn new(transaction_fee: U256, masq_token: U256) -> Self {
+    pub fn new(transaction_fee: U256, pulsecloak_token: U256) -> Self {
         Self {
             transaction_fee_balance_in_minor_units: transaction_fee,
-            masq_token_balance_in_minor_units: masq_token,
+            pulsecloak_token_balance_in_minor_units: pulsecloak_token,
         }
     }
 }
@@ -89,7 +89,7 @@ mod tests {
     use crate::test_utils::persistent_configuration_mock::PersistentConfigurationMock;
     use crate::test_utils::recorder::{make_blockchain_bridge_subs_from_recorder, Recorder};
     use actix::{Actor, System};
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::utils::find_free_port;
     use std::sync::{Arc, Mutex};
 
     #[test]

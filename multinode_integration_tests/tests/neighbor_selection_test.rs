@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
 use multinode_integration_tests_lib::multinode_gossip::GossipType;
 use multinode_integration_tests_lib::multinode_gossip::{
     parse_gossip, MultinodeGossip, SingleNode, Standard,
@@ -22,7 +22,7 @@ use std::time::Duration;
 
 #[test]
 fn debut_target_does_not_introduce_known_neighbors() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let one_common_neighbor = make_node_record(1234, true);
     let another_common_neighbor = make_node_record(2435, true);
     let dest_db = {
@@ -84,7 +84,7 @@ fn debut_target_does_not_introduce_known_neighbors() {
 
 #[test]
 fn debut_target_does_not_pass_to_known_neighbors() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let common_neighbors = (0..5)
         .into_iter()
         .map(|index| make_node_record(1111 + index, true))
@@ -125,7 +125,7 @@ fn debut_target_does_not_pass_to_known_neighbors() {
 
 #[test]
 fn node_remembers_its_neighbors_across_a_bounce() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let dest_db = {
         let originating_node = make_node_record(1234, true);
         let mut dest_db: NeighborhoodDatabase = db_from_node(&originating_node);

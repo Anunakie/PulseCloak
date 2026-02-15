@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![allow(proc_macro_derive_resolution_fallback)]
 
 use crate::proxy_client::resolver_wrapper::ResolverWrapper;
@@ -17,7 +17,7 @@ use actix::Recipient;
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use futures::future;
 use futures::future::Future;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::collections::HashMap;
 use std::io;
 use std::net::{AddrParseError, IpAddr, Ipv4Addr, SocketAddr};
@@ -646,9 +646,9 @@ mod tests {
     use crate::test_utils::tokio_wrapper_mocks::WriteHalfWrapperMock;
     use actix::System;
     use lazy_static::lazy_static;
-    use masq_lib::constants::HTTP_PORT;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::constants::HTTP_PORT;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::cell::RefCell;
     use std::io::Error;
     use std::io::ErrorKind;

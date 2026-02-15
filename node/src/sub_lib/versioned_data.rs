@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use itertools::Itertools;
-use masq_lib::data_version::{DataVersion, FUTURE_VERSION};
+use pulsecloak_lib::data_version::{DataVersion, FUTURE_VERSION};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -358,7 +358,7 @@ macro_rules! migrate_value {
                     Err(_) => {
                         return Err(
                             $crate::sub_lib::versioned_data::StepError::DeserializationError(
-                                masq_lib::data_version::FUTURE_VERSION,
+                                pulsecloak_lib::data_version::FUTURE_VERSION,
                                 $tv,
                                 format!(
                                     "Unable to deserialize {} with data {:?}",
@@ -387,7 +387,7 @@ macro_rules! migrate_value {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use masq_lib::data_version::FUTURE_VERSION;
+    use pulsecloak_lib::data_version::FUTURE_VERSION;
     use serde_cbor::Value;
 
     #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]

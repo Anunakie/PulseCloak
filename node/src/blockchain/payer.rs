@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::accountant::db_access_objects::banned_dao::BAN_CACHE;
 use crate::blockchain::signature::SerializableSignature;
 use crate::sub_lib::wallet::Wallet;
@@ -63,7 +63,7 @@ mod tests {
     use crate::sub_lib::cryptde;
     use crate::sub_lib::cryptde::PublicKey as SubPublicKey;
     use crate::test_utils::make_payer;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use rustc_hex::FromHex;
 
     #[test]

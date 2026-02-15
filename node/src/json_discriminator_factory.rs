@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
 use crate::json_framer::JsonFramer;
-use crate::json_masquerader::JsonMasquerader;
+use crate::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
 
 #[derive(Debug, Default)]
 pub struct JsonDiscriminatorFactory {}
@@ -11,7 +11,7 @@ impl DiscriminatorFactory for JsonDiscriminatorFactory {
     fn make(&self) -> Discriminator {
         Discriminator::new(
             Box::new(JsonFramer::new()),
-            vec![Box::new(JsonMasquerader::new())],
+            vec![Box::new(JsonXYZPROTECT_PulseCloakuerader::new())],
         )
     }
 
@@ -30,7 +30,7 @@ impl JsonDiscriminatorFactory {
 mod tests {
     use super::*;
     use crate::discriminator::UnmaskedChunk;
-    use crate::masquerader::Masquerader;
+    use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
 
     #[test]
     fn discriminator_factory_duplicate_works() {
@@ -56,8 +56,8 @@ mod tests {
     #[test]
     fn factory_makes_discriminator_that_unmasks_json_data() {
         let data = &b"I am contained in JSON!"[..];
-        let masquerader = JsonMasquerader::new();
-        let json = masquerader.mask(data).unwrap();
+        let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+        let json = XYZPROTECT_XYZPROTECT_pulsecloakuerader.mask(data).unwrap();
         let subject = JsonDiscriminatorFactory::new();
         let mut discriminator = subject.make();
 

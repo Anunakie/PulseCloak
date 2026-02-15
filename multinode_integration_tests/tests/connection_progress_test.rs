@@ -1,22 +1,22 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::time::Duration;
 
-use masq_lib::messages::{
+use pulsecloak_lib::messages::{
     FromMessageBody, ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage,
     UiConnectionStatusRequest, UiConnectionStatusResponse,
 };
-use masq_lib::utils::find_free_port;
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
-    ConsumingWalletInfo, MASQRealNode, NodeStartupConfigBuilder,
+use pulsecloak_lib::utils::find_free_port;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    ConsumingWalletInfo, PulseCloakRealNode, NodeStartupConfigBuilder,
 };
 
 #[test]
 fn connection_progress_is_properly_broadcast() {
     let ui_port = find_free_port();
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     // Set up small preexisting network that is much too small to route
     let relay_2 = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
@@ -54,7 +54,7 @@ fn connection_progress_is_properly_broadcast() {
                     .build(),
             )
         })
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
 
     let message_body =
         ui_client.wait_for_specific_broadcast(vec!["connectionChange"], Duration::from_secs(5));
@@ -72,7 +72,7 @@ fn connection_progress_is_properly_broadcast() {
 #[test]
 fn connection_progress_can_be_requested() {
     let ui_port = find_free_port();
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     // Set up Node from which we will get connection-progress information
     // and hook a UI to it
     let subject = cluster.start_real_node(

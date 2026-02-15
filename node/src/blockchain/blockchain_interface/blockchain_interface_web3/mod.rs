@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod lower_level_interface_web3;
 mod utils;
@@ -13,8 +13,8 @@ use crate::blockchain::blockchain_interface::{BlockchainAgentBuildError, Blockch
 use crate::sub_lib::wallet::Wallet;
 use futures::{Future};
 use indoc::indoc;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::logger::Logger;
 use std::convert::{From, TryInto};
 use std::fmt::Debug;
 use actix::Recipient;
@@ -185,12 +185,12 @@ impl BlockchainInterface for BlockchainInterfaceWeb3 {
                                 .map_err(move |e| {
                                     BlockchainAgentBuildError::ServiceFeeBalance(wallet_address, e)
                                 })
-                                .and_then(move |masq_token_balance| {
+                                .and_then(move |pulsecloak_token_balance| {
                                     let blockchain_agent_future_result =
                                         BlockchainAgentFutureResult {
                                             gas_price_wei,
                                             transaction_fee_balance,
-                                            masq_token_balance,
+                                            pulsecloak_token_balance,
                                         };
                                     Ok(create_blockchain_agent_web3(
                                         gas_limit_const_part,
@@ -452,11 +452,11 @@ mod tests {
     use crate::test_utils::make_wallet;
     use ethsign_crypto::Keccak256;
     use futures::Future;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::utils::find_free_port;
     use std::net::Ipv4Addr;
     use std::str::FromStr;
     use web3::transports::Http;
@@ -840,7 +840,7 @@ mod tests {
             .ok_response("0x3B9ACA00".to_string(), 0) // 1000000000
             // transaction_fee_balance
             .ok_response("0xFFF0".to_string(), 0) // 65520
-            // masq_balance
+            // pulsecloak_balance
             .ok_response(
                 "0x000000000000000000000000000000000000000000000000000000000000FFFF".to_string(), // 65535
                 0,
@@ -856,14 +856,14 @@ mod tests {
             .unwrap();
 
         let expected_transaction_fee_balance = U256::from(65_520);
-        let expected_masq_balance = U256::from(65_535);
+        let expected_pulsecloak_balance = U256::from(65_535);
         let expected_gas_price_wei = 1_000_000_000;
         assert_eq!(result.consuming_wallet(), &wallet);
         assert_eq!(
             result.consuming_wallet_balances(),
             ConsumingWalletBalances {
                 transaction_fee_balance_in_minor_units: expected_transaction_fee_balance,
-                masq_token_balance_in_minor_units: expected_masq_balance
+                pulsecloak_token_balance_in_minor_units: expected_pulsecloak_balance
             }
         );
         assert_eq!(
@@ -934,7 +934,7 @@ mod tests {
     }
 
     #[test]
-    fn build_of_the_blockchain_agent_fails_on_masq_balance() {
+    fn build_of_the_blockchain_agent_fails_on_pulsecloak_balance() {
         let port = find_free_port();
         let _blockchain_client_server = MBCSBuilder::new(port)
             .ok_response("0x3B9ACA00".to_string(), 0)

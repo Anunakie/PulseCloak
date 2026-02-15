@@ -1,13 +1,13 @@
-# Communication Between `MASQNode` and User Interfaces
+# Communication Between `PulseCloakNode` and User Interfaces
 
 ## Background
 
 ### Project Architecture
 
-The `MASQNode` (or `MASQNode.exe` for Windows) binary is used for two different purposes. One is called the Daemon;
+The `PulseCloakNode` (or `PulseCloakNode.exe` for Windows) binary is used for two different purposes. One is called the Daemon;
 the other is called the Node.
 
-The Node contains all the communications capabilities MASQ is known for. Its job is to start with root privilege,
+The Node contains all the communications capabilities PulseCloak is known for. Its job is to start with root privilege,
 open low ports, drop privilege to user level, and settle into sending and receiving CORES packages.
 
 The Daemon is different. Its job is to start when the machine boots, with root privilege, and keep running with
@@ -35,13 +35,13 @@ future.
 If the Daemon is started without specific settings, like this
 
 ```
-$ ./MASQNode --initialization
+$ ./PulseCloakNode --initialization
 ```
 
 it will try to come up listening for UI connections on port 5333. But if it's started like this
 
 ```
-$ ./MASQNode --initialization --ui-port 12345
+$ ./PulseCloakNode --initialization --ui-port 12345
 ```
 
 it will try to come up listening for UI connections on port 12345. If it finds the target port already occupied, it
@@ -57,7 +57,7 @@ machine. This restriction is in place for security reasons.
 
 #### Level 2
 
-The link between the UIs and the Daemon or Node is insecure WebSockets, using the protocol name of `MASQNode-UIv2`.
+The link between the UIs and the Daemon or Node is insecure WebSockets, using the protocol name of `PulseCloakNode-UIv2`.
 Any other protocol name will be rejected, and no connection will be made.
 
 #### Level 3
@@ -67,7 +67,7 @@ or Node are formatted in JSON. A message packet is always a JSON object, never a
 
 #### Level 4
 
-The low-level JSON format of `MASQNode-UIv2` messages is reasonably simple. It looks like this:
+The low-level JSON format of `PulseCloakNode-UIv2` messages is reasonably simple. It looks like this:
 
 ```
 {
@@ -135,13 +135,13 @@ kinds of errors, by comparing one `code` to the next.
 
 The `message` field is a string with a hopefully-friendly description of the error.
 
-There is no provision in the `MASQNode-UIv2` protocol for UIs to communicate with one another. A UI may be able
+There is no provision in the `PulseCloakNode-UIv2` protocol for UIs to communicate with one another. A UI may be able
 to deduce, from broadcasts, the existence of other UIs, but it can never be assured that there _aren't_ any other UIs
 connected to the Node or Daemon.
 
 #### Level 5
 
-The structure of the `payload` of a `MASQNode-UIv2` message depends on the `opcode` of that message. See the
+The structure of the `payload` of a `PulseCloakNode-UIv2` message depends on the `opcode` of that message. See the
 Message Reference section below.
 
 ## General Operational Concepts
@@ -183,7 +183,7 @@ If the Node is not running, there's nowhere to Redirect, so the Daemon will just
 However, if the Node _is_ running, the Daemon will send back a Redirect response, which will contain both
 information about where the Node is running and also the unexpected message sent to the Daemon. When the UI
 gets a Redirect, it should drop the WebSockets connection to the Daemon, make a WebSockets connection to the
-Node on the port supplied in the Redirect message (on `localhost`, using the `MASQNode-UIv2` protocol), and
+Node on the port supplied in the Redirect message (on `localhost`, using the `PulseCloakNode-UIv2` protocol), and
 resend the original message--which, in case the UI doesn't remember it anymore, is helpfully included in the
 Redirect payload.  If it's a valid Node message, the Node should respond appropriately to it.
 
@@ -206,14 +206,14 @@ The password is never stored anywhere but in memory by the Node; it should not b
 either. In order to carry out certain instructions, the Node will need the password from the UI, which means the
 UI will need to get it from the user.
 
-Using `MASQNode-UIv2` messages, the UI can check to see if a password is correct; it can change the database
+Using `PulseCloakNode-UIv2` messages, the UI can check to see if a password is correct; it can change the database
 password (if it knows the old one); and it can be notified when some other UI changes the password (so that it
 knows the one it's aware of is no longer valid).
 
 #### Configuration
 
 The configuration information with which the Node runs (which is different from the setup information with
-which the Daemon starts a Node) is available via `MASQNode-UIv2` as well. A UI can request the configuration
+which the Daemon starts a Node) is available via `PulseCloakNode-UIv2` as well. A UI can request the configuration
 information, and if the information changes for some reason, all UIs will be notified so that--if desired--they
 can request the latest version.
 
@@ -281,7 +281,7 @@ If the password was successfully changed, this is a simple acknowledgment that t
 This message is used to check whether a password the UI knows is actually the real database
 password.
 
-Note that under some circumstances, during the first few minutes after installation, a new MASQNode
+Note that under some circumstances, during the first few minutes after installation, a new PulseCloakNode
 may not have any database password at all.
 
 There's no way to make the Node tell you what the database password is, but if you have an idea
@@ -417,7 +417,7 @@ database password. If you want to know whether the password you have is the corr
   allowed to remain unpaid, or a pending receivable that won’t cause a ban, decreases linearly from the debtThresholdGwei
   to permanentDebtAllowedGwei or unbanBelowGwei.
 
-* `debtThresholdGwei`: Payables higher than this -- in gwei of MASQ -- will be suggested for payment immediately upon
+* `debtThresholdGwei`: Payables higher than this -- in gwei of PulseCloak -- will be suggested for payment immediately upon
   passing the maturityThresholdSec age. Payables less than this can stay unpaid longer. Receivables higher than this
   will be expected to be settled by other Nodes, but will never cause bans until they pass the maturityThresholdSec +
   paymentGracePeriodSec age. Receivables less than this will survive longer without banning.
@@ -428,27 +428,27 @@ database password. If you want to know whether the password you have is the corr
 * `paymentGracePeriodSec`: A large receivable can get as old as maturityThresholdSec + paymentGracePeriodSec -- in seconds
   -- before the Node that owes it will be banned.
 
-* `permanentDebtAllowedGwei`: Receivables this small and smaller -- in gwei of MASQ -- will not cause bans no matter 
+* `permanentDebtAllowedGwei`: Receivables this small and smaller -- in gwei of PulseCloak -- will not cause bans no matter 
   how old they get.
 
 * `unbanBelowGwei`: When a delinquent Node has been banned due to non-payment, the receivables balance must be paid
-  below this level -- in gwei of MASQ -- to cause them to be unbanned. In most cases, you'll want this to be set the
+  below this level -- in gwei of PulseCloak -- to cause them to be unbanned. In most cases, you'll want this to be set the
   same as permanentDebtAllowedGwei.
 
 * `ratePack`: These four parameters specify your rates that your Node will use for charging other Nodes for your provided
-  services. They are currently denominated in gwei of MASQ, but will be improved to allow denomination in wei units.
+  services. They are currently denominated in gwei of PulseCloak, but will be improved to allow denomination in wei units.
   These are ever present values, no matter if the user's set any value, they have defaults.
 
-* `exitByteRate`: This parameter indicates an amount of MASQ demanded to process 1 byte of routed payload while the Node
+* `exitByteRate`: This parameter indicates an amount of PulseCloak demanded to process 1 byte of routed payload while the Node
   acts as the exit Node.
 
-* `exitServiceRate`: This parameter indicates an amount of MASQ demanded to provide services, unpacking and repacking
+* `exitServiceRate`: This parameter indicates an amount of PulseCloak demanded to provide services, unpacking and repacking
   1 CORES package, while the Node acts as the exit Node.
 
-* `routingByteRate`: This parameter indicates an amount of MASQ demanded to process 1 byte of routed payload while the
+* `routingByteRate`: This parameter indicates an amount of PulseCloak demanded to process 1 byte of routed payload while the
   Node is a common relay Node.
 
-* `routingServiceRate`: This parameter indicates an amount of MASQ demanded to provide services, unpacking and repacking
+* `routingServiceRate`: This parameter indicates an amount of PulseCloak demanded to provide services, unpacking and repacking
   1 CORES package, while the Node is a common relay Node.
 
 * `scanIntervals`: These three intervals describe the length of three different scan cycles running automatically in the
@@ -493,7 +493,7 @@ your cache.
 "payload": {}
 ```
 ##### Description:
-This message is used to check the connection status of the node with the MASQ Network.
+This message is used to check the connection status of the node with the PulseCloak Network.
 
 #### `connectionStatus`
 ##### Direction: Response
@@ -506,7 +506,7 @@ This message is used to check the connection status of the node with the MASQ Ne
 ```
 ##### Description:
 If you send a `connectionStatus` request to the Node, it will respond back with a message containing the stage 
-of the connection status with the MASQ Network.
+of the connection status with the PulseCloak Network.
 
 There are following three connection stages:
 

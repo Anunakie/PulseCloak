@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::neighborhood::gossip::{
     regenerate_signed_gossip, AccessibleGossipRecord, GossipNodeRecord,
@@ -10,7 +10,7 @@ use crate::sub_lib::neighborhood::{NodeDescriptor, RatePack};
 use crate::sub_lib::node_addr::NodeAddr;
 use crate::sub_lib::utils::time_t_timestamp;
 use crate::sub_lib::wallet::Wallet;
-use masq_lib::blockchains::chains::Chain;
+use pulsecloak_lib::blockchains::chains::Chain;
 use serde_derive::{Deserialize, Serialize};
 use std::collections::btree_set::BTreeSet;
 use std::collections::HashSet;
@@ -380,7 +380,7 @@ mod tests {
     use crate::test_utils::neighborhood_test_utils::{db_from_node, make_node_record};
     use crate::test_utils::{assert_contains, rate_pack};
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::net::IpAddr;
     use std::str::FromStr;
 
@@ -473,7 +473,7 @@ mod tests {
 
         assert_eq!(
             result,
-            NodeDescriptor::try_from((cryptde, "masq://base-sepolia:AQIDBA@1.2.3.4:1234/2345"))
+            NodeDescriptor::try_from((cryptde, "pulsecloak://base-sepolia:AQIDBA@1.2.3.4:1234/2345"))
                 .unwrap()
         );
     }
@@ -487,7 +487,7 @@ mod tests {
 
         assert_eq!(
             result,
-            NodeDescriptor::try_from((cryptde, "masq://base-sepolia:AQIDBA@:")).unwrap()
+            NodeDescriptor::try_from((cryptde, "pulsecloak://base-sepolia:AQIDBA@:")).unwrap()
         );
     }
 

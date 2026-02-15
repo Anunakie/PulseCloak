@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod configurator;
 pub mod node_configurator_initialization;
@@ -15,13 +15,13 @@ use crate::sub_lib::utils::{db_connection_launch_panic, make_new_multi_config};
 use clap::{value_t, App};
 use core::option::Option;
 use dirs::{data_local_dir, home_dir};
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::DEFAULT_CHAIN;
-use masq_lib::multi_config::{
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::DEFAULT_CHAIN;
+use pulsecloak_lib::multi_config::{
     merge, CommandLineVcl, EnvironmentVcl, MultiConfig, VirtualCommandLine,
 };
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::utils::{add_masq_and_chain_directories, localhost};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::utils::{add_pulsecloak_and_chain_directories, localhost};
 use std::env::current_dir;
 use std::net::{SocketAddr, TcpListener};
 use std::path::{Path, PathBuf};
@@ -307,7 +307,7 @@ pub fn data_directory_from_context(
         .strip_prefix(wrong_home_dir)
         .expect("std lib failed");
     let homedir = right_home_dir.join(adjusted_local_data_dir);
-    add_masq_and_chain_directories(chain, &homedir)
+    add_pulsecloak_and_chain_directories(chain, &homedir)
 }
 
 pub fn port_is_busy(port: u16) -> bool {
@@ -351,10 +351,10 @@ mod tests {
     use super::*;
     use crate::node_test_utils::DirsWrapperMock;
     use crate::test_utils::ArgsBuilder;
-    use masq_lib::shared_schema::{config_file_arg, data_directory_arg, DATA_DIRECTORY_HELP};
-    use masq_lib::test_utils::environment_guard::EnvironmentGuard;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::shared_schema::{config_file_arg, data_directory_arg, DATA_DIRECTORY_HELP};
+    use pulsecloak_lib::test_utils::environment_guard::EnvironmentGuard;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::find_free_port;
     use std::net::{SocketAddr, TcpListener};
 
     fn determine_config_file_path_app() -> App<'static, 'static> {
@@ -383,7 +383,7 @@ mod tests {
         assert_eq!(
             result,
             PathBuf::from(
-                "/nonexistent_home/nonexistent_alice/.local/share/MASQ/polygon-amoy".to_string()
+                "/nonexistent_home/nonexistent_alice/.local/share/PulseCloak/polygon-amoy".to_string()
             )
         )
     }
@@ -441,10 +441,10 @@ mod tests {
         let args = ArgsBuilder::new();
         let args_vec: Vec<String> = args.into();
         std::env::set_var(
-            "MASQ_DATA_DIRECTORY",
+            "PCLOAK_DATA_DIRECTORY",
             &data_directory.to_string_lossy().to_string(),
         );
-        std::env::set_var("MASQ_CONFIG_FILE", "booga.toml");
+        std::env::set_var("PCLOAK_CONFIG_FILE", "booga.toml");
         let app = determine_config_file_path_app();
 
         let user_specific_data =

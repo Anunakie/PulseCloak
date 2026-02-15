@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::accountant::db_access_objects::utils::DaoFactoryReal;
 use crate::database::rusqlite_wrappers::{ConnectionWrapper, TransactionSafeWrapper};
-use masq_lib::utils::to_string;
+use pulsecloak_lib::utils::to_string;
 use rusqlite::types::ToSql;
 use rusqlite::{Row, Rows, Statement};
 
@@ -180,8 +180,8 @@ mod tests {
     use crate::database::db_initializer::{DbInitializer, DbInitializerReal};
     use crate::database::test_utils::ConnectionWrapperMock;
     use crate::test_utils::assert_contains;
-    use masq_lib::constants::CURRENT_SCHEMA_VERSION;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::constants::CURRENT_SCHEMA_VERSION;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::Connection;
     use std::path::Path;
 

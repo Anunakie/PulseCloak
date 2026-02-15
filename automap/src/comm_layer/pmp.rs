@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::any::Any;
 use std::convert::TryFrom;
@@ -11,9 +11,9 @@ use std::time::{Duration, Instant};
 
 use crossbeam_channel::{unbounded, Receiver, Sender};
 
-use masq_lib::logger::Logger;
-use masq_lib::utils::AutomapProtocol;
-use masq_lib::{debug, error, info, warning};
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::AutomapProtocol;
+use pulsecloak_lib::{debug, error, info, warning};
 
 use crate::comm_layer::pcp_pmp_common::{
     find_routers, make_local_socket_address, FreePortFactory, FreePortFactoryReal, MappingConfig,
@@ -526,8 +526,8 @@ mod tests {
 
     use lazy_static::lazy_static;
 
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::utils::AutomapProtocol;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::utils::AutomapProtocol;
 
     use crate::comm_layer::pcp_pmp_common::MappingConfig;
     use crate::comm_layer::AutomapErrorCause;

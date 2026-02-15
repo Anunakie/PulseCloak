@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::bootstrapper::RealUser;
 use crate::daemon::launcher::LauncherReal;
@@ -15,11 +15,11 @@ use actix::{Actor, System, SystemRunner};
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use flexi_logger::LevelFilter;
 use itertools::Itertools;
-use masq_lib::command::StdStreams;
-use masq_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::shared_schema::ConfiguratorError;
 use std::collections::HashMap;
 
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::utils::ExpectValue;
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -137,7 +137,7 @@ impl DaemonInitializerReal {
             .expectv("path string")
             .join(relative_data_dir);
         params.logger_initializer_wrapper.init(
-            real_data_dir.join("MASQ"),
+            real_data_dir.join("PulseCloak"),
             &real_user,
             LevelFilter::Trace,
             Some("daemon"),
@@ -194,10 +194,10 @@ mod tests {
     use crate::test_utils::unshared_test_utils::ChannelFactoryMock;
     use actix::System;
     use crossbeam_channel::unbounded;
-    use masq_lib::test_utils::environment_guard::EnvironmentGuard;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::{find_free_port, localhost, slice_of_strs_to_vec_of_strings};
+    use pulsecloak_lib::test_utils::environment_guard::EnvironmentGuard;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::{find_free_port, localhost, slice_of_strs_to_vec_of_strings};
     use std::cell::RefCell;
     use std::iter::FromIterator;
     use std::net::{SocketAddr, TcpListener};
@@ -261,7 +261,7 @@ mod tests {
         new_handles_home_directory(
             "/home/username",
             "standard/data/dir",
-            "/home/username/standard/data/dir/MASQ",
+            "/home/username/standard/data/dir/PulseCloak",
         )
     }
 
@@ -273,7 +273,7 @@ mod tests {
         new_handles_home_directory(
             "/root",
             "standard/data/dir",
-            "/home/username/standard/data/dir/MASQ",
+            "/home/username/standard/data/dir/PulseCloak",
         );
     }
 
@@ -285,7 +285,7 @@ mod tests {
         new_handles_home_directory(
             "/var/root",
             "standard/data/dir",
-            "/Users/username/standard/data/dir/MASQ",
+            "/Users/username/standard/data/dir/PulseCloak",
         );
     }
 

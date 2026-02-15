@@ -1,10 +1,10 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::http_packet_framer::ChunkExistenceState;
 use crate::sub_lib::http_packet_framer::ChunkProgressState;
 use crate::sub_lib::http_packet_framer::HttpFramerState;
 use crate::sub_lib::http_packet_framer::HttpPacketStartFinder;
 use crate::sub_lib::http_packet_framer::PacketProgressState;
-use masq_lib::utils::index_of;
+use pulsecloak_lib::utils::index_of;
 use regex::Regex;
 
 const LONGEST_PREFIX_LEN: usize = 13;

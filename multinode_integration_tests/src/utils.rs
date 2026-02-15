@@ -1,10 +1,10 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::command::Command;
-use crate::masq_node::{MASQNode, MASQNodeUtils};
-use crate::masq_real_node::MASQRealNode;
-use masq_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
-use masq_lib::utils::NeighborhoodModeLight;
+use crate::pulsecloak_node::{PulseCloakNode, PulseCloakNodeUtils};
+use crate::pulsecloak_real_node::PulseCloakRealNode;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
+use pulsecloak_lib::utils::NeighborhoodModeLight;
 use node_lib::accountant::db_access_objects::payable_dao::{PayableDao, PayableDaoReal};
 use node_lib::accountant::db_access_objects::receivable_dao::{ReceivableDao, ReceivableDaoReal};
 use node_lib::database::db_initializer::{
@@ -80,7 +80,7 @@ pub fn database_conn(node_name: &str) -> Box<dyn ConnectionWrapper> {
 }
 
 pub fn node_chain_specific_data_directory(node_name: &str) -> String {
-    MASQRealNode::node_home_dir(&MASQNodeUtils::find_project_root(), node_name)
+    PulseCloakRealNode::node_home_dir(&PulseCloakNodeUtils::find_project_root(), node_name)
 }
 
 pub fn config_dao(node_name: &str) -> Box<dyn ConfigDao> {
@@ -122,21 +122,21 @@ pub fn open_all_file_permissions(dir: PathBuf) {
     }
 }
 
-impl From<&dyn MASQNode> for AccessibleGossipRecord {
-    fn from(masq_node: &dyn MASQNode) -> Self {
-        let cryptde = masq_node.signing_cryptde().unwrap_or_else (|| panic! ("You can only make an AccessibleGossipRecord from a MASQRealNode if it has a CryptDENull, not a CryptDEReal."));
+impl From<&dyn PulseCloakNode> for AccessibleGossipRecord {
+    fn from(pulsecloak_node: &dyn PulseCloakNode) -> Self {
+        let cryptde = pulsecloak_node.signing_cryptde().unwrap_or_else (|| panic! ("You can only make an AccessibleGossipRecord from a PulseCloakRealNode if it has a CryptDENull, not a CryptDEReal."));
         let mut agr = AccessibleGossipRecord {
             inner: NodeRecordInner_0v1 {
-                public_key: masq_node.main_public_key().clone(),
-                earning_wallet: masq_node.earning_wallet(),
-                rate_pack: masq_node.rate_pack(),
+                public_key: pulsecloak_node.main_public_key().clone(),
+                earning_wallet: pulsecloak_node.earning_wallet(),
+                rate_pack: pulsecloak_node.rate_pack(),
                 neighbors: BTreeSet::new(),
-                accepts_connections: masq_node.accepts_connections(),
-                routes_data: masq_node.routes_data(),
+                accepts_connections: pulsecloak_node.accepts_connections(),
+                routes_data: pulsecloak_node.routes_data(),
                 version: 0,
-                country_code_opt: masq_node.country_code_opt(),
+                country_code_opt: pulsecloak_node.country_code_opt(),
             },
-            node_addr_opt: Some(masq_node.node_addr()),
+            node_addr_opt: Some(pulsecloak_node.node_addr()),
             signed_gossip: PlainData::new(b""),
             signature: CryptData::new(b""),
         };

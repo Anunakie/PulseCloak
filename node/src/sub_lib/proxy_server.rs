@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::cryptde::PublicKey;
 use crate::sub_lib::data_version::DataVersion;
 use crate::sub_lib::dispatcher::InboundClientData;
@@ -13,7 +13,7 @@ use crate::sub_lib::utils::MessageScheduler;
 use crate::sub_lib::versioned_data::VersionedData;
 use actix::Message;
 use actix::Recipient;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use serde_derive::{Deserialize, Serialize};
 use std::fmt::Debug;
 

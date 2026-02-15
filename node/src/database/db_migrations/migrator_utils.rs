@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::database::db_initializer::ExternalData;
 use crate::database::db_migrations::db_migrator::{DatabaseMigration, DbMigratorReal};
 use crate::database::rusqlite_wrappers::{ConnectionWrapper, TransactionSafeWrapper};
-use masq_lib::constants::CURRENT_SCHEMA_VERSION;
-use masq_lib::logger::Logger;
-use masq_lib::utils::{to_string, ExpectValue};
+use pulsecloak_lib::constants::CURRENT_SCHEMA_VERSION;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::{to_string, ExpectValue};
 use rusqlite::{Error, ToSql};
 use std::fmt::{Display, Formatter};
 
@@ -240,8 +240,8 @@ mod tests {
     };
     use crate::database::rusqlite_wrappers::ConnectionWrapperReal;
     use crate::test_utils::database_utils::make_external_data;
-    use masq_lib::logger::Logger;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::{Connection, Error, OptionalExtension, ToSql};
 
     #[test]

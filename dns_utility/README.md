@@ -4,13 +4,13 @@ Utility for helping to change DNS on a user's local machine.
 # This tool is currently very unreliable and is known to be unusual on any Windows machine that has more than one NIC detected
 
 ## Purpose
-The purpose of `dns_utility` is to be the OS-agnostic tool that the MASQ Node user interface will use to examine
-and manage the DNS settings of a user's machine for routing its TCP communications over the MASQ Network.
+The purpose of `dns_utility` is to be the OS-agnostic tool that the PulseCloak Node user interface will use to examine
+and manage the DNS settings of a user's machine for routing its TCP communications over the PulseCloak Network.
 
 It is built as a utility, and can be run from the command line. There are two main parameters which require privilege 
 escalation. They are:
 
-- `subvert` - Subverts a user's DNS settings by changing it to the local machine so that it relies on the MASQ Network 
+- `subvert` - Subverts a user's DNS settings by changing it to the local machine so that it relies on the PulseCloak Network 
   for resolution.
 - `revert` - Reverts a user's DNS settings to the previous configuration.
 
@@ -64,7 +64,7 @@ reverted
 ```
 
 It probably isn't the most interesting place to begin digging into our code;
-[node](https://github.com/MASQ-Project/Node/tree/master/node)
+[node](https://github.com/PulseCloak-Project/Node/tree/master/node)
 is a better place to start.
 
-Copyright (c) 2022, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+Copyright (c) 2022, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.

@@ -1,4 +1,4 @@
-// Copyright (c) 2024, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2024, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::cmp::Ordering;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr};

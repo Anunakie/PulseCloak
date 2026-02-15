@@ -1,4 +1,4 @@
-// Copyright (c) 2024, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2024, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::payable_dao::PayableAccount;
 use crate::accountant::db_access_objects::pending_payable_dao::PendingPayable;
@@ -16,8 +16,8 @@ use crate::sub_lib::blockchain_bridge::ConsumingWalletBalances;
 use crate::sub_lib::wallet::Wallet;
 use actix::Recipient;
 use futures::Future;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::logger::Logger;
 use secp256k1secrets::SecretKey;
 use serde_json::Value;
 use std::iter::once;
@@ -32,7 +32,7 @@ use web3::Web3;
 pub struct BlockchainAgentFutureResult {
     pub gas_price_wei: U256,
     pub transaction_fee_balance: U256,
-    pub masq_token_balance: U256,
+    pub pulsecloak_token_balance: U256,
 }
 pub fn advance_used_nonce(current_nonce: U256) -> U256 {
     current_nonce
@@ -321,7 +321,7 @@ pub fn create_blockchain_agent_web3(
         ConsumingWalletBalances {
             transaction_fee_balance_in_minor_units: blockchain_agent_future_result
                 .transaction_fee_balance,
-            masq_token_balance_in_minor_units: blockchain_agent_future_result.masq_token_balance,
+            pulsecloak_token_balance_in_minor_units: blockchain_agent_future_result.pulsecloak_token_balance,
         },
         chain,
     ))
@@ -357,11 +357,11 @@ mod tests {
     use ethereum_types::H256;
     use jsonrpc_core::ErrorCode::ServerError;
     use jsonrpc_core::{Error, ErrorCode};
-    use masq_lib::constants::{DEFAULT_CHAIN, DEFAULT_GAS_PRICE};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::constants::{DEFAULT_CHAIN, DEFAULT_GAS_PRICE};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::utils::find_free_port;
     use serde_json::Value;
     use std::net::Ipv4Addr;
     use std::str::FromStr;

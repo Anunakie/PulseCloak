@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
-use masq_lib::command::StdStreams;
-use masq_lib::multi_config::MultiConfig;
-use masq_lib::shared_schema::ConfiguratorError;
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::multi_config::MultiConfig;
+use pulsecloak_lib::shared_schema::ConfiguratorError;
 use tokio::prelude::Future;
 
 pub trait ConfiguredByPrivilege: Future<Item = (), Error = ()> {

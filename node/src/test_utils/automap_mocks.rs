@@ -1,9 +1,9 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::actor_system_factory::AutomapControlFactory;
 use automap_lib::comm_layer::AutomapError;
 use automap_lib::control_layer::automap_control::{AutomapControl, ChangeHandler};
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::utils::AutomapProtocol;
 use std::cell::RefCell;
 use std::net::IpAddr;
 use std::sync::{Arc, Mutex};

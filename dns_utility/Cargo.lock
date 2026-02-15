@@ -462,7 +462,7 @@ dependencies = [
  "core-foundation",
  "ipconfig 0.2.2",
  "libc",
- "masq_lib",
+ "pulsecloak_lib",
  "regex",
  "system-configuration",
  "winreg 0.10.1",
@@ -918,7 +918,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "masq_lib"
+name = "pulsecloak_lib"
 version = "0.9.0"
 dependencies = [
  "actix",

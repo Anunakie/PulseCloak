@@ -1,14 +1,14 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::database::db_initializer::{InitializationError, DATABASE_FILE};
 use actix::{Actor, AsyncContext, Context, Handler, Message, SpawnHandle};
 use clap::App;
-use masq_lib::logger::Logger;
-use masq_lib::messages::{FromMessageBody, UiCrashRequest};
-use masq_lib::multi_config::{MultiConfig, VirtualCommandLine};
-use masq_lib::shared_schema::ConfiguratorError;
-use masq_lib::ui_gateway::NodeFromUiMessage;
-use masq_lib::utils::type_name_of;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::{FromMessageBody, UiCrashRequest};
+use pulsecloak_lib::multi_config::{MultiConfig, VirtualCommandLine};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::utils::type_name_of;
 use std::io::ErrorKind;
 use std::marker::PhantomData;
 use std::path::Path;
@@ -258,9 +258,9 @@ mod tests {
     use actix::{Handler, System};
     use crossbeam_channel::{unbounded, Sender};
     use log::Level;
-    use masq_lib::messages::ToMessageBody;
-    use masq_lib::multi_config::CommandLineVcl;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::messages::ToMessageBody;
+    use pulsecloak_lib::multi_config::CommandLineVcl;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::ops::Sub;
     use std::panic::{catch_unwind, AssertUnwindSafe};
 

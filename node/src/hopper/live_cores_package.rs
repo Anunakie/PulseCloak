@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::sub_lib::cryptde::PublicKey;
 use crate::sub_lib::cryptde::{decodex, CryptDE};
@@ -104,7 +104,7 @@ mod tests {
         make_meaningless_message_type, make_meaningless_route, make_paying_wallet,
     };
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::net::{IpAddr, SocketAddr};
     use std::str::FromStr;
 

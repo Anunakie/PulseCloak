@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(test)]
 
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::msgs::BlockchainAgentWithContextMessage;
@@ -58,7 +58,7 @@ use actix::Handler;
 use actix::MessageResult;
 use actix::System;
 use actix::{Actor, Message};
-use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
 use std::any::{Any, TypeId};
 use std::sync::{Arc, Mutex};
 use std::thread;

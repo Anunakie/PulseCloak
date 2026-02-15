@@ -1,18 +1,18 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
-use crate::utils::MASQNode;
-use masq_lib::constants::DEFAULT_CHAIN;
-use masq_lib::messages::SerializableLogLevel::Warn;
-use masq_lib::messages::{
+use crate::utils::PulseCloakNode;
+use pulsecloak_lib::constants::DEFAULT_CHAIN;
+use pulsecloak_lib::messages::SerializableLogLevel::Warn;
+use pulsecloak_lib::messages::{
     UiChangePasswordRequest, UiCheckPasswordRequest, UiCheckPasswordResponse, UiLogBroadcast,
     UiRedirect, UiSetupRequest, UiSetupResponse, UiShutdownRequest, UiStartOrder, UiStartResponse,
     UiWalletAddressesRequest, NODE_UI_PROTOCOL,
 };
-use masq_lib::test_utils::ui_connection::UiConnection;
-use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-use masq_lib::utils::{add_chain_specific_directory, find_free_port};
+use pulsecloak_lib::test_utils::ui_connection::UiConnection;
+use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+use pulsecloak_lib::utils::{add_chain_specific_directory, find_free_port};
 use std::net::TcpStream;
 use std::thread;
 use std::time::{Duration, SystemTime};
@@ -25,7 +25,7 @@ fn ui_requests_something_and_gets_corresponding_response_integration() {
     let test_name = "ui_requests_something_and_gets_corresponding_response";
     let port = find_free_port();
     let home_dir = ensure_node_home_directory_exists("ui_gateway_test", test_name);
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         test_name,
         Some(
             CommandConfig::new()
@@ -56,10 +56,10 @@ fn ui_requests_something_and_gets_corresponding_response_integration() {
 
 #[test]
 fn log_broadcasts_are_correctly_received_integration() {
-    wait_for_masq_node_ends();
+    wait_for_pulsecloak_node_ends();
     fdlimit::raise_fd_limit();
     let port = find_free_port();
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         "log_broadcasts_are_correctly_received",
         Some(
             CommandConfig::new()
@@ -95,18 +95,18 @@ fn log_broadcasts_are_correctly_received_integration() {
     node.wait_for_exit();
 }
 
-fn wait_for_masq_node_ends() {
+fn wait_for_pulsecloak_node_ends() {
     let mut system = System::new_all();
     let deadline = SystemTime::now() + Duration::from_secs(5);
     loop {
         if SystemTime::now() > deadline {
-            panic!("Previous instance of MASQNode does not stops");
+            panic!("Previous instance of PulseCloakNode does not stops");
         }
         system.refresh_all();
         if system
             .processes()
             .into_iter()
-            .find(|(_, process)| process.name().contains("MASQNode"))
+            .find(|(_, process)| process.name().contains("PulseCloakNode"))
             .is_none()
         {
             break;
@@ -120,13 +120,13 @@ fn daemon_does_not_allow_node_to_keep_his_client_alive_integration() {
     //Daemon's probe to check if the Node is alive causes an unwanted new reference
     //for the Daemon's client, so we need to make the Daemon send a close message
     //breaking any reference to him immediately
-    wait_for_masq_node_ends();
+    wait_for_pulsecloak_node_ends();
     fdlimit::raise_fd_limit();
     let test_name = "daemon_does_not_allow_node_to_keep_his_client_alive_integration";
     let data_directory = ensure_node_home_directory_exists("ui_gateway_test", test_name);
     let expected_chain_data_dir = add_chain_specific_directory(DEFAULT_CHAIN, &data_directory);
     let daemon_port = find_free_port();
-    let mut daemon = utils::MASQNode::start_daemon(
+    let mut daemon = utils::PulseCloakNode::start_daemon(
         test_name,
         Some(CommandConfig::new().pair("--ui-port", daemon_port.to_string().as_str())),
         true,
@@ -154,7 +154,7 @@ fn daemon_does_not_allow_node_to_keep_his_client_alive_integration() {
          make_regex_searching_for_port_in_logs: fn(port_spec: &str) -> String| {
             let port_number_regex_str = r"UI connected at 127\.0\.0\.1:([\d]*)";
             let log_file_directory = expected_chain_data_dir.clone();
-            let all_uis_connected_so_far = MASQNode::capture_pieces_of_log_at_directory(
+            let all_uis_connected_so_far = PulseCloakNode::capture_pieces_of_log_at_directory(
                 port_number_regex_str,
                 &log_file_directory.as_path(),
                 how_many_occurrences_we_look_for,
@@ -163,7 +163,7 @@ fn daemon_does_not_allow_node_to_keep_his_client_alive_integration() {
             //we want the last occurrence (last index in the first vec) and the second entry from the capturing groups
             let searched_port_of_ui =
                 all_uis_connected_so_far[how_many_occurrences_we_look_for - 1][1].as_str();
-            MASQNode::wait_for_match_at_directory(
+            PulseCloakNode::wait_for_match_at_directory(
                 make_regex_searching_for_port_in_logs(searched_port_of_ui).as_str(),
                 log_file_directory.as_path(),
                 Some(1500),
@@ -200,11 +200,11 @@ fn daemon_does_not_allow_node_to_keep_his_client_alive_integration() {
 
 #[test]
 fn cleanup_after_deceased_clients_integration() {
-    wait_for_masq_node_ends();
+    wait_for_pulsecloak_node_ends();
     fdlimit::raise_fd_limit();
     let test_name = "cleanup_after_deceased_clients_integration";
     let port = find_free_port();
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         test_name,
         Some(
             CommandConfig::new()

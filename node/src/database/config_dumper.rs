@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::apps::app_config_dumper;
 use crate::blockchain::bip39::Bip39;
@@ -20,10 +20,10 @@ use crate::sub_lib::neighborhood::NodeDescriptor;
 use crate::sub_lib::utils::make_new_multi_config;
 use clap::value_t;
 use heck::MixedCase;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::command::StdStreams;
-use masq_lib::multi_config::{CommandLineVcl, EnvironmentVcl, VirtualCommandLine};
-use masq_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::multi_config::{CommandLineVcl, EnvironmentVcl, VirtualCommandLine};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
 use rustc_hex::ToHex;
 use serde_json::json;
 use serde_json::{Map, Value};
@@ -175,12 +175,12 @@ mod tests {
     use crate::test_utils::database_utils::bring_db_0_back_to_life_and_return_connection;
     use crate::test_utils::ArgsBuilder;
     use lazy_static::lazy_static;
-    use masq_lib::constants::CURRENT_SCHEMA_VERSION;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::NeighborhoodModeLight;
+    use pulsecloak_lib::constants::CURRENT_SCHEMA_VERSION;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::environment_guard::{ClapGuard, EnvironmentGuard};
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::NeighborhoodModeLight;
     use rustc_hex::ToHex;
     use std::fs::{create_dir_all, File};
     use std::io::ErrorKind;
@@ -232,7 +232,7 @@ mod tests {
             "dump_config_does_not_migrate_obsolete_database",
         );
         create_dir_all(&data_dir)
-            .expect("Could not create chain directory inside config_file_not_specified_but_exists home/MASQ directory");
+            .expect("Could not create chain directory inside config_file_not_specified_but_exists home/PulseCloak directory");
         let conn = bring_db_0_back_to_life_and_return_connection(&data_dir.join(DATABASE_FILE));
         let dao = ConfigDaoReal::new(Box::new(ConnectionWrapperReal::new(conn)));
         let schema_version_before = dao.get("schema_version").unwrap().value_opt.unwrap();
@@ -289,12 +289,12 @@ mod tests {
                     Some(vec![
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://eth-ropsten:QUJDREVGRw@1.2.3.4:1234",
+                            "pulsecloak://eth-ropsten:QUJDREVGRw@1.2.3.4:1234",
                         ))
                         .unwrap(),
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://eth-ropsten:QkNERUZHSA@2.3.4.5:2345",
+                            "pulsecloak://eth-ropsten:QkNERUZHSA@2.3.4.5:2345",
                         ))
                         .unwrap(),
                     ]),
@@ -394,7 +394,7 @@ mod tests {
         );
         let data_dir = home_dir.join("data_dir");
         let database_path = data_dir
-            .join("MASQ")
+            .join("PulseCloak")
             .join(DEFAULT_CHAIN.rec().literal_identifier);
         let mock_dirs_wrapper_opt = Some(Box::new(
             DirsWrapperMock::new()
@@ -443,12 +443,12 @@ mod tests {
                     Some(vec![
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234",
+                            "pulsecloak://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234",
                         ))
                         .unwrap(),
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345",
+                            "pulsecloak://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345",
                         ))
                         .unwrap(),
                     ]),
@@ -496,7 +496,7 @@ mod tests {
         );
         assert_value("chainName", "polygon-mainnet", &map);
         assert_value("gasPrice", "1", &map);
-        assert_value("pastNeighbors", "masq://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234,masq://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345", &map);
+        assert_value("pastNeighbors", "pulsecloak://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234,pulsecloak://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345", &map);
         assert_value("neighborhoodMode", "consume-only", &map);
         assert_value("schemaVersion", &CURRENT_SCHEMA_VERSION.to_string(), &map);
         assert_null("startBlock", &map);
@@ -547,12 +547,12 @@ mod tests {
                     Some(vec![
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234",
+                            "pulsecloak://polygon-mainnet:QUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVowMTIzNDU@1.2.3.4:1234",
                         ))
                         .unwrap(),
                         NodeDescriptor::try_from((
                             CRYPTDE_PAIR.main.as_ref(),
-                            "masq://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345",
+                            "pulsecloak://polygon-mainnet:QkNERUZHSElKS0xNTk9QUVJTVFVWV1hZWjAxMjM0NTY@2.3.4.5:2345",
                         ))
                         .unwrap(),
                     ]),

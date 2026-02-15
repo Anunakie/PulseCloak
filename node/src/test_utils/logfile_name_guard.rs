@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(test)]
 use crate::server_initializer::LoggerInitializerWrapperReal;
 use lazy_static::lazy_static;
-use masq_lib::test_utils::environment_guard::ConcurrencyPreventer;
+use pulsecloak_lib::test_utils::environment_guard::ConcurrencyPreventer;
 use std::path::PathBuf;
 use std::sync::Mutex;
 

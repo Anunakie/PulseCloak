@@ -1,13 +1,13 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::blockchain_agent::BlockchainAgent;
 
 use crate::sub_lib::blockchain_bridge::ConsumingWalletBalances;
 use crate::sub_lib::wallet::Wallet;
 use ethereum_types::U256;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::logger::Logger;
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
 
 #[derive(Clone)]
 pub struct BlockchainAgentNull {
@@ -25,7 +25,7 @@ impl BlockchainAgent for BlockchainAgentNull {
         self.log_function_call("consuming_wallet_balances()");
         ConsumingWalletBalances {
             transaction_fee_balance_in_minor_units: U256::zero(),
-            masq_token_balance_in_minor_units: U256::zero(),
+            pulsecloak_token_balance_in_minor_units: U256::zero(),
         }
     }
 
@@ -83,9 +83,9 @@ mod tests {
     use crate::sub_lib::blockchain_bridge::ConsumingWalletBalances;
     use crate::sub_lib::wallet::Wallet;
 
-    use masq_lib::logger::Logger;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use web3::types::U256;
 
     fn blockchain_agent_null_constructor_works<C>(constructor: C)
@@ -148,7 +148,7 @@ mod tests {
             result,
             ConsumingWalletBalances {
                 transaction_fee_balance_in_minor_units: U256::zero(),
-                masq_token_balance_in_minor_units: U256::zero()
+                pulsecloak_token_balance_in_minor_units: U256::zero()
             }
         );
         assert_error_log(test_name, "consuming_wallet_balances")

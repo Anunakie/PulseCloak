@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::comma_joined_stringifiable;
 use itertools::Either;
@@ -95,7 +95,7 @@ impl Display for BlockchainAgentBuildError {
                 address, blockchain_e
             )),
             Self::ServiceFeeBalance(address, blockchain_e) => Either::Left(format!(
-                "masq balance for our earning wallet {:#x} due to {}",
+                "pulsecloak balance for our earning wallet {:#x} due to {}",
                 address, blockchain_e
             )),
             Self::UninitializedBlockchainInterface => {
@@ -122,7 +122,7 @@ mod tests {
     use crate::blockchain::blockchain_interface::{BlockchainAgentBuildError, BlockchainError};
     use crate::blockchain::test_utils::make_tx_hash;
     use crate::test_utils::make_wallet;
-    use masq_lib::utils::{slice_of_strs_to_vec_of_strings, to_string};
+    use pulsecloak_lib::utils::{slice_of_strs_to_vec_of_strings, to_string};
 
     #[test]
     fn constants_have_correct_values() {
@@ -238,7 +238,7 @@ mod tests {
                 "Blockchain agent construction failed at fetching gas price due to: InvalidResponse",
                 "Blockchain agent construction failed at fetching transaction fee balance for our earning \
                 wallet 0x0000000000000000000000000000000000616263 due to: Blockchain error: Invalid response",
-                "Blockchain agent construction failed at fetching masq balance for our earning wallet \
+                "Blockchain agent construction failed at fetching pulsecloak balance for our earning wallet \
                 0x0000000000000000000000000000000000616263 due to Blockchain error: Invalid address",
                 BLOCKCHAIN_SERVICE_URL_NOT_SPECIFIED
             ])

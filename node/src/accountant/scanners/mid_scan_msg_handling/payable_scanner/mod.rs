@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod agent_null;
 pub mod agent_web3;
@@ -12,7 +12,7 @@ use crate::accountant::scanners::Scanner;
 use crate::sub_lib::blockchain_bridge::OutboundPaymentsInstructions;
 use actix::Message;
 use itertools::Either;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 
 pub trait MultistagePayableScanner<BeginMessage, EndMessage>:
     Scanner<BeginMessage, EndMessage> + SolvencySensitivePaymentInstructor

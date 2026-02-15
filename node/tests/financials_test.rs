@@ -1,16 +1,16 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
 use crate::utils::{make_conn, CommandConfig};
-use masq_lib::constants::DEFAULT_CHAIN;
-use masq_lib::messages::{
+use pulsecloak_lib::constants::DEFAULT_CHAIN;
+use pulsecloak_lib::messages::{
     TopRecordsConfig, TopRecordsOrdering, UiFinancialsRequest, UiFinancialsResponse,
     UiShutdownRequest, NODE_UI_PROTOCOL,
 };
-use masq_lib::test_utils::ui_connection::UiConnection;
-use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, open_all_file_permissions};
-use masq_lib::utils::find_free_port;
+use pulsecloak_lib::test_utils::ui_connection::UiConnection;
+use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, open_all_file_permissions};
+use pulsecloak_lib::utils::find_free_port;
 use node_lib::accountant::db_access_objects::payable_dao::{PayableDao, PayableDaoReal};
 use node_lib::accountant::db_access_objects::receivable_dao::{ReceivableDao, ReceivableDaoReal};
 use node_lib::accountant::db_access_objects::utils::{from_time_t, to_time_t};
@@ -21,7 +21,7 @@ use node_lib::database::db_initializer::{
 use node_lib::db_config::config_dao::{ConfigDao, ConfigDaoReal};
 use node_lib::test_utils::make_wallet;
 use std::time::SystemTime;
-use utils::MASQNode;
+use utils::PulseCloakNode;
 
 #[test]
 fn financials_command_retrieves_payable_and_receivable_records_integration() {
@@ -71,7 +71,7 @@ fn financials_command_retrieves_payable_and_receivable_records_integration() {
             amount_receivable_2,
         )
         .unwrap();
-    let mut node = MASQNode::start_standard(
+    let mut node = PulseCloakNode::start_standard(
         test_name,
         Some(CommandConfig::new().pair("--ui-port", &port.to_string())),
         false,

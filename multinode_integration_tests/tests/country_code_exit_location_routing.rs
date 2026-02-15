@@ -1,14 +1,14 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::thread;
 use std::time::Duration;
 
-use masq_lib::messages::{
+use pulsecloak_lib::messages::{
     CountryGroups, ToMessageBody, UiSetConfigurationRequest, UiSetExitLocationRequest,
 };
-use masq_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
-use multinode_integration_tests_lib::masq_node::{MASQNode, PortSelector};
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
+use multinode_integration_tests_lib::pulsecloak_node::{PulseCloakNode, PortSelector};
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
 use multinode_integration_tests_lib::neighborhood_constructor::construct_neighborhood;
 use node_lib::sub_lib::cryptde_null::CryptDENull;
 use node_lib::sub_lib::hopper::MessageTypeLite;
@@ -17,7 +17,7 @@ use node_lib::test_utils::neighborhood_test_utils::{db_from_node, make_node_reco
 
 #[test]
 fn http_end_to_end_routing_test_with_exit_location() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_neighbor = make_node_record(2345, true);
     let mut exit_fr = make_node_record(3456, false);
     exit_fr.inner.country_code_opt = Some("FR".to_string());

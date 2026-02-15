@@ -1,10 +1,10 @@
                     GNU GENERAL PUBLIC LICENSE
                     
-Copyright (c) 2022, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+Copyright (c) 2022, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-MASQ Node and code under MASQ Project (https://github.com/MASQ-Project) is licensed under the GNU GPL, version 3
+PulseCloak Node and code under PulseCloak Project (https://github.com/PulseCloak-Project) is licensed under the GNU GPL, version 3
 
-This package/repository contains original and modified works from the MASQ project team and contributors as well as some open-source works - namely the forked code-base of the open-source Substratum repos. You can find the source code of their open source projects 
+This package/repository contains original and modified works from the PulseCloak project team and contributors as well as some open-source works - namely the forked code-base of the open-source Substratum repos. You can find the source code of their open source projects 
 along with license information below.
 
 We acknowledge and are grateful to these developers for their contributions to open source.
@@ -13,9 +13,9 @@ File Copyrights
 ===============
 
 All files not explicitly mentioned below
-    What: MASQ Project
-    Source URL: https://github.com/MASQ-Project
-    Copyright: MASQ Project 2019, (https://masq.ai)
+    What: PulseCloak Project
+    Source URL: https://github.com/PulseCloak-Project
+    Copyright: PulseCloak Project 2019, (https://pulsechaincloak.io)
     License: GNU GPLv3
     License text: See below
 

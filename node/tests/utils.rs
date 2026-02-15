@@ -1,12 +1,12 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use itertools::Itertools;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{CURRENT_LOGFILE_NAME, DEFAULT_CHAIN, DEFAULT_UI_PORT};
-use masq_lib::test_utils::utils::{
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{CURRENT_LOGFILE_NAME, DEFAULT_CHAIN, DEFAULT_UI_PORT};
+use pulsecloak_lib::test_utils::utils::{
     ensure_node_home_directory_exists, node_home_directory, recreate_data_dir,
 };
-use masq_lib::utils::{add_masq_and_chain_directories, localhost, running_test};
+use pulsecloak_lib::utils::{add_pulsecloak_and_chain_directories, localhost, running_test};
 use node_lib::database::db_initializer::{
     DbInitializationConfig, DbInitializer, DbInitializerReal,
 };
@@ -28,7 +28,7 @@ use std::time::Duration;
 use std::time::Instant;
 
 #[derive(Debug)]
-pub struct MASQNode {
+pub struct PulseCloakNode {
     pub data_dir: PathBuf,
     child: Option<process::Child>,
     output: Option<Output>,
@@ -69,13 +69,13 @@ impl CommandConfig {
     }
 }
 
-impl Drop for MASQNode {
+impl Drop for PulseCloakNode {
     fn drop(&mut self) {
         let _ = self.kill();
     }
 }
 
-impl MASQNode {
+impl PulseCloakNode {
     pub fn path_to_logfile(data_dir: &Path) -> Box<Path> {
         data_dir.join(CURRENT_LOGFILE_NAME).into_boxed_path()
     }
@@ -96,7 +96,7 @@ impl MASQNode {
         sterile_logfile: bool,
         piped_output: bool,
         ensure_start: bool,
-    ) -> MASQNode {
+    ) -> PulseCloakNode {
         Self::start_something(
             test_name,
             config_opt,
@@ -116,7 +116,7 @@ impl MASQNode {
         sterile_logfile: bool,
         piped_output: bool,
         ensure_start: bool,
-    ) -> MASQNode {
+    ) -> PulseCloakNode {
         Self::start_something(
             test_name,
             config_opt,
@@ -136,7 +136,7 @@ impl MASQNode {
         sterile_logfile: bool,
         piped_output: bool,
         ensure_start: bool,
-    ) -> MASQNode {
+    ) -> PulseCloakNode {
         Self::start_something(
             test_name,
             config_opt,
@@ -156,7 +156,7 @@ impl MASQNode {
         sterile_logfile: bool,
         piped_output: bool,
         ensure_start: bool,
-    ) -> MASQNode {
+    ) -> PulseCloakNode {
         Self::start_something(
             test_name,
             config_opt,
@@ -260,7 +260,7 @@ impl MASQNode {
                 }
             };
             assert!(
-                MASQNode::millis_since(started_at) < real_limit_ms,
+                PulseCloakNode::millis_since(started_at) < real_limit_ms,
                 "Timeout: waited for more than {}ms without finding '{}' in these logs:\n{}\n",
                 real_limit_ms,
                 pattern,
@@ -288,7 +288,7 @@ impl MASQNode {
                 Ok(output) => Some(output),
                 Err(e) => panic!("{:?}", e),
             },
-            (Some(_), Some(_)) => panic!("Internal error: Inconsistent MASQ Node state"),
+            (Some(_), Some(_)) => panic!("Internal error: Inconsistent PulseCloak Node state"),
             (None, None) => None,
         }
     }
@@ -313,7 +313,7 @@ impl MASQNode {
                 self.output = Some(output);
                 result
             }
-            (Some(_), Some(_)) => panic!("Internal error: Inconsistent MASQ Node state"),
+            (Some(_), Some(_)) => panic!("Internal error: Inconsistent PulseCloak Node state"),
             (None, None) => return Err(io::Error::from(io::ErrorKind::InvalidData)),
         })
     }
@@ -321,10 +321,10 @@ impl MASQNode {
     #[cfg(target_os = "windows")]
     pub fn kill(&mut self) -> Result<process::ExitStatus, io::Error> {
         let mut command = process::Command::new("taskkill");
-        command.args(&["/IM", "MASQNode.exe", "/F"]);
+        command.args(&["/IM", "PulseCloakNode.exe", "/F"]);
         let process_output = command
             .output()
-            .unwrap_or_else(|e| panic!("Couldn't kill MASQNode.exe: {}", e));
+            .unwrap_or_else(|e| panic!("Couldn't kill PulseCloakNode.exe: {}", e));
         self.child.take();
         Ok(process_output.status)
     }
@@ -340,7 +340,7 @@ impl MASQNode {
     }
 
     pub fn remove_database(data_dir: &PathBuf, chain: Chain) {
-        let data_dir_chain_path = add_masq_and_chain_directories(chain, data_dir);
+        let data_dir_chain_path = add_pulsecloak_and_chain_directories(chain, data_dir);
         let database = Self::path_to_database(&data_dir_chain_path);
         match std::fs::remove_file(&database) {
             Ok(_) => (),
@@ -360,7 +360,7 @@ impl MASQNode {
         piped_streams: bool,
         ensure_start: bool,
         command_getter: F,
-    ) -> MASQNode {
+    ) -> PulseCloakNode {
         running_test();
         let data_dir = match (
             sterile_database,
@@ -376,7 +376,7 @@ impl MASQNode {
         }
         let ui_port = Self::ui_port_from_config_opt(&config_opt);
         let mut command = command_getter(&data_dir, config_opt, sterile_database);
-        eprintln!("Launching MASQNode with this command: {:?}", command);
+        eprintln!("Launching PulseCloakNode with this command: {:?}", command);
         let command = if piped_streams {
             command.stdout(Stdio::piped()).stderr(Stdio::piped())
         } else {
@@ -389,9 +389,9 @@ impl MASQNode {
         result
     }
 
-    fn spawn_process(cmd: &mut Command, data_dir: PathBuf) -> MASQNode {
+    fn spawn_process(cmd: &mut Command, data_dir: PathBuf) -> PulseCloakNode {
         let child = cmd.spawn().unwrap();
-        MASQNode {
+        PulseCloakNode {
             data_dir,
             child: Some(child),
             output: None,
@@ -562,7 +562,7 @@ impl MASQNode {
             default_args: Vec<String>,
             config_args: &HashMap<String, PositionedArg>,
         ) -> HashMap<String, PositionedArg> {
-            MASQNode::virtual_arg_pairs_with_remembered_position(default_args)
+            PulseCloakNode::virtual_arg_pairs_with_remembered_position(default_args)
                 .into_iter()
                 .flat_map(|(arg_name, value)| {
                     config_args
@@ -679,7 +679,7 @@ fn command_to_start() -> process::Command {
         .next()
         .unwrap();
     let bin_dir = &format!("target/{}", debug_or_release);
-    let command_to_start = &format!("{}/MASQNode", bin_dir);
+    let command_to_start = &format!("{}/PulseCloakNode", bin_dir);
     process::Command::new(command_to_start)
 }
 
@@ -704,7 +704,7 @@ fn node_command() -> String {
         .next()
         .unwrap();
     let bin_dir = &format!("target\\{}", debug_or_release);
-    format!("{}\\MASQNode.exe", bin_dir)
+    format!("{}\\PulseCloakNode.exe", bin_dir)
 }
 
 pub fn make_conn(home_dir: &Path) -> Box<dyn ConnectionWrapper> {
@@ -715,8 +715,8 @@ pub fn make_conn(home_dir: &Path) -> Box<dyn ConnectionWrapper> {
 
 #[cfg(test)]
 mod tests {
-    use super::MASQNode;
-    use masq_lib::utils::slice_of_strs_to_vec_of_strings;
+    use super::PulseCloakNode;
+    use pulsecloak_lib::utils::slice_of_strs_to_vec_of_strings;
 
     #[test]
     fn extend_without_duplication_replaces_default_params_with_additionally_supplied_values() {
@@ -738,7 +738,7 @@ mod tests {
             "false",
         ]);
 
-        let result = MASQNode::extend_args_without_duplication(default_args, args_extension);
+        let result = PulseCloakNode::extend_args_without_duplication(default_args, args_extension);
 
         let expected_args = slice_of_strs_to_vec_of_strings(&[
             "--arg-without-val",
@@ -759,7 +759,7 @@ mod tests {
         let default_args = slice_of_strs_to_vec_of_strings(&["--arg1", "value1"]);
         let args_extension = slice_of_strs_to_vec_of_strings(&["--arg2", "value2", "--arg3"]);
 
-        let result = MASQNode::extend_args_without_duplication(default_args, args_extension);
+        let result = PulseCloakNode::extend_args_without_duplication(default_args, args_extension);
 
         let expected_args =
             slice_of_strs_to_vec_of_strings(&["--arg1", "value1", "--arg2", "value2", "--arg3"]);
@@ -786,6 +786,6 @@ mod tests {
             "booga",
         ]);
 
-        let _ = MASQNode::extend_args_without_duplication(default_args, args_extension);
+        let _ = PulseCloakNode::extend_args_without_duplication(default_args, args_extension);
     }
 }

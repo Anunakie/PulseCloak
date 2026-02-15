@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::neighborhood::gossip::{GossipNodeRecord, Gossip_0v1};
 use crate::sub_lib::versioned_data::{MigrationError, Migrations, StepError, VersionedData};
@@ -8,13 +8,13 @@ use std::convert::TryFrom;
 
 lazy_static! {
     static ref MIGRATIONS: Migrations = {
-        let current_version = masq_lib::constants::GOSSIP_CURRENT_VERSION;
+        let current_version = pulsecloak_lib::constants::GOSSIP_CURRENT_VERSION;
         let mut migrations = Migrations::new(current_version);
 
         migrate_value!(dv!(0, 1), Gossip_0v1, GossipMF_0v1, {|value: serde_cbor::Value| {
             Gossip_0v1::try_from (&value)
         }});
-        migrations.add_step (masq_lib::data_version::FUTURE_VERSION, dv!(0, 1), Box::new (GossipMF_0v1{}));
+        migrations.add_step (pulsecloak_lib::data_version::FUTURE_VERSION, dv!(0, 1), Box::new (GossipMF_0v1{}));
 
         // add more steps here
 
@@ -83,7 +83,7 @@ mod tests {
     use super::*;
     use crate::neighborhood::gossip::GossipBuilder;
     use crate::test_utils::neighborhood_test_utils::{db_from_node, make_node_record};
-    use masq_lib::data_version::DataVersion;
+    use pulsecloak_lib::data_version::DataVersion;
     use serde_derive::{Deserialize, Serialize};
 
     #[test]

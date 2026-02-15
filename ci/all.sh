@@ -1,5 +1,5 @@
 #!/bin/bash -xev
-# Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+# Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 CI_DIR="$( cd "$( dirname "$0" )" && pwd )"
 export ARGV_1="$1"
 
@@ -23,10 +23,10 @@ SCCACHE_IDLE_TIMEOUT=0 sccache --start-server || echo "sccache server already ru
 export RUSTFLAGS="-D warnings -Anon-snake-case"
 
 echo "*********************************************************************************************************"
-echo "***                                             MASQ_LIB HEAD                                         ***"
-cd "$CI_DIR/../masq_lib"
+echo "***                                             PCLOAK_LIB HEAD                                         ***"
+cd "$CI_DIR/../pulsecloak_lib"
 ci/all.sh
-echo "***                                             MASQ_LIB TAIL                                         ***"
+echo "***                                             PCLOAK_LIB TAIL                                         ***"
 echo "*********************************************************************************************************"
 echo "*********************************************************************************************************"
 echo "***                                               NODE HEAD                                           ***"
@@ -41,10 +41,10 @@ ci/all.sh
 echo "***                                           DNS UTILITY TAIL                                        ***"
 echo "*********************************************************************************************************"
 echo "*********************************************************************************************************"
-echo "***                                             MASQ UI HEAD                                          ***"
-cd "$CI_DIR/../masq"
+echo "***                                             PulseCloak UI HEAD                                          ***"
+cd "$CI_DIR/../pulsecloak"
 ci/all.sh
-echo "***                                             MASQ UI TAIL                                          ***"
+echo "***                                             PulseCloak UI TAIL                                          ***"
 echo "*********************************************************************************************************"
 echo "*********************************************************************************************************"
 echo "***                                             AUTOMAP HEAD                                          ***"

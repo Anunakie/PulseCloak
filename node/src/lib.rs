@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![recursion_limit = "128"]
 
 #[macro_use]
 pub mod sub_lib;
 
 #[macro_use]
-extern crate masq_lib;
+extern crate pulsecloak_lib;
 extern crate core;
 
 extern crate ip_country_lib;
@@ -29,12 +29,12 @@ pub mod hopper;
 pub mod http_request_start_finder;
 pub mod json_discriminator_factory;
 pub mod json_framer;
-pub mod json_masquerader;
+pub mod json_XYZPROTECT_XYZPROTECT_pulsecloakuerader;
 mod listener_handler;
-pub mod masquerader;
+pub mod XYZPROTECT_XYZPROTECT_pulsecloakuerader;
 pub mod neighborhood;
 pub mod node_configurator;
-mod null_masquerader;
+mod XYZPROTECT_null_XYZPROTECT_XYZPROTECT_pulsecloakuerader;
 pub mod privilege_drop;
 pub mod proxy_client;
 pub mod proxy_server;

@@ -1,5 +1,5 @@
 use std::env;
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use super::accountant::Accountant;
 use super::bootstrapper::BootstrapperConfig;
 use super::dispatcher::Dispatcher;
@@ -37,15 +37,15 @@ use automap_lib::comm_layer::AutomapError;
 use automap_lib::control_layer::automap_control::{
     AutomapChange, AutomapControl, AutomapControlReal, ChangeHandler,
 };
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::crash_point::CrashPoint;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::crash_point::CrashPoint;
 #[cfg(feature = "log_recipient_test")]
-use masq_lib::logger::log_broadcast_substitution_in_tests::prepare_log_recipient;
+use pulsecloak_lib::logger::log_broadcast_substitution_in_tests::prepare_log_recipient;
 #[cfg(not(feature = "log_recipient_test"))]
-use masq_lib::logger::prepare_log_recipient;
-use masq_lib::logger::Logger;
-use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
-use masq_lib::utils::{exit_process, AutomapProtocol};
+use pulsecloak_lib::logger::prepare_log_recipient;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::utils::{exit_process, AutomapProtocol};
 use std::net::{IpAddr, Ipv4Addr};
 use std::path::Path;
 
@@ -546,7 +546,7 @@ fn is_crashable(config: &BootstrapperConfig) -> bool {
 }
 
 fn is_running_in_integration_test() -> bool {
-    env::var("MASQ_INTEGRATION_TEST")
+    env::var("PCLOAK_INTEGRATION_TEST")
         .map(|value| value.to_ascii_lowercase() == "true")
         .unwrap_or(false)
 }
@@ -667,16 +667,16 @@ mod tests {
     use crossbeam_channel::unbounded;
     use lazy_static::lazy_static;
     use log::LevelFilter;
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::crash_point::CrashPoint;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::crash_point::CrashPoint;
     #[cfg(feature = "log_recipient_test")]
-    use masq_lib::logger::INITIALIZATION_COUNTER;
-    use masq_lib::messages::{ToMessageBody, UiCrashRequest, UiDescriptorRequest};
-    use masq_lib::test_utils::environment_guard::EnvironmentGuard;
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::ui_gateway::NodeFromUiMessage;
-    use masq_lib::utils::running_test;
-    use masq_lib::utils::AutomapProtocol::Igdp;
+    use pulsecloak_lib::logger::INITIALIZATION_COUNTER;
+    use pulsecloak_lib::messages::{ToMessageBody, UiCrashRequest, UiDescriptorRequest};
+    use pulsecloak_lib::test_utils::environment_guard::EnvironmentGuard;
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
+    use pulsecloak_lib::utils::running_test;
+    use pulsecloak_lib::utils::AutomapProtocol::Igdp;
     use std::cell::RefCell;
     use std::collections::HashMap;
     use std::convert::TryFrom;
@@ -1207,7 +1207,7 @@ mod tests {
             earning_wallet: make_wallet("earning"),
             consuming_wallet_opt: Some(make_wallet("consuming")),
             data_directory: PathBuf::new(),
-            node_descriptor: NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "masq://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap(),
+            node_descriptor: NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "pulsecloak://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap(),
             cryptde_pair: CRYPTDE_PAIR.clone(),
             mapping_protocol_opt: Some(Igdp),
             real_user: RealUser::null(),
@@ -1241,7 +1241,7 @@ mod tests {
             Box::new(actor_factory),
         );
 
-        let system = System::new("MASQNode");
+        let system = System::new("PulseCloakNode");
         System::current().stop();
         system.run();
         check_bind_message(&recordings.dispatcher, false);
@@ -1304,7 +1304,7 @@ mod tests {
         let dispatcher_param = Parameters::get(parameters.dispatcher_params);
         assert_eq!(
             dispatcher_param.node_descriptor,
-            NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "masq://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap()
+            NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "pulsecloak://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap()
         );
         let blockchain_bridge_param = Parameters::get(parameters.blockchain_bridge_params);
         assert_eq!(
@@ -1384,7 +1384,7 @@ mod tests {
         let change_handler: ChangeHandler = make_params.remove(0).1;
         change_handler(AutomapChange::NewIp(IpAddr::from_str("1.2.3.5").unwrap()));
 
-        let system = System::new("MASQNode");
+        let system = System::new("PulseCloakNode");
         System::current().stop();
         system.run();
     }
@@ -1503,7 +1503,7 @@ mod tests {
             earning_wallet: make_wallet("earning"),
             consuming_wallet_opt: Some(make_wallet("consuming")),
             data_directory: PathBuf::new(),
-            node_descriptor: NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "masq://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap(),
+            node_descriptor: NodeDescriptor::try_from((CRYPTDE_PAIR.main.as_ref(), "pulsecloak://polygon-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@172.50.48.6:9342")).unwrap(),
             cryptde_pair: CRYPTDE_PAIR.clone(),
             mapping_protocol_opt: None,
             real_user: RealUser::null(),
@@ -1514,7 +1514,7 @@ mod tests {
             payment_thresholds_opt: Default::default(),
             when_pending_too_long_sec: DEFAULT_PENDING_TOO_LONG_SEC,
         };
-        let system = System::new("MASQNode");
+        let system = System::new("PulseCloakNode");
         let mut subject = make_subject_with_null_setter();
         subject.automap_control_factory = Box::new(AutomapControlFactoryMock::new());
 
@@ -1703,7 +1703,7 @@ mod tests {
             when_pending_too_long_sec: DEFAULT_PENDING_TOO_LONG_SEC,
         };
         let subject = make_subject_with_null_setter();
-        let system = System::new("MASQNode");
+        let system = System::new("PulseCloakNode");
 
         let _ = subject.prepare_initial_messages(
             config.clone(),
@@ -1965,21 +1965,21 @@ mod tests {
         ];
 
         for (input, expected) in test_cases {
-            env::set_var("MASQ_INTEGRATION_TEST", input);
+            env::set_var("PCLOAK_INTEGRATION_TEST", input);
             assert_eq!(
                 is_running_in_integration_test(),
                 expected,
                 "Failed on input: {}",
                 input
             );
-            env::remove_var("MASQ_INTEGRATION_TEST");
+            env::remove_var("PCLOAK_INTEGRATION_TEST");
         }
     }
 
     #[test]
     fn is_running_in_integration_test_works_when_unset() {
         let _guard = EnvironmentGuard::new();
-        let precondition = env::var("MASQ_INTEGRATION_TEST");
+        let precondition = env::var("PCLOAK_INTEGRATION_TEST");
 
         let result = is_running_in_integration_test();
 

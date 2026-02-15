@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::any::Any;
 use std::fmt::{Debug, Formatter};
@@ -7,7 +7,7 @@ use std::str::FromStr;
 
 use crossbeam_channel::Sender;
 
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::utils::AutomapProtocol;
 
 use crate::comm_layer::pcp_pmp_common::MappingConfig;
 use crate::control_layer::automap_control::ChangeHandler;

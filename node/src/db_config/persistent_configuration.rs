@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::arbitrary_id_stamp_in_trait;
 use crate::blockchain::bip32::Bip32EncryptionKeyProvider;
@@ -16,11 +16,11 @@ use crate::sub_lib::cryptde_null::CryptDENull;
 use crate::sub_lib::cryptde_real::CryptDEReal;
 use crate::sub_lib::neighborhood::{Hops, NodeDescriptor, RatePack};
 use crate::sub_lib::wallet::Wallet;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{HIGHEST_USABLE_PORT, LOWEST_USABLE_INSECURE_PORT};
-use masq_lib::shared_schema::{ConfiguratorError, ParamError};
-use masq_lib::utils::NeighborhoodModeLight;
-use masq_lib::utils::{to_string, AutomapProtocol};
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{HIGHEST_USABLE_PORT, LOWEST_USABLE_INSECURE_PORT};
+use pulsecloak_lib::shared_schema::{ConfiguratorError, ParamError};
+use pulsecloak_lib::utils::NeighborhoodModeLight;
+use pulsecloak_lib::utils::{to_string, AutomapProtocol};
 use rustc_hex::{FromHex, ToHex};
 use std::fmt::Display;
 use std::net::{Ipv4Addr, SocketAddrV4, TcpListener};
@@ -691,9 +691,9 @@ mod tests {
     use bip39::{Language, MnemonicType};
     use itertools::Itertools;
     use lazy_static::lazy_static;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::{derivation_path, find_free_port};
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::{derivation_path, find_free_port};
     use paste::paste;
     use std::convert::TryFrom;
     use std::net::SocketAddr;
@@ -1953,12 +1953,12 @@ mod tests {
         let node_descriptors = vec![
             NodeDescriptor::try_from((
                 CRYPTDE_PAIR.main.as_ref(),
-                "masq://eth-mainnet:AQIDBA@1.2.3.4:1234",
+                "pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234",
             ))
             .unwrap(),
             NodeDescriptor::try_from((
                 CRYPTDE_PAIR.main.as_ref(),
-                "masq://eth-ropsten:AgMEBQ@2.3.4.5:2345",
+                "pulsecloak://eth-ropsten:AgMEBQ@2.3.4.5:2345",
             ))
             .unwrap(),
         ];
@@ -2001,12 +2001,12 @@ mod tests {
         let node_descriptors = vec![
             NodeDescriptor::try_from((
                 CRYPTDE_PAIR.main.as_ref(),
-                "masq://eth-mainnet:AQIDBA@1.2.3.4:1234",
+                "pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234",
             ))
             .unwrap(),
             NodeDescriptor::try_from((
                 CRYPTDE_PAIR.main.as_ref(),
-                "masq://eth-ropsten:AgMEBQ@2.3.4.5:2345",
+                "pulsecloak://eth-ropsten:AgMEBQ@2.3.4.5:2345",
             ))
             .unwrap(),
         ];

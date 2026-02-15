@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(target_os = "macos")]
 use crate::dns_modifier::DnsModifier;
 use regex::Regex;
@@ -11,7 +11,7 @@ use core_foundation::dictionary::CFDictionary;
 use core_foundation::propertylist::CFPropertyList;
 use core_foundation::propertylist::CFPropertyListSubClass;
 use core_foundation::string::CFString;
-use masq_lib::short_writeln;
+use pulsecloak_lib::short_writeln;
 use std::io::Write;
 use system_configuration::dynamic_store::SCDynamicStore;
 use system_configuration::dynamic_store::SCDynamicStoreBuilder;
@@ -64,7 +64,7 @@ impl DnsModifier for DynamicStoreDnsModifier {
 impl Default for DynamicStoreDnsModifier {
     fn default() -> Self {
         Self {
-            store: Box::new(StoreWrapperReal::new("MASQNode")),
+            store: Box::new(StoreWrapperReal::new("PulseCloakNode")),
         }
     }
 }
@@ -406,7 +406,7 @@ mod tests {
     use core_foundation::boolean::CFBoolean;
     use core_foundation::propertylist::CFPropertyListSubClass;
     use core_foundation::string::CFString;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
     use std::cell::RefCell;
     use std::sync::{Arc, Mutex};
 

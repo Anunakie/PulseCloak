@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use super::live_cores_package::LiveCoresPackage;
 use crate::sub_lib::cryptde::CryptData;
@@ -7,7 +7,7 @@ use crate::sub_lib::dispatcher::{Endpoint, InboundClientData};
 use crate::sub_lib::hopper::{IncipientCoresPackage, NoLookupIncipientCoresPackage};
 use crate::sub_lib::stream_handler_pool::TransmitDataMsg;
 use actix::Recipient;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::borrow::Borrow;
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use std::time::SystemTime;
@@ -148,9 +148,9 @@ mod tests {
     use crate::test_utils::{make_meaningless_message_type, make_paying_wallet};
     use actix::System;
     use lazy_static::lazy_static;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::net::{IpAddr, Ipv4Addr};
     use std::str::FromStr;
     use std::time::SystemTime;

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod payable_scanner_utils {
     use crate::accountant::db_access_objects::utils::ThresholdUtils;
@@ -10,7 +10,7 @@ pub mod payable_scanner_utils {
     use crate::sub_lib::accountant::PaymentThresholds;
     use crate::sub_lib::wallet::Wallet;
     use itertools::Itertools;
-    use masq_lib::logger::Logger;
+    use pulsecloak_lib::logger::Logger;
     use std::cmp::Ordering;
     use std::ops::Not;
     use std::time::SystemTime;
@@ -311,7 +311,7 @@ pub mod payable_scanner_utils {
 pub mod pending_payable_scanner_utils {
     use crate::accountant::PendingPayableId;
     use crate::blockchain::blockchain_bridge::PendingPayableFingerprint;
-    use masq_lib::logger::Logger;
+    use pulsecloak_lib::logger::Logger;
     use std::time::SystemTime;
 
     #[derive(Debug, Default, PartialEq, Eq, Clone)]
@@ -456,9 +456,9 @@ mod tests {
     use crate::blockchain::test_utils::make_tx_hash;
     use crate::sub_lib::accountant::PaymentThresholds;
     use crate::test_utils::make_wallet;
-    use masq_lib::constants::WEIS_IN_GWEI;
-    use masq_lib::logger::Logger;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::constants::WEIS_IN_GWEI;
+    use pulsecloak_lib::logger::Logger;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::time::SystemTime;
     use crate::accountant::db_access_objects::pending_payable_dao::PendingPayable;
     use crate::blockchain::blockchain_interface::data_structures::errors::{BlockchainError, PayableTransactionError};

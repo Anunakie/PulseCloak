@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(target_os = "linux")]
 
 use dns_utility_lib::resolv_conf_dns_modifier::ResolvConfDnsModifier;
@@ -31,5 +31,5 @@ pub fn is_subverted(entries: &Vec<String>) -> bool {
         None => return false,
         Some(x) => x,
     };
-    ResolvConfDnsModifier::is_masq_ip(&first_entry)
+    ResolvConfDnsModifier::is_pulsecloak_ip(&first_entry)
 }

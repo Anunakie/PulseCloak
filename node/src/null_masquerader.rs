@@ -1,23 +1,23 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::UnmaskedChunk;
-use crate::masquerader::MasqueradeError;
-use crate::masquerader::Masquerader;
+use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::PulseCloakueradeError;
+use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
 
-pub struct NullMasquerader {}
+pub struct NullXYZPROTECT_PulseCloakuerader {}
 
-impl Masquerader for NullMasquerader {
-    fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, MasqueradeError> {
+impl XYZPROTECT_PulseCloakuerader for NullXYZPROTECT_PulseCloakuerader {
+    fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, PulseCloakueradeError> {
         Ok(UnmaskedChunk::new(Vec::from(item), true, true))
     }
 
-    fn mask(&self, data: &[u8]) -> Result<Vec<u8>, MasqueradeError> {
+    fn mask(&self, data: &[u8]) -> Result<Vec<u8>, PulseCloakueradeError> {
         Ok(Vec::from(data))
     }
 }
 
-impl NullMasquerader {
-    pub fn new() -> NullMasquerader {
-        NullMasquerader {}
+impl NullXYZPROTECT_PulseCloakuerader {
+    pub fn new() -> NullXYZPROTECT_PulseCloakuerader {
+        NullXYZPROTECT_PulseCloakuerader {}
     }
 }
 
@@ -28,7 +28,7 @@ mod tests {
     #[test]
     fn try_unmask_returns_input_data_with_specified_clandestine_flag() {
         let data = "booga".as_bytes();
-        let subject = NullMasquerader::new();
+        let subject = NullXYZPROTECT_PulseCloakuerader::new();
 
         let result = subject.try_unmask(data).unwrap();
 
@@ -38,7 +38,7 @@ mod tests {
     #[test]
     fn try_unmask_marks_chunk_as_needing_sequencing() {
         let data = "booga".as_bytes();
-        let subject = NullMasquerader::new();
+        let subject = NullXYZPROTECT_PulseCloakuerader::new();
 
         let result = subject.try_unmask(data).unwrap();
 
@@ -48,7 +48,7 @@ mod tests {
     #[test]
     fn mask_returns_input_data() {
         let data = "booga".as_bytes();
-        let subject = NullMasquerader::new();
+        let subject = NullXYZPROTECT_PulseCloakuerader::new();
 
         let result = subject.mask(data).unwrap();
 

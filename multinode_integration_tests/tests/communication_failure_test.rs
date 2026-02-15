@@ -1,17 +1,17 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-use masq_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
-use masq_lib::utils::{find_free_port, index_of};
-use multinode_integration_tests_lib::masq_mock_node::MASQMockNode;
-use multinode_integration_tests_lib::masq_node::{MASQNode, PortSelector};
-use multinode_integration_tests_lib::masq_node_client::MASQNodeClient;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
-    make_consuming_wallet_info, MASQRealNode, NodeStartupConfigBuilder,
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
+use pulsecloak_lib::utils::{find_free_port, index_of};
+use multinode_integration_tests_lib::pulsecloak_mock_node::PulseCloakMockNode;
+use multinode_integration_tests_lib::pulsecloak_node::{PulseCloakNode, PortSelector};
+use multinode_integration_tests_lib::pulsecloak_node_client::PulseCloakNodeClient;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    make_consuming_wallet_info, PulseCloakRealNode, NodeStartupConfigBuilder,
     STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use multinode_integration_tests_lib::neighborhood_constructor::construct_neighborhood;
-use node_lib::json_masquerader::JsonMasquerader;
+use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
 use node_lib::neighborhood::gossip::AccessibleGossipRecord;
 use node_lib::neighborhood::neighborhood_database::NeighborhoodDatabase;
 use node_lib::neighborhood::node_record::NodeRecord;
@@ -48,7 +48,7 @@ const EXAMPLE_HTML_RESPONSE: &str = "<!doctype html>
 #[ignore] // Should be removed by SC-811/GH-158
 fn neighborhood_notified_of_newly_missing_node() {
     // Set up three-Node network, and add a mock witness Node.
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let chain = cluster.chain;
     let neighbor = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
@@ -146,7 +146,7 @@ fn neighborhood_notified_of_newly_missing_node() {
 #[test]
 fn dns_resolution_failure_first_automatic_retry_succeeds() {
     /* Mock_node_good_exit <-- Originating_node --> Mock_node_bad_exit */
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let (originating_node, bad_exit_node, good_exit_node) = {
         let originating_node: NodeRecord = make_node_record(1234, true);
         let mut db: NeighborhoodDatabase = db_from_node(&originating_node);
@@ -166,7 +166,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         let good_exit_node = node_map.remove(&good_exit_node_public_key).unwrap();
         (originating_node, bad_exit_node, good_exit_node)
     };
-    let masquerader = JsonMasquerader::new();
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     let originating_node_alias_cryptde = CryptDENull::from(
         originating_node.alias_public_key(),
         TEST_DEFAULT_MULTINODE_CHAIN,
@@ -191,7 +191,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         .transmit_package(
             bad_exit_node.port_list()[0],
             dns_fail_pkg,
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )
@@ -216,7 +216,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         .transmit_package(
             good_exit_node.port_list()[0],
             client_response_pkg,
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )
@@ -233,7 +233,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
 
 #[test]
 fn dns_resolution_failure_with_real_nodes() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let first_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .db_password(None)
@@ -251,7 +251,7 @@ fn dns_resolution_failure_with_real_nodes() {
                     .build(),
             )
         })
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
     thread::sleep(Duration::from_millis(500 * (nodes.len() as u64)));
     let mut client = first_node.make_client(8080, 2 * 60_000);
 
@@ -279,7 +279,7 @@ fn dns_resolution_failure_with_real_nodes() {
 #[test]
 fn dns_resolution_failure_for_wildcard_ip_with_real_nodes() {
     let dns_server_that_fails = Ipv4Addr::new(1, 1, 1, 3).into();
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let exit_node = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
             .db_password(None)
@@ -319,7 +319,7 @@ fn dns_resolution_failure_for_wildcard_ip_with_real_nodes() {
 
 #[test]
 fn dns_resolution_failure_no_longer_blacklists_exit_node_for_all_hosts() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     // Make network:
     //  +--> node_4  +--> node_3
     //  |            |
@@ -356,11 +356,11 @@ fn dns_resolution_failure_no_longer_blacklists_exit_node_for_all_hosts() {
         let node_list = node_pub_key_list
             .iter()
             .map(|pub_key| node_map.remove(pub_key).unwrap())
-            .collect::<Vec<MASQMockNode>>();
+            .collect::<Vec<PulseCloakMockNode>>();
         (originating_node, node_list)
     };
-    let mut client: MASQNodeClient = originating_node.make_client(8080, 5000);
-    let masquerader = JsonMasquerader::new();
+    let mut client: PulseCloakNodeClient = originating_node.make_client(8080, 5000);
+    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
     let originating_node_alias_cryptde = CryptDENull::from(
         &originating_node.alias_public_key(),
         TEST_DEFAULT_MULTINODE_CHAIN,
@@ -385,7 +385,7 @@ fn dns_resolution_failure_no_longer_blacklists_exit_node_for_all_hosts() {
         node.transmit_package(
             node.port_list()[0],
             dns_fail_pkg,
-            &masquerader,
+            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )

@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::io::{ErrorKind, Read, Write};
 use std::net::{IpAddr, Ipv4Addr, Shutdown, SocketAddr, TcpListener, TcpStream};
@@ -11,7 +11,7 @@ use rand::{thread_rng, Rng};
 
 use crate::automap_core_functions::{TestParameters, TestStatus};
 use crate::comm_layer::{AutomapError, AutomapErrorCause, Transactor};
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::utils::AutomapProtocol;
 
 #[derive(Debug)]
 pub struct FirstSectionData {
@@ -187,7 +187,7 @@ mod tests {
     use super::*;
     use std::io::{ErrorKind, IoSlice};
 
-    use masq_lib::utils::{find_free_port_0000, localhost};
+    use pulsecloak_lib::utils::{find_free_port_0000, localhost};
 
     use crate::automap_core_functions::TestStatus;
     use crate::probe_researcher::{deploy_background_listener, generate_nonce};

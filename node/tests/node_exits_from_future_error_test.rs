@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
@@ -8,7 +8,7 @@ use crate::utils::CommandConfig;
 #[test]
 fn node_exits_from_future_error_integration() {
     let panic_config = CommandConfig::new().pair("--crash-point", "error");
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         "node_exits_from_future_error_integration",
         Some(panic_config),
         true,
@@ -25,7 +25,7 @@ fn node_exits_from_future_error_integration() {
 #[test]
 fn node_exits_from_future_error_integration() {
     let panic_config = CommandConfig::new().pair("--crash-point", "error");
-    let mut node = utils::MASQNode::start_standard(
+    let mut node = utils::PulseCloakNode::start_standard(
         "node_exits_from_future_error_integration",
         Some(panic_config),
         true,

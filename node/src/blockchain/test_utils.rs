@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(test)]
 
@@ -9,8 +9,8 @@ use bip39::{Language, Mnemonic, Seed};
 use ethabi::Hash;
 use ethereum_types::{BigEndianHash, H160, H256, U64};
 use lazy_static::lazy_static;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::utils::to_string;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::utils::to_string;
 use serde::Serialize;
 use serde_derive::Deserialize;
 use std::fmt::Debug;

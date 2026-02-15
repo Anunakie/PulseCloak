@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::apps::{app_config_dumper, app_daemon, app_node};
 use crate::privilege_drop::{PrivilegeDropper, PrivilegeDropperReal};
@@ -10,9 +10,9 @@ use crate::run_modes_factories::{
 use actix::System;
 use clap::Error;
 use futures::future::Future;
-use masq_lib::command::StdStreams;
-use masq_lib::multi_config::MultiConfig;
-use masq_lib::shared_schema::{ConfiguratorError, ParamError};
+use pulsecloak_lib::command::StdStreams;
+use pulsecloak_lib::multi_config::MultiConfig;
+use pulsecloak_lib::shared_schema::{ConfiguratorError, ParamError};
 use ProgramEntering::{Enter, Leave};
 
 #[derive(Debug, PartialEq, Eq)]
@@ -177,7 +177,7 @@ impl RunModes {
             ("does not require", "without sudo next time")
         };
         format!(
-            "MASQNode in {:?} mode {} root privilege; try {}",
+            "PulseCloakNode in {:?} mode {} root privilege; try {}",
             mode, requirement, recommendation
         )
     }
@@ -189,7 +189,7 @@ impl RunModes {
         } else {
             "does not require Administrator privilege."
         };
-        format!("MASQNode.exe in {:?} mode {}", mode, suffix)
+        format!("PulseCloakNode.exe in {:?} mode {}", mode, suffix)
     }
 
     fn determine_mode_and_priv_req(&self, args: &[String]) -> (Mode, bool) {
@@ -288,8 +288,8 @@ mod tests {
         DumpConfigRunnerMock, ServerInitializerFactoryMock, ServerInitializerMock,
     };
     use crate::server_initializer::test_utils::PrivilegeDropperMock;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
-    use masq_lib::utils::slice_of_strs_to_vec_of_strings;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::utils::slice_of_strs_to_vec_of_strings;
     use regex::Regex;
     use std::cell::RefCell;
     use std::ops::{Deref, Not};
@@ -429,12 +429,12 @@ mod tests {
 
         assert_eq!(
             service_yes,
-            "MASQNode in Service mode must run with root privilege; try sudo"
+            "PulseCloakNode in Service mode must run with root privilege; try sudo"
         );
-        assert_eq!(dump_config_no, "MASQNode in DumpConfig mode does not require root privilege; try without sudo next time");
+        assert_eq!(dump_config_no, "PulseCloakNode in DumpConfig mode does not require root privilege; try without sudo next time");
         assert_eq!(
             initialization_yes,
-            "MASQNode in Initialization mode must run with root privilege; try sudo"
+            "PulseCloakNode in Initialization mode must run with root privilege; try sudo"
         )
     }
 
@@ -447,15 +447,15 @@ mod tests {
 
         assert_eq!(
             node_yes,
-            "MASQNode.exe in Service mode must run as Administrator."
+            "PulseCloakNode.exe in Service mode must run as Administrator."
         );
         assert_eq!(
             dump_config_no,
-            "MASQNode.exe in DumpConfig mode does not require Administrator privilege."
+            "PulseCloakNode.exe in DumpConfig mode does not require Administrator privilege."
         );
         assert_eq!(
             initialization_yes,
-            "MASQNode.exe in Initialization mode must run as Administrator."
+            "PulseCloakNode.exe in Initialization mode must run as Administrator."
         );
     }
 
@@ -735,7 +735,7 @@ parm2 - msg2\n"
 
         assert_eq!(daemon_h_exit_code, 0);
         let daemon_stdout_message = daemon_h_holder.stdout.get_string();
-        assert!(daemon_stdout_message.contains("MASQ\nMASQ Node is the foundation of MASQ Network, an open-source network that allows anyone to"));
+        assert!(daemon_stdout_message.contains("PulseCloak\nPulseCloak Node is the foundation of PulseCloak Network, an open-source network that allows anyone to"));
         assert!(daemon_stdout_message.contains("--initialization    Directs"));
         assert_eq!(daemon_h_holder.stderr.get_string(), "");
         assert_eq!(node_h_exit_code, 0);
@@ -774,7 +774,7 @@ parm2 - msg2\n"
             );
 
             assert_eq!(daemon_v_exit_code, 0);
-            let regex = Regex::new(r"MASQ Node \d+\.\d+\.\d+\n").unwrap();
+            let regex = Regex::new(r"PulseCloak Node \d+\.\d+\.\d+\n").unwrap();
             let daemon_stdout_message = daemon_v_holder.stdout.get_string();
             assert!(
                 regex.is_match(&daemon_stdout_message),

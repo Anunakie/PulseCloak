@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::blockchain_agent::BlockchainAgent;
 use crate::sub_lib::blockchain_bridge::ConsumingWalletBalances;
 use crate::sub_lib::wallet::Wallet;
-use masq_lib::blockchains::chains::Chain;
+use pulsecloak_lib::blockchains::chains::Chain;
 
 #[derive(Debug, Clone)]
 pub struct BlockchainAgentWeb3 {
@@ -70,7 +70,7 @@ mod tests {
     use crate::accountant::scanners::mid_scan_msg_handling::payable_scanner::blockchain_agent::BlockchainAgent;
     use crate::sub_lib::blockchain_bridge::ConsumingWalletBalances;
     use crate::test_utils::make_wallet;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use web3::types::U256;
 
     #[test]
@@ -85,7 +85,7 @@ mod tests {
         let consuming_wallet = make_wallet("abcde");
         let consuming_wallet_balances = ConsumingWalletBalances {
             transaction_fee_balance_in_minor_units: U256::from(456_789),
-            masq_token_balance_in_minor_units: U256::from(123_000_000),
+            pulsecloak_token_balance_in_minor_units: U256::from(123_000_000),
         };
 
         let subject = BlockchainAgentWeb3::new(
@@ -110,7 +110,7 @@ mod tests {
         let consuming_wallet = make_wallet("efg");
         let consuming_wallet_balances = ConsumingWalletBalances {
             transaction_fee_balance_in_minor_units: Default::default(),
-            masq_token_balance_in_minor_units: Default::default(),
+            pulsecloak_token_balance_in_minor_units: Default::default(),
         };
         let agent = BlockchainAgentWeb3::new(
             444,

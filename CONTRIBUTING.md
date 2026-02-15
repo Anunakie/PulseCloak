@@ -1,10 +1,10 @@
-# Contributing to the MASQ Network
+# Contributing to the PulseCloak Network
 
 ## Introduction
 
 :tada: First off, thank you for your interest in contributing! :tada:
 
-The lion's share of the MASQ Node codebase is written in Rust. Rust is a relatively young programming language
+The lion's share of the PulseCloak Node codebase is written in Rust. Rust is a relatively young programming language
 that compiles to native code; its competitors are languages like C, C++, and Go.  If you're used to interpreted or
 virtual-machine languages like Java, JavaScript, Ruby, Python, C#, or Kotlin, you'll find that Rust hides considerably
 less of a program's low-level operation from you than those languages do. If you're used to Rust's competitors, you'll
@@ -12,34 +12,34 @@ notice that Rust hides significantly more from you than those languages do: it's
 to leak memory or overrun a buffer or dereference a null pointer.
 
 If you're not familiar with the Rust language, we recommend that you cut your teeth on something simpler than
-MASQ Node: perhaps a succession of katas would serve. Be sure that you find a way to make peace with the
+PulseCloak Node: perhaps a succession of katas would serve. Be sure that you find a way to make peace with the
 Borrow Checker, which is a feature that you probably have never encountered in any language before. If you still
 think that Rust is essentially interchangeable with C++, but with slightly better syntax, then you haven't met the
 Borrow Checker yet, and you still have hours and hours of frustration and misery ahead.
 
-One way to abbreviate that frustration and misery is to do remote pairing on MASQ Node with a developer who is
+One way to abbreviate that frustration and misery is to do remote pairing on PulseCloak Node with a developer who is
 already familiar with Rust. At the moment, there is no formal procedure for arranging remote pairing, and it's up to
-you to contact such a developer and make arrangements. But this is not meant as a discouragement; the MASQ team
+you to contact such a developer and make arrangements. But this is not meant as a discouragement; the PulseCloak team
 is enthusiastic about pairing with community developers and getting them up to speed on the codebase and the
 engineering practices.
 
 ## Things You Will Need
-In order to make contributions to the main public MASQ Node repository, here are the things you will need to
+In order to make contributions to the main public PulseCloak Node repository, here are the things you will need to
 prepare:
 
 * Rust compiler and toolchain
 
-* Development environment (the MASQ dev team uses JetBrains' IntelliJ IDEA with the Rust plugin installed, but
+* Development environment (the PulseCloak dev team uses JetBrains' IntelliJ IDEA with the Rust plugin installed, but
 there are [several other choices](https://medium.com/cloud-native-the-gathering/whats-the-best-ide-for-developing-in-rust-5087d46006f5).)
 
 * An account on [GitHub](https://github.com).
 
-* A link to the [MASQ Node Card Wall](https://github.com/orgs/MASQ-Project/projects/1)
+* A link to the [PulseCloak Node Card Wall](https://github.com/orgs/PulseCloak-Project/projects/1)
 
-* A link to the [MASQ Node GitHub Actions build site](https://github.com/MASQ-Project/Node/actions)
+* A link to the [PulseCloak Node GitHub Actions build site](https://github.com/PulseCloak-Project/Node/actions)
 
 ## One-Time Preparations
-These are the things you'll only need to do one time to set up an environment for working on MASQ Node.
+These are the things you'll only need to do one time to set up an environment for working on PulseCloak Node.
 
 #### Install git
 Like almost everyone else, we use `git` for version control. This means you'll need it installed on your computer.
@@ -47,7 +47,7 @@ If you don't have it already, follow these
 [installation instructions for Linux, macOS, and Windows](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 to get it.
 
-__Note for Windows users:__ The command scripts associated with MASQ Node are written for the `bash` command
+__Note for Windows users:__ The command scripts associated with PulseCloak Node are written for the `bash` command
 processor, not Windows batch or PowerShell. This means that while you're doing development, you'll want to have a
 Git Bash window open for typing commands: preferably one started with Administrator privilege.
 
@@ -68,7 +68,7 @@ It is highly recommended that you establish an account on (GitHub)[https://githu
 already, as submitting pull requests will be much easier if you do.
 
 #### Decide: SSH or HTTPS?
-You can choose to access the GitHub MASQ Node repo from your development machine either through an HTTPS URL or through
+You can choose to access the GitHub PulseCloak Node repo from your development machine either through an HTTPS URL or through
 an SSH URL. The HTTPS URL is very easy to set up, but it will require you to type in your GitHub username and password 
 every time you want to make a change to your fork. The SSH URL is somewhat more difficult to set up, but will let you 
 push from your development machine without manual authentication whenever you want to. (There's a way you can set `git`
@@ -78,20 +78,20 @@ configuring persistent HTTPS credentials.) You can
 [read about configuring for SSH](https://help.github.com/en/articles/connecting-to-github-with-ssh) to help guide your 
 decision.
 
-#### Clone the MASQ Node Repository
+#### Clone the PulseCloak Node Repository
 1. Log in to GitHub as yourself.
-1. Navigate to the [MASQ Node repository](https://github.com/MASQ-Project/Node).
+1. Navigate to the [PulseCloak Node repository](https://github.com/PulseCloak-Project/Node).
 1. Click the ![Code](images/CodeButton.png) button near the upper right corner.
 1. Choose either the HTTPS or the SSH URL, and copy it to your clipboard. Do not "Download ZIP."
-1. On your development machine, navigate to the directory under which you wish to do your MASQ Node development.
+1. On your development machine, navigate to the directory under which you wish to do your PulseCloak Node development.
 1. Type the command `git clone `[contents of clipboard] to populate a sandbox on your machine with a copy of your
-forked MASQ Node repository.
+forked PulseCloak Node repository.
 1. `cd Node` and explore the sandbox to ensure that it's what you expect.
 
 #### Install Rust
 You'll need the latest version of the Rust toolchain. You can get it by following the instructions at the
 [Rust website](https://www.rust-lang.org/tools/install). After you have Rust (specifically `rustup`) installed,
-add two other toolchain links that the MASQ project uses:
+add two other toolchain links that the PulseCloak project uses:
 
 ```
 rustup component add rustfmt
@@ -102,16 +102,16 @@ rustup component add clippy
 that suggests modifications to make the code smaller, faster, clearer, or otherwise better.
 
 #### Install Development Environment
-If you don't already have a favorite development environment set up, you'll need one to work on MASQ Node.
+If you don't already have a favorite development environment set up, you'll need one to work on PulseCloak Node.
 [Here's an article](https://medium.com/cloud-native-the-gathering/whats-the-best-ide-for-developing-in-rust-5087d46006f5)
 listing several such choices.
 
-The MASQ team uses JetBrains IntelliJ IDEA with the Rust plugin installed.
+The PulseCloak team uses JetBrains IntelliJ IDEA with the Rust plugin installed.
 
 #### Kick the Tires
 To see if you've gotten everything working, navigate on your development machine to your fork's sandbox
 (probably ...`/Node`) and type `ci/all.sh`. This should kick off a long process that involves building
-and testing the MASQ Node. Partway through, the zero-hop integration tests will pause and ask for your
+and testing the PulseCloak Node. Partway through, the zero-hop integration tests will pause and ask for your
 password. This is so that they can run test Nodes with `sudo`.
 
 If you're developing with Linux, then once `ci/all.sh` is successful, try `ci/multinode_integration_tests.sh` to
@@ -123,12 +123,12 @@ correctly.
 ## Addressing an Issue
 
 #### Select the Issue
-The MASQ team's priorities are reflected in the __Awaiting Development (Prioritized)__ column of the
-[issues board](https://github.com/orgs/MASQ-Project/projects/1). The top issue in that column is the one that is
+The PulseCloak team's priorities are reflected in the __Awaiting Development (Prioritized)__ column of the
+[issues board](https://github.com/orgs/PulseCloak-Project/projects/1). The top issue in that column is the one that is
 currently most urgently needed, and if you choose that issue to work on you'll get the most attention and support
 (although if you spend too much time on it, you may be bypassed by someone who needs it done faster).
 
-If you're new to Rust or to MASQ Node or both, the top issue in __Awaiting Development__ may not be the sort of thing you want to
+If you're new to Rust or to PulseCloak Node or both, the top issue in __Awaiting Development__ may not be the sort of thing you want to
 take on, especially if you're alone. In that case, you're encouraged to look through the __Ready for Development__ column
 for something that fits your aptitudes--especially something marked as technical debt. The __Ready for Development__
 issues are not presented in any particular order; specifically, they are not prioritized like the issues in __Awaiting Development.__
@@ -138,7 +138,7 @@ Click on its name to get a summary on the right-hand side of your browser window
 where you should see "No one--assign yourself". Click "assign yourself" to put your name on the issue.
 
 #### Update the `master` Branch
-Before you begin any development work, you'll want to make sure you're working from the latest code in the MASQ
+Before you begin any development work, you'll want to make sure you're working from the latest code in the PulseCloak
 public repository. Specifically, you'll want to pull in the upstream `master` branch and merge it with your own `master`
 branch. You can do that with these commands:
 ```
@@ -164,7 +164,7 @@ commits as you can possibly imagine needing, and then throw in a few more for go
 
 We also encourage you to compose commit messages that make it easy for you to find a particular commit if you have to
 roll back later in the development process, but that's up to you. Since your individual commits will eventually be
-squashed together, we at MASQ won't be able to make any real use of your commit comments: those are for you, not us.
+squashed together, we at PulseCloak won't be able to make any real use of your commit comments: those are for you, not us.
 
 #### Verify Against the Test Plan
 As the issue was moving through the grooming process, the testing crew will have (should have) added a test plan in
@@ -203,7 +203,7 @@ a pull request that's passing all the tests and have it fail because you forgot 
 
 Navigate to your top-level `Node` directory and type `ci/all.sh`. This will do some preliminary work,
 including release (not debug) builds, then run unit tests and (zero-hop) integration tests for each component of
-MASQ Node. Keep your eye on it, because in order to run zero-hop integration tests on Linux or macOS, it'll need
+PulseCloak Node. Keep your eye on it, because in order to run zero-hop integration tests on Linux or macOS, it'll need
 to use `sudo`, so you'll have to type in your password to get it to continue.
 
 If you're developing on Linux, run `ci/multinode_integration_tests.sh` too. (Whether you do or not, 
@@ -213,7 +213,7 @@ Windows, `ci/multinode_integration_tests.sh` won't do much for you, so you'll ha
 #### Open a Pull Request
 First, make sure you've pushed the last of your changes to your feature branch on your fork.
 
-Then log onto GitHub and navigate to the [MASQ Node repository](https://github.com/MASQ-Project/Node). Click the
+Then log onto GitHub and navigate to the [PulseCloak Node repository](https://github.com/PulseCloak-Project/Node). Click the
 "Pull requests" tab near the top:
 
 ![Pull requests](images/PullRequestsTab.png)
@@ -239,7 +239,7 @@ to go back to __Merge in `master`__ and assimilate those changes before your pul
 
 #### Watch the Actions Build
 As soon as you create your pull request, the
-[GitHub Actions build site](https://github.com/MASQ-Project/Node/actions) should
+[GitHub Actions build site](https://github.com/PulseCloak-Project/Node/actions) should
 begin building your feature branch on Linux, macOS, and Windows platforms. It will also run the multinode integration
 tests on Linux. Track the builds as they proceed, and watch for failures. If there are any, go back to __Complete the Work__
 and fix the problems. Sometimes, especially for failures in multinode integration tests, the reasons for the failures may

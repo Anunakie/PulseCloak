@@ -1,10 +1,10 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::apps::app_daemon;
 use crate::node_configurator::NodeConfigurator;
 use crate::sub_lib::utils::make_new_multi_config;
-use masq_lib::multi_config::{CommandLineVcl, MultiConfig};
-use masq_lib::shared_schema::ConfiguratorError;
+use pulsecloak_lib::multi_config::{CommandLineVcl, MultiConfig};
+use pulsecloak_lib::shared_schema::ConfiguratorError;
 
 #[derive(Default, Clone, PartialEq, Eq, Debug)]
 pub struct InitializationConfig {
@@ -38,8 +38,8 @@ impl NodeConfigurator<InitializationConfig> for NodeConfiguratorInitializationRe
 mod initialization {
     use super::*;
     use clap::value_t;
-    use masq_lib::constants::DEFAULT_UI_PORT;
-    use masq_lib::multi_config::MultiConfig;
+    use pulsecloak_lib::constants::DEFAULT_UI_PORT;
+    use pulsecloak_lib::multi_config::MultiConfig;
 
     pub fn parse_args(multi_config: &MultiConfig, config: &mut InitializationConfig) {
         config.ui_port = value_m!(multi_config, "ui-port", u16).unwrap_or(DEFAULT_UI_PORT);
@@ -50,8 +50,8 @@ mod initialization {
 mod tests {
     use super::*;
     use crate::test_utils::ArgsBuilder;
-    use masq_lib::constants::DEFAULT_UI_PORT;
-    use masq_lib::multi_config::{CommandLineVcl, VirtualCommandLine};
+    use pulsecloak_lib::constants::DEFAULT_UI_PORT;
+    use pulsecloak_lib::multi_config::{CommandLineVcl, VirtualCommandLine};
 
     #[test]
     fn parse_args_creates_configuration_with_defaults() {

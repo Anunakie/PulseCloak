@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod db_access_objects;
 pub mod db_big_integer;
@@ -10,7 +10,7 @@ pub mod scanners;
 pub mod test_utils;
 
 use core::fmt::Debug;
-use masq_lib::constants::{SCAN_ERROR, WEIS_IN_GWEI};
+use pulsecloak_lib::constants::{SCAN_ERROR, WEIS_IN_GWEI};
 use std::cell::{Ref, RefCell};
 
 use crate::accountant::db_access_objects::payable_dao::{PayableDao, PayableDaoError};
@@ -55,18 +55,18 @@ use actix::Message;
 use actix::Recipient;
 use itertools::Either;
 use itertools::Itertools;
-use masq_lib::crash_point::CrashPoint;
-use masq_lib::logger::Logger;
-use masq_lib::messages::UiFinancialsResponse;
-use masq_lib::messages::{FromMessageBody, ToMessageBody, UiFinancialsRequest};
-use masq_lib::messages::{
+use pulsecloak_lib::crash_point::CrashPoint;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::UiFinancialsResponse;
+use pulsecloak_lib::messages::{FromMessageBody, ToMessageBody, UiFinancialsRequest};
+use pulsecloak_lib::messages::{
     QueryResults, ScanType, UiFinancialStatistics, UiPayableAccount, UiReceivableAccount,
     UiScanRequest,
 };
-use masq_lib::ui_gateway::MessageTarget::ClientId;
-use masq_lib::ui_gateway::{MessageBody, MessagePath};
-use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::ui_gateway::MessageTarget::ClientId;
+use pulsecloak_lib::ui_gateway::{MessageBody, MessagePath};
+use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::utils::ExpectValue;
 use std::any::type_name;
 #[cfg(test)]
 use std::default::Default;
@@ -1094,22 +1094,22 @@ mod tests {
     use ethereum_types::U64;
     use ethsign_crypto::Keccak256;
     use log::Level;
-    use masq_lib::constants::{
+    use pulsecloak_lib::constants::{
         REQUEST_WITH_MUTUALLY_EXCLUSIVE_PARAMS, REQUEST_WITH_NO_VALUES, SCAN_ERROR,
         VALUE_EXCEEDS_ALLOWED_LIMIT,
     };
-    use masq_lib::messages::TopRecordsOrdering::{Age, Balance};
-    use masq_lib::messages::{
+    use pulsecloak_lib::messages::TopRecordsOrdering::{Age, Balance};
+    use pulsecloak_lib::messages::{
         CustomQueries, RangeQuery, ScanType, TopRecordsConfig, UiFinancialStatistics,
         UiMessageError, UiPayableAccount, UiReceivableAccount, UiScanRequest, UiScanResponse,
     };
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::ui_gateway::MessagePath::Conversation;
-    use masq_lib::ui_gateway::{MessageBody, MessagePath, NodeFromUiMessage, NodeToUiMessage};
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::ui_gateway::MessagePath::Conversation;
+    use pulsecloak_lib::ui_gateway::{MessageBody, MessagePath, NodeFromUiMessage, NodeToUiMessage};
+    use pulsecloak_lib::utils::find_free_port;
     use std::any::TypeId;
     use std::ops::{Add, Sub};
     use std::str::FromStr;
@@ -1613,13 +1613,13 @@ mod tests {
     }
 
     #[test]
-    fn received_qualified_payables_exceeding_our_masq_balance_are_adjusted_before_forwarded_to_blockchain_bridge(
+    fn received_qualified_payables_exceeding_our_pulsecloak_balance_are_adjusted_before_forwarded_to_blockchain_bridge(
     ) {
         // the numbers for balances don't do real math, they need not to match either the condition for
         // the payment adjustment or the actual values that come from the payable size reducing algorithm;
         // all that is mocked in this test
         init_test_logging();
-        let test_name = "received_qualified_payables_exceeding_our_masq_balance_are_adjusted_before_forwarded_to_blockchain_bridge";
+        let test_name = "received_qualified_payables_exceeding_our_pulsecloak_balance_are_adjusted_before_forwarded_to_blockchain_bridge";
         let adjust_payments_params_arc = Arc::new(Mutex::new(vec![]));
         let (blockchain_bridge, _, blockchain_bridge_recording_arc) = make_recorder();
         let report_recipient = blockchain_bridge
@@ -1665,7 +1665,7 @@ mod tests {
             response_skeleton_opt: Some(response_skeleton),
         };
         let payment_adjuster = PaymentAdjusterMock::default()
-            .is_adjustment_required_result(Ok(Some(Adjustment::MasqToken)))
+            .is_adjustment_required_result(Ok(Some(Adjustment::PulseCloakToken)))
             .adjust_payments_params(&adjust_payments_params_arc)
             .adjust_payments_result(payments_instructions);
         let payable_scanner = PayableScannerBuilder::new()
@@ -1685,7 +1685,7 @@ mod tests {
         let mut adjust_payments_params = adjust_payments_params_arc.lock().unwrap();
         let (actual_prepared_adjustment, captured_now, logger_clone) =
             adjust_payments_params.remove(0);
-        assert_eq!(actual_prepared_adjustment.adjustment, Adjustment::MasqToken);
+        assert_eq!(actual_prepared_adjustment.adjustment, Adjustment::PulseCloakToken);
         assert_eq!(
             actual_prepared_adjustment
                 .original_setup_msg
@@ -3447,7 +3447,7 @@ mod tests {
             .ok_response("0x3B9ACA00".to_string(), 0) // 1000000000
             // Blockchain Agent transaction fee balance
             .ok_response("0xFFF0".to_string(), 0) // 65520
-            // Blockchain Agent masq balance
+            // Blockchain Agent pulsecloak balance
             .ok_response(
                 "0x000000000000000000000000000000000000000000000000000000000000FFFF".to_string(),
                 0,
@@ -4875,8 +4875,8 @@ pub mod exportable_test_parts {
     use crate::test_utils::unshared_test_utils::{AssertionsMessage, SubsFactoryTestAddrLeaker};
     use actix::System;
     use crossbeam_channel::bounded;
-    use masq_lib::test_utils::utils::ShouldWeRunTheTest::{GoAhead, Skip};
-    use masq_lib::test_utils::utils::{
+    use pulsecloak_lib::test_utils::utils::ShouldWeRunTheTest::{GoAhead, Skip};
+    use pulsecloak_lib::test_utils::utils::{
         check_if_source_code_is_attached, ensure_node_home_directory_exists, ShouldWeRunTheTest,
     };
     use regex::Regex;

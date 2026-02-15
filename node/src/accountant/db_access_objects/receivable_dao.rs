@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::checked_conversion;
 use crate::accountant::db_access_objects::receivable_dao::ReceivableDaoError::RusqliteError;
@@ -22,9 +22,9 @@ use crate::sub_lib::accountant::PaymentThresholds;
 use crate::sub_lib::wallet::Wallet;
 use indoc::indoc;
 use itertools::Either;
-use masq_lib::constants::WEIS_IN_GWEI;
-use masq_lib::logger::Logger;
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::constants::WEIS_IN_GWEI;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::ExpectValue;
 use rusqlite::OptionalExtension;
 use rusqlite::Row;
 use rusqlite::{named_params, Error};
@@ -511,10 +511,10 @@ mod tests {
     use crate::database::test_utils::ConnectionWrapperMock;
     use crate::test_utils::assert_contains;
     use crate::test_utils::make_wallet;
-    use masq_lib::messages::TopRecordsOrdering::{Age, Balance};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
-    use masq_lib::utils::NeighborhoodModeLight;
+    use pulsecloak_lib::messages::TopRecordsOrdering::{Age, Balance};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::utils::NeighborhoodModeLight;
     use rusqlite::{ffi, Connection, ErrorCode, OpenFlags, ToSql};
     use std::panic::{catch_unwind, AssertUnwindSafe};
     use std::path::Path;

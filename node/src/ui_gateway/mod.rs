@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 mod websocket_supervisor;
 
@@ -19,10 +19,10 @@ use actix::Context;
 use actix::Handler;
 use actix::Recipient;
 use itertools::Either;
-use masq_lib::logger::Logger;
-use masq_lib::messages::UiCrashRequest;
-use masq_lib::ui_gateway::{MessageBody, NodeFromUiMessage, NodeToUiMessage};
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::UiCrashRequest;
+use pulsecloak_lib::ui_gateway::{MessageBody, NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::utils::ExpectValue;
 use std::mem::replace;
 
 pub const CRASH_KEY: &str = "UIGATEWAY";
@@ -200,11 +200,11 @@ mod tests {
     use actix::Message;
     use actix::System;
     use crossbeam_channel::{unbounded, Sender};
-    use masq_lib::messages::{ToMessageBody, UiChangePasswordRequest};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::ui_gateway::MessagePath::FireAndForget;
-    use masq_lib::ui_gateway::{MessageBody, MessagePath, MessageTarget};
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::messages::{ToMessageBody, UiChangePasswordRequest};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::ui_gateway::MessagePath::FireAndForget;
+    use pulsecloak_lib::ui_gateway::{MessageBody, MessagePath, MessageTarget};
+    use pulsecloak_lib::utils::find_free_port;
     use std::sync::{Arc, Mutex};
 
     #[test]

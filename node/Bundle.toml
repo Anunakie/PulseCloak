@@ -1,9 +1,9 @@
-name = "MASQNode"
-identifier = "net.masq.node"
-icon = ["masq.png"]
+name = "PulseCloakNode"
+identifier = "net.pulsecloak.node"
+icon = ["pulsecloak.png"]
 version = "1.0.0"
-copyright = "Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved."
-short_description = "MASQ Node"
+copyright = "Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved."
+short_description = "PulseCloak Node"
 long_description = """
-MASQ Node allows Node runners to make money while they sleep.
+PulseCloak Node allows Node runners to make money while they sleep.
 """

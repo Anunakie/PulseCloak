@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use super::neighborhood_database::NeighborhoodDatabaseError::NodeKeyNotFound;
 use crate::neighborhood::dot_graph::{
     render_dot_graph, DotRenderable, EdgeRenderable, NodeRenderable, NodeRenderableInner,
@@ -12,8 +12,8 @@ use crate::sub_lib::node_addr::NodeAddr;
 use crate::sub_lib::utils::time_t_timestamp;
 use crate::sub_lib::wallet::Wallet;
 use itertools::Itertools;
-use masq_lib::logger::Logger;
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::ExpectValue;
 use std::collections::HashSet;
 use std::collections::{BTreeSet, HashMap};
 use std::fmt::Debug;
@@ -391,8 +391,8 @@ mod tests {
     use crate::test_utils::neighborhood_test_utils::{
         db_from_node, make_node_record, make_node_record_cc, make_segmented_ip, make_segments,
     };
-    use masq_lib::constants::DEFAULT_CHAIN;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::constants::DEFAULT_CHAIN;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::iter::FromIterator;
     use std::str::FromStr;
 

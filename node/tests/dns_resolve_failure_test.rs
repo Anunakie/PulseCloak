@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 
@@ -10,7 +10,7 @@ use std::time::Duration;
 
 #[test]
 fn dns_resolve_failure_http_response_integration() {
-    let _node_to_test_against = utils::MASQNode::start_standard(
+    let _node_to_test_against = utils::PulseCloakNode::start_standard(
         "dns_resolve_failure_http_response_integration",
         None,
         true,
@@ -33,7 +33,7 @@ fn dns_resolve_failure_http_response_integration() {
 
 #[test]
 fn dns_resolve_failure_tls_response_integration() {
-    let _node_to_test_against = utils::MASQNode::start_standard(
+    let _node_to_test_against = utils::PulseCloakNode::start_standard(
         "dns_resolve_failure_tls_response_integration",
         None,
         true,

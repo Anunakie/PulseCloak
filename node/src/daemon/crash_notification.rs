@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use actix::Message;
 use lazy_static::lazy_static;
-use masq_lib::messages::CrashReason;
+use pulsecloak_lib::messages::CrashReason;
 
 lazy_static! {
     static ref RECOGNIZERS: Vec<Box<dyn Recognizer>> = vec![

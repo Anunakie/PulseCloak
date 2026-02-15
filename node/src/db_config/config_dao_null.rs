@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::database::db_initializer::DbInitializerReal;
 use crate::database::rusqlite_wrappers::TransactionSafeWrapper;
@@ -7,8 +7,8 @@ use crate::neighborhood::DEFAULT_MIN_HOPS;
 use crate::sub_lib::accountant::{DEFAULT_PAYMENT_THRESHOLDS, DEFAULT_SCAN_INTERVALS};
 use crate::sub_lib::neighborhood::DEFAULT_RATE_PACK;
 use itertools::Itertools;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{CURRENT_SCHEMA_VERSION, DEFAULT_GAS_PRICE};
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{CURRENT_SCHEMA_VERSION, DEFAULT_GAS_PRICE};
 use std::collections::HashMap;
 
 /*
@@ -155,9 +155,9 @@ mod tests {
     use crate::database::test_utils::transaction_wrapper_mock::TransactionInnerWrapperMockBuilder;
     use crate::db_config::config_dao::ConfigDaoReal;
     use crate::neighborhood::DEFAULT_MIN_HOPS;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::constants::{DEFAULT_CHAIN, ETH_MAINNET_CONTRACT_CREATION_BLOCK};
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::constants::{DEFAULT_CHAIN, ETH_MAINNET_CONTRACT_CREATION_BLOCK};
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
 
     #[test]
     fn get_works() {

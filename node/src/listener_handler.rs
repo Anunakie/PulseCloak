@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::bootstrapper::PortConfiguration;
 use crate::stream_messages::AddStreamMsg;
 use crate::sub_lib::stream_connector::StreamConnector;
@@ -6,7 +6,7 @@ use crate::sub_lib::stream_connector::StreamConnectorReal;
 use crate::sub_lib::tokio_wrappers::TokioListenerWrapper;
 use crate::sub_lib::tokio_wrappers::TokioListenerWrapperReal;
 use actix::Recipient;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::io;
 use std::marker::Send;
 use std::net::IpAddr;
@@ -144,10 +144,10 @@ mod tests {
     use actix::Addr;
     use actix::System;
     use crossbeam_channel::unbounded;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLog;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::utils::{find_free_port, localhost};
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLog;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::utils::{find_free_port, localhost};
     use std::cell::RefCell;
     use std::io::Error;
     use std::io::ErrorKind;

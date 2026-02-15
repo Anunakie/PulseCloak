@@ -1,15 +1,15 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use bip39::{Language, Mnemonic, Seed};
 use futures::Future;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::WEIS_IN_GWEI;
-use masq_lib::messages::{ScanType, ToMessageBody, UiScanRequest};
-use masq_lib::test_utils::utils::UrlHolder;
-use masq_lib::utils::{derivation_path, find_free_port, NeighborhoodModeLight};
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::WEIS_IN_GWEI;
+use pulsecloak_lib::messages::{ScanType, ToMessageBody, UiScanRequest};
+use pulsecloak_lib::test_utils::utils::UrlHolder;
+use pulsecloak_lib::utils::{derivation_path, find_free_port, NeighborhoodModeLight};
 use multinode_integration_tests_lib::blockchain::BlockchainServer;
-use multinode_integration_tests_lib::masq_node::{MASQNode, MASQNodeUtils};
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
+use multinode_integration_tests_lib::pulsecloak_node::{PulseCloakNode, PulseCloakNodeUtils};
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
     ConsumingWalletInfo, EarningWalletInfo, NodeStartupConfig, NodeStartupConfigBuilder,
 };
 use multinode_integration_tests_lib::utils::{
@@ -40,7 +40,7 @@ use web3::Web3;
 
 #[test]
 fn verify_bill_payment() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let blockchain_server = BlockchainServer {
         name: "ganache-cli",
     };
@@ -310,7 +310,7 @@ fn verify_bill_payment() {
 
 #[test]
 fn verify_pending_payables() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let blockchain_server = BlockchainServer {
         name: "ganache-cli",
     };
@@ -438,27 +438,27 @@ fn verify_pending_payables() {
     );
 
     assert!(consuming_payable_dao.non_pending_payables().is_empty());
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_consuming_node.name(),
         "Found 3 pending payables to process",
         Duration::from_secs(5),
     );
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_consuming_node.name(),
         "Scan results: Successful: 3, Pending: 0, Failed: 0",
         Duration::from_secs(5),
     );
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_consuming_node.name(),
         "Transaction 0x75a8f185b7fb3ac0c4d1ee6b402a46940c9ae0477c0c7378a1308fb4bf539c5c has been added to the blockchain;",
         Duration::from_secs(5),
     );
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_consuming_node.name(),
         "Transaction 0x384a3bb5bbd9718a97322be2878fa88c7cacacb2ac3416f521a621ca1946ddfc has been added to the blockchain;",
         Duration::from_secs(5),
     );
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         real_consuming_node.name(),
         "Transaction 0x6bc98d5db61ddd7676de1f25cb537156b3d9e066cec414fef8dbe9c695908215 has been added to the blockchain;",
         Duration::from_secs(5),
@@ -495,7 +495,7 @@ fn assert_balances(
         .lower_interface()
         .get_service_fee_balance(wallet.address())
         .wait()
-        .unwrap_or_else(|_| panic!("Failed to retrieve masq balance for {}", wallet));
+        .unwrap_or_else(|_| panic!("Failed to retrieve pulsecloak balance for {}", wallet));
     assert_eq!(
         token_balance,
         web3::types::U256::from_dec_str(expected_token_balance).unwrap(),

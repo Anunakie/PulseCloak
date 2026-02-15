@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::blockchain::bip32::Bip32EncryptionKeyProvider;
 use crate::blockchain::payer::Payer;
 use crate::sub_lib::cryptde;
@@ -442,12 +442,12 @@ impl Serialize for Wallet {
 mod tests {
     use super::*;
     use crate::blockchain::test_utils::make_meaningless_seed;
-    use crate::masq_lib::utils::DEFAULT_CONSUMING_DERIVATION_PATH;
+    use crate::pulsecloak_lib::utils::DEFAULT_CONSUMING_DERIVATION_PATH;
     use crate::test_utils::make_paying_wallet;
     use crate::test_utils::make_wallet;
     use bip39::{Language, Mnemonic, Seed};
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-    use masq_lib::utils::derivation_path;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::utils::derivation_path;
     use rusqlite::Connection;
     use rustc_hex::FromHex;
     use serde_cbor;

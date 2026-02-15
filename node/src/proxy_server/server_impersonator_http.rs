@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::proxy_server::protocol_pack::ServerImpersonator;
 
 pub struct ServerImpersonatorHttp {}
@@ -10,7 +10,7 @@ impl ServerImpersonator for ServerImpersonatorHttp {
             "Routing Problem",
             format!("Can't find a route to {}", server_name).as_str(),
             format!(
-                "MASQ can't find a route through the Network yet to a Node that knows \
+                "PulseCloak can't find a route through the Network yet to a Node that knows \
                  where to find {}. Maybe later enough will be known about the Network to \
                  find that Node, but we can't guarantee it. We're sorry.",
                 server_name
@@ -186,7 +186,7 @@ mod tests {
             503,
             "Routing Problem",
             "Can't find a route to server.com",
-            "MASQ can't find a route through the Network yet to a Node that knows \
+            "PulseCloak can't find a route through the Network yet to a Node that knows \
              where to find server.com. Maybe later enough will be known about the Network to \
              find that Node, but we can't guarantee it. We're sorry.",
         );

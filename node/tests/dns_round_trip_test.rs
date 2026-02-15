@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod utils;
 use node_lib::entry_dns::packet_facade::PacketFacade;
@@ -13,7 +13,7 @@ use trust_dns::rr::{DNSClass, RecordType};
 #[ignore]
 #[serial(port53)]
 fn handles_two_consecutive_ipv4_dns_requests_integration() {
-    let _node = utils::MASQNode::start_standard(
+    let _node = utils::PulseCloakNode::start_standard(
         "handles_two_consecutive_ipv4_dns_requests_integration",
         None,
         true,
@@ -31,7 +31,7 @@ fn handles_two_consecutive_ipv4_dns_requests_integration() {
 #[ignore]
 #[serial(port53)]
 fn handles_consecutive_heterogeneous_dns_requests_integration() {
-    let _node = utils::MASQNode::start_standard(
+    let _node = utils::PulseCloakNode::start_standard(
         "handles_consecutive_heterogeneous_dns_requests_integration",
         None,
         true,

@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::command::Command;
-use crate::masq_node::MASQNodeUtils;
-use masq_lib::test_utils::utils::UrlHolder;
+use crate::pulsecloak_node::PulseCloakNodeUtils;
+use pulsecloak_lib::test_utils::utils::UrlHolder;
 use node_lib::test_utils;
 use std::net::{IpAddr, Ipv4Addr};
 
@@ -18,7 +18,7 @@ impl<'a> UrlHolder for BlockchainServer<'a> {
 
 impl<'a> BlockchainServer<'a> {
     pub fn start(&self) {
-        MASQNodeUtils::clean_up_existing_container(self.name);
+        PulseCloakNodeUtils::clean_up_existing_container(self.name);
         let ip_addr = IpAddr::V4(Ipv4Addr::new(172, 18, 1, 250));
         let ip_addr_string = ip_addr.to_string();
         let args = vec![
@@ -60,6 +60,6 @@ impl<'a> BlockchainServer<'a> {
 
 impl<'a> Drop for BlockchainServer<'a> {
     fn drop(&mut self) {
-        MASQNodeUtils::stop(self.name);
+        PulseCloakNodeUtils::stop(self.name);
     }
 }

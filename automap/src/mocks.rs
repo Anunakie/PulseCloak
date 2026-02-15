@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(any(test, not(feature = "no_test_share")))]
 
@@ -11,7 +11,7 @@ use crate::control_layer::automap_control::{
 };
 use crossbeam_channel::Sender;
 use lazy_static::lazy_static;
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::utils::AutomapProtocol;
 use std::any::Any;
 use std::cell::RefCell;
 use std::io::ErrorKind;

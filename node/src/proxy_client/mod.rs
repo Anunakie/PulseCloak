@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #[cfg(test)]
 mod local_test_utils;
@@ -35,8 +35,8 @@ use actix::Addr;
 use actix::Context;
 use actix::Handler;
 use actix::Recipient;
-use masq_lib::logger::Logger;
-use masq_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
 use pretty_hex::PrettyHex;
 use std::collections::HashMap;
 use std::net::SocketAddr;
@@ -358,8 +358,8 @@ mod tests {
     use crate::test_utils::*;
     use actix::System;
     use lazy_static::lazy_static;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::cell::RefCell;
     use std::net::SocketAddr;
     use std::net::{IpAddr, SocketAddrV4};

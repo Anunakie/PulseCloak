@@ -2,15 +2,15 @@
 name = "dns_utility"
 version = "0.9.0"
 license = "GPL-3.0-only"
-authors = ["Dan Wiebe <dnwiebe@gmail.com>", "MASQ"]
-copyright = "Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved."
+authors = ["Dan Wiebe <dnwiebe@gmail.com>", "PulseChainCloak"]
+copyright = "Copyright (c) 2019, PulseChainCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved."
 description = "Command-line utility to turn DNS subversion on and off"
 edition = "2021"
 
 [dependencies]
 regex = "1.5.4"
 libc = "0.2.107"
-masq_lib = { path = "../masq_lib" }
+pulsecloak_lib = { path = "../pulsecloak_lib" }
 
 
 [target.'cfg(target_os = "macos")'.dependencies]

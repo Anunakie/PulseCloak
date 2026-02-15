@@ -1,5 +1,5 @@
 use std::num::NonZeroU32;
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::cryptde::PlainData;
 use bip39::{Language, Mnemonic, MnemonicType, Seed};
 use ethsign::keyfile::Crypto;

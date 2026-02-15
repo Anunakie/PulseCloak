@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::neighborhood::overall_connection_status::ConnectionStageErrors::{
     NoGossipResponseReceived, PassLoopFound, TcpConnectionFailed,
@@ -7,9 +7,9 @@ use crate::sub_lib::neighborhood::{
     ConnectionProgressEvent, ConnectionProgressMessage, NodeDescriptor,
 };
 use actix::Recipient;
-use masq_lib::logger::Logger;
-use masq_lib::messages::{ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage};
-use masq_lib::ui_gateway::{MessageTarget, NodeToUiMessage};
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::{ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage};
+use pulsecloak_lib::ui_gateway::{MessageTarget, NodeToUiMessage};
 use std::net::IpAddr;
 use std::string::String;
 
@@ -337,10 +337,10 @@ mod tests {
     use crate::test_utils::neighborhood_test_utils::{make_ip, make_node, make_node_descriptor};
     use crate::test_utils::unshared_test_utils::make_node_to_ui_recipient;
     use actix::System;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::messages::{ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::ui_gateway::MessageTarget;
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::messages::{ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::ui_gateway::MessageTarget;
 
     #[test]
     #[should_panic(

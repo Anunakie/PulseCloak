@@ -1,7 +1,7 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
-use crate::masq_node::MASQNode;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
+use crate::pulsecloak_node::PulseCloakNode;
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
 use node_lib::neighborhood::gossip::AccessibleGossipRecord;
 use node_lib::neighborhood::gossip::{GossipNodeRecord, Gossip_0v1};
 use node_lib::sub_lib::cryptde::PublicKey;
@@ -133,7 +133,7 @@ impl From<&AccessibleGossipRecord> for SingleNode {
 }
 
 impl SingleNode {
-    pub fn new(node: &dyn MASQNode) -> SingleNode {
+    pub fn new(node: &dyn PulseCloakNode) -> SingleNode {
         SingleNode {
             node: AccessibleGossipRecord::from(node),
         }
@@ -217,7 +217,7 @@ impl From<(&AccessibleGossipRecord, &AccessibleGossipRecord)> for Introduction {
 }
 
 impl Introduction {
-    pub fn new(introducer: &dyn MASQNode, introducee: &dyn MASQNode) -> Introduction {
+    pub fn new(introducer: &dyn PulseCloakNode, introducee: &dyn PulseCloakNode) -> Introduction {
         Introduction {
             introducer: AccessibleGossipRecord::from(introducer),
             introducee: AccessibleGossipRecord::from(introducee),
@@ -334,8 +334,8 @@ impl StandardBuilder {
         }
     }
 
-    pub fn add_masq_node(self, masq_node: &dyn MASQNode, version: u32) -> StandardBuilder {
-        let mut agr = AccessibleGossipRecord::from(masq_node);
+    pub fn add_pulsecloak_node(self, pulsecloak_node: &dyn PulseCloakNode, version: u32) -> StandardBuilder {
+        let mut agr = AccessibleGossipRecord::from(pulsecloak_node);
         agr.inner.version = version;
         self.add_agr(&agr)
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(test)]
 
@@ -15,7 +15,7 @@ pub(in crate::accountant::db_big_integer) mod restricted {
     use crate::accountant::db_big_integer::big_int_db_processor::{
         DisplayableParamValue, KeyVariants,
     };
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::Connection;
 
     pub fn create_new_empty_db(module: &str, test_name: &str) -> Connection {

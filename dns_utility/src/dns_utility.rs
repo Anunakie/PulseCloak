@@ -1,9 +1,9 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::dns_modifier::DnsModifier;
 use crate::dns_modifier_factory::DnsModifierFactory;
 use crate::dns_modifier_factory::DnsModifierFactoryReal;
-use masq_lib::command::{Command, StdStreams};
-use masq_lib::short_writeln;
+use pulsecloak_lib::command::{Command, StdStreams};
+use pulsecloak_lib::short_writeln;
 use std::io::Write;
 
 enum Action {
@@ -111,7 +111,7 @@ impl DnsUtility {
 mod tests {
     use super::*;
     use crate::dns_modifier::DnsModifier;
-    use masq_lib::test_utils::fake_stream_holder::FakeStreamHolder;
+    use pulsecloak_lib::test_utils::fake_stream_holder::FakeStreamHolder;
     use std::cell::RefCell;
     use std::io;
 

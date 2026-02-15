@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
-use masq_lib::messages::{ToMessageBody, UiSetConfigurationRequest};
-use masq_lib::utils::{find_free_port, index_of};
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
-    make_consuming_wallet_info, MASQRealNode, NodeStartupConfigBuilder,
+use pulsecloak_lib::messages::{ToMessageBody, UiSetConfigurationRequest};
+use pulsecloak_lib::utils::{find_free_port, index_of};
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
+    make_consuming_wallet_info, PulseCloakRealNode, NodeStartupConfigBuilder,
 };
 use node_lib::sub_lib::neighborhood::Hops;
 use std::thread;
@@ -21,7 +21,7 @@ fn data_can_be_routed_using_different_min_hops() {
 }
 
 fn assert_http_end_to_end_routing(min_hops: Hops) {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let config = NodeStartupConfigBuilder::standard()
         .min_hops(min_hops)
         .chain(cluster.chain)
@@ -41,7 +41,7 @@ fn assert_http_end_to_end_routing(min_hops: Hops) {
                     .build(),
             )
         })
-        .collect::<Vec<MASQRealNode>>();
+        .collect::<Vec<PulseCloakRealNode>>();
 
     thread::sleep(Duration::from_millis(500 * (nodes.len() as u64)));
 
@@ -62,7 +62,7 @@ fn assert_http_end_to_end_routing(min_hops: Hops) {
 fn min_hops_can_be_changed_during_runtime() {
     let initial_min_hops = Hops::OneHop;
     let new_min_hops = Hops::TwoHops;
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let ui_port = find_free_port();
     let first_node_config = NodeStartupConfigBuilder::standard()
         .min_hops(initial_min_hops)

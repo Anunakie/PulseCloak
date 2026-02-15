@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::comm_layer::igdp::IgdpTransactor;
 use crate::comm_layer::pcp::PcpTransactor;
@@ -7,9 +7,9 @@ use crate::comm_layer::{
     AutomapError, HousekeepingThreadCommand, Transactor, DEFAULT_MAPPING_LIFETIME_SECONDS,
 };
 use crossbeam_channel::Sender;
-use masq_lib::debug;
-use masq_lib::logger::Logger;
-use masq_lib::utils::{plus, AutomapProtocol};
+use pulsecloak_lib::debug;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::{plus, AutomapProtocol};
 use std::cell::{RefCell, RefMut};
 use std::collections::HashSet;
 use std::fmt::Debug;

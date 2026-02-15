@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(test)]
 
@@ -159,7 +159,7 @@ mod tests {
     use crate::daemon::crash_notification::CrashNotification;
     use crate::sub_lib::peer_actors::{NewPublicIp, StartMessage};
     use crate::test_utils::recorder_stop_conditions::{StopCondition, StopConditions};
-    use masq_lib::messages::ScanType;
+    use pulsecloak_lib::messages::ScanType;
     use std::any::TypeId;
     use std::net::{IpAddr, Ipv4Addr};
     use std::vec;

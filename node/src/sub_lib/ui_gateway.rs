@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::sub_lib::peer_actors::BindMessage;
 use actix::Recipient;
-use masq_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::ui_gateway::{NodeFromUiMessage, NodeToUiMessage};
 use std::fmt::{Debug, Formatter};
 
 #[derive(Clone, Debug)]

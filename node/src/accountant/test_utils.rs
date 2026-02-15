@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(test)]
 
@@ -47,9 +47,9 @@ use crate::test_utils::unshared_test_utils::make_bc_with_defaults;
 use actix::{Message, System};
 use ethereum_types::H256;
 use itertools::Either;
-use masq_lib::logger::Logger;
-use masq_lib::messages::ScanType;
-use masq_lib::ui_gateway::NodeToUiMessage;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::ScanType;
+use pulsecloak_lib::ui_gateway::NodeToUiMessage;
 use rusqlite::{Connection, OpenFlags, Row};
 use std::any::type_name;
 use std::cell::RefCell;

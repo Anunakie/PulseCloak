@@ -1,4 +1,4 @@
-// Copyright (c) 2023, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2023, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(test)]
 pub mod transaction_wrapper_mock;

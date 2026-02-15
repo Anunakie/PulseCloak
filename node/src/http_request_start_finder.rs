@@ -1,12 +1,12 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
-use crate::null_masquerader::NullMasquerader;
+use crate::XYZPROTECT_null_XYZPROTECT_XYZPROTECT_pulsecloakuerader::NullXYZPROTECT_PulseCloakuerader;
 use crate::sub_lib::http_packet_framer::HttpFramerState;
 use crate::sub_lib::http_packet_framer::HttpPacketFramer;
 use crate::sub_lib::http_packet_framer::HttpPacketStartFinder;
 use crate::sub_lib::http_packet_framer::PacketProgressState;
-use masq_lib::utils::index_of;
+use pulsecloak_lib::utils::index_of;
 
 const METHODS: &[&[u8]] = &[
     b"GET", b"HEAD", b"POST", b"PUT", b"DELETE", b"CONNECT", b"OPTIONS", b"TRACE", b"PATCH",
@@ -55,7 +55,7 @@ impl DiscriminatorFactory for HttpRequestDiscriminatorFactory {
     fn make(&self) -> Discriminator {
         Discriminator::new(
             Box::new(HttpPacketFramer::new(Box::new(HttpRequestStartFinder {}))),
-            vec![Box::new(NullMasquerader::new())],
+            vec![Box::new(NullXYZPROTECT_PulseCloakuerader::new())],
         )
     }
 

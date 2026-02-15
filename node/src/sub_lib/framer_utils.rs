@@ -1,5 +1,5 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
-use masq_lib::utils::index_of;
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
+use pulsecloak_lib::utils::index_of;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct ChunkOffsetLength {

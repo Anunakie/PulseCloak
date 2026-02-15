@@ -145,7 +145,7 @@ dependencies = [
  "lazy_static",
  "local_ipaddress",
  "log 0.4.17",
- "masq_lib",
+ "pulsecloak_lib",
  "port_scanner",
  "pretty-hex",
  "rand 0.7.3",
@@ -1115,7 +1115,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "masq_lib"
+name = "pulsecloak_lib"
 version = "0.9.0"
 dependencies = [
  "actix",

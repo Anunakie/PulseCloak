@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::blockchain::blockchain_interface::blockchain_interface_web3::CONTRACT_ABI;
 use crate::blockchain::blockchain_interface::data_structures::errors::BlockchainError;
@@ -180,8 +180,8 @@ mod tests {
     use crate::test_utils::make_wallet;
     use ethereum_types::{H256, U64};
     use futures::Future;
-    use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-    use masq_lib::utils::find_free_port;
+    use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+    use pulsecloak_lib::utils::find_free_port;
     use std::str::FromStr;
     use web3::types::{BlockNumber, Bytes, FilterBuilder, Log, TransactionReceipt, U256};
     use crate::blockchain::blockchain_interface::blockchain_interface_web3::lower_level_interface_web3::{TxReceipt, TxStatus};

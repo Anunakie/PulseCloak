@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod client_request_payload_factory;
 pub mod http_protocol_pack;
@@ -46,10 +46,10 @@ use actix::Handler;
 use actix::Recipient;
 use actix::{Actor, MailboxError};
 use actix::{Addr, AsyncContext};
-use masq_lib::constants::TLS_PORT;
-use masq_lib::logger::Logger;
-use masq_lib::ui_gateway::NodeFromUiMessage;
-use masq_lib::utils::MutabilityConflictHelper;
+use pulsecloak_lib::constants::TLS_PORT;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::ui_gateway::NodeFromUiMessage;
+use pulsecloak_lib::utils::MutabilityConflictHelper;
 use regex::Regex;
 use std::collections::HashMap;
 use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
@@ -1392,10 +1392,10 @@ mod tests {
     use actix::System;
     use crossbeam_channel::unbounded;
     use lazy_static::lazy_static;
-    use masq_lib::constants::{HTTP_PORT, TLS_PORT};
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
-    use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+    use pulsecloak_lib::constants::{HTTP_PORT, TLS_PORT};
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
     use std::any::TypeId;
     use std::cell::RefCell;
     use std::net::SocketAddr;

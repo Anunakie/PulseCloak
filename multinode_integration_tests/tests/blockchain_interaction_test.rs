@@ -1,14 +1,14 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use log::Level;
-use masq_lib::messages::{FromMessageBody, ScanType, ToMessageBody, UiScanRequest, UiScanResponse};
-use masq_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
-use masq_lib::test_utils::utils::{is_running_under_github_actions, LogObject, UrlHolder};
-use masq_lib::utils::find_free_port;
-use multinode_integration_tests_lib::masq_node::MASQNode;
-use multinode_integration_tests_lib::masq_node::MASQNodeUtils;
-use multinode_integration_tests_lib::masq_node_cluster::MASQNodeCluster;
-use multinode_integration_tests_lib::masq_real_node::{
+use pulsecloak_lib::messages::{FromMessageBody, ScanType, ToMessageBody, UiScanRequest, UiScanResponse};
+use pulsecloak_lib::test_utils::mock_blockchain_client_server::MBCSBuilder;
+use pulsecloak_lib::test_utils::utils::{is_running_under_github_actions, LogObject, UrlHolder};
+use pulsecloak_lib::utils::find_free_port;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
+use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNodeUtils;
+use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
+use multinode_integration_tests_lib::pulsecloak_real_node::{
     ConsumingWalletInfo, NodeStartupConfigBuilder,
 };
 use multinode_integration_tests_lib::utils::{
@@ -28,7 +28,7 @@ fn debtors_are_credited_once_but_not_twice() {
     }
     let mbcs_port = find_free_port();
     let ui_port = find_free_port();
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     // Create and initialize mock blockchain client: prepare a receivable at block 2000
     eprintln!("Setting up mock blockchain client");
     let blockchain_client_server = MBCSBuilder::new(mbcs_port)
@@ -156,7 +156,7 @@ fn debtors_are_credited_once_but_not_twice() {
 
 #[test]
 fn blockchain_bridge_starts_properly_on_bootstrap() {
-    let mut cluster = MASQNodeCluster::start().unwrap();
+    let mut cluster = PulseCloakNodeCluster::start().unwrap();
     let private_key = "0011223300112233001122330011223300112233001122330011223300112233";
     let subject = cluster.start_real_node(
         NodeStartupConfigBuilder::standard()
@@ -165,7 +165,7 @@ fn blockchain_bridge_starts_properly_on_bootstrap() {
             .build(),
     );
 
-    MASQNodeUtils::assert_node_wrote_log_containing(
+    PulseCloakNodeUtils::assert_node_wrote_log_containing(
         subject.name(),
         "DEBUG: BlockchainBridge: Received BindMessage",
         Duration::from_millis(1000),

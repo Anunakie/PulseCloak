@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::database::rusqlite_wrappers::{ConnectionWrapper, ConnectionWrapperReal};
 
 use crate::database::db_migrations::db_migrator::{DbMigrator, DbMigratorReal};
@@ -7,14 +7,14 @@ use crate::neighborhood::DEFAULT_MIN_HOPS;
 use crate::sub_lib::accountant::{DEFAULT_PAYMENT_THRESHOLDS, DEFAULT_SCAN_INTERVALS};
 use crate::sub_lib::neighborhood::DEFAULT_RATE_PACK;
 use crate::sub_lib::utils::db_connection_launch_panic;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{
     CURRENT_SCHEMA_VERSION, DEFAULT_GAS_PRICE, HIGHEST_RANDOM_CLANDESTINE_PORT,
     LOWEST_USABLE_INSECURE_PORT,
 };
-use masq_lib::logger::Logger;
-use masq_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
-use masq_lib::utils::NeighborhoodModeLight;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_CHAIN;
+use pulsecloak_lib::utils::NeighborhoodModeLight;
 use rand::prelude::*;
 use rusqlite::{Connection, OpenFlags};
 use std::fmt::{Debug, Formatter};
@@ -638,13 +638,13 @@ mod tests {
     };
     use itertools::Either::{Left, Right};
     use itertools::{Either, Itertools};
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::test_utils::utils::{
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::utils::{
         ensure_node_home_directory_does_not_exist, ensure_node_home_directory_exists,
         TEST_DEFAULT_CHAIN,
     };
-    use masq_lib::utils::NeighborhoodModeLight;
+    use pulsecloak_lib::utils::NeighborhoodModeLight;
     use regex::Regex;
     use rusqlite::Error::InvalidColumnType;
     use rusqlite::{Error, OpenFlags};

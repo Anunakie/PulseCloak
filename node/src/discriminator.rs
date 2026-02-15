@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
-use crate::masquerader::{MasqueradeError, Masquerader};
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
+use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::{PulseCloakueradeError, XYZPROTECT_PulseCloakuerader};
 use crate::sub_lib::framer::Framer;
 use core::fmt::Debug;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct UnmaskedChunk {
@@ -34,18 +34,18 @@ impl Clone for Box<dyn DiscriminatorFactory> {
 
 pub struct Discriminator {
     framer: Box<dyn Framer>,
-    masqueraders: Vec<Box<dyn Masquerader>>,
+    XYZPROTECT_XYZPROTECT_pulsecloakueraders: Vec<Box<dyn XYZPROTECT_PulseCloakuerader>>,
     logger: Logger,
 }
 
 impl Discriminator {
-    pub fn new(framer: Box<dyn Framer>, masqueraders: Vec<Box<dyn Masquerader>>) -> Discriminator {
-        if masqueraders.is_empty() {
-            panic!("Discriminator must be given at least one Masquerader");
+    pub fn new(framer: Box<dyn Framer>, XYZPROTECT_XYZPROTECT_pulsecloakueraders: Vec<Box<dyn XYZPROTECT_PulseCloakuerader>>) -> Discriminator {
+        if XYZPROTECT_XYZPROTECT_pulsecloakueraders.is_empty() {
+            panic!("Discriminator must be given at least one XYZPROTECT_PulseCloakuerader");
         }
         Discriminator {
             framer,
-            masqueraders,
+            XYZPROTECT_XYZPROTECT_pulsecloakueraders,
             logger: Logger::new("Discriminator"),
         }
     }
@@ -59,10 +59,10 @@ impl Discriminator {
             Some(frame) => frame,
             None => return None,
         };
-        for masquerader in &self.masqueraders {
-            match masquerader.try_unmask(&frame.chunk[..]) {
+        for XYZPROTECT_XYZPROTECT_pulsecloakuerader in &self.XYZPROTECT_XYZPROTECT_pulsecloakueraders {
+            match XYZPROTECT_XYZPROTECT_pulsecloakuerader.try_unmask(&frame.chunk[..]) {
                 Ok(chunk) => return Some(chunk),
-                Err(MasqueradeError::NotThisMasquerader) => (),
+                Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader) => (),
                 Err(e) => {
                     warning!(self.logger, "{}", e);
                 }
@@ -75,9 +75,9 @@ impl Discriminator {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::masquerader::MasqueradeError;
+    use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::PulseCloakueradeError;
     use crate::sub_lib::framer::FramedChunk;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
     use std::cell::RefCell;
     use std::ops::DerefMut;
     use std::sync::Arc;
@@ -110,14 +110,14 @@ mod tests {
         }
     }
 
-    // TODO: Remove this struct and replace with the MasqueraderMock from node_test_utils
-    pub struct MasqueraderMock {
-        try_unmask_results: RefCell<Vec<Result<UnmaskedChunk, MasqueradeError>>>,
+    // TODO: Remove this struct and replace with the XYZPROTECT_PulseCloakueraderMock from node_test_utils
+    pub struct XYZPROTECT_PulseCloakueraderMock {
+        try_unmask_results: RefCell<Vec<Result<UnmaskedChunk, PulseCloakueradeError>>>,
         try_unmask_parameters: RefCell<Arc<Mutex<Vec<Vec<u8>>>>>,
     }
 
-    impl Masquerader for MasqueraderMock {
-        fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, MasqueradeError> {
+    impl XYZPROTECT_PulseCloakuerader for XYZPROTECT_PulseCloakueraderMock {
+        fn try_unmask(&self, item: &[u8]) -> Result<UnmaskedChunk, PulseCloakueradeError> {
             let mut try_unmask_parameters_ref = self.try_unmask_parameters.borrow_mut();
             try_unmask_parameters_ref
                 .deref_mut()
@@ -127,14 +127,14 @@ mod tests {
             self.try_unmask_results.borrow_mut().remove(0)
         }
 
-        fn mask(&self, _data: &[u8]) -> Result<Vec<u8>, MasqueradeError> {
+        fn mask(&self, _data: &[u8]) -> Result<Vec<u8>, PulseCloakueradeError> {
             unimplemented!()
         }
     }
 
-    impl MasqueraderMock {
-        pub fn new() -> MasqueraderMock {
-            MasqueraderMock {
+    impl XYZPROTECT_PulseCloakueraderMock {
+        pub fn new() -> XYZPROTECT_PulseCloakueraderMock {
+            XYZPROTECT_PulseCloakueraderMock {
                 try_unmask_results: RefCell::new(vec![]),
                 try_unmask_parameters: RefCell::new(Arc::new(Mutex::new(vec![]))),
             }
@@ -142,8 +142,8 @@ mod tests {
 
         pub fn try_unmask_result(
             self,
-            result: Result<UnmaskedChunk, MasqueradeError>,
-        ) -> MasqueraderMock {
+            result: Result<UnmaskedChunk, PulseCloakueradeError>,
+        ) -> XYZPROTECT_PulseCloakueraderMock {
             self.try_unmask_results.borrow_mut().push(result);
             self
         }
@@ -151,15 +151,15 @@ mod tests {
         pub fn try_unmask_parameters(
             self,
             parameters: &mut Arc<Mutex<Vec<Vec<u8>>>>,
-        ) -> MasqueraderMock {
+        ) -> XYZPROTECT_PulseCloakueraderMock {
             *parameters = self.try_unmask_parameters.borrow_mut().clone();
             self
         }
     }
 
     #[test]
-    #[should_panic(expected = "Discriminator must be given at least one Masquerader")]
-    fn complains_if_no_masqueraders() {
+    #[should_panic(expected = "Discriminator must be given at least one XYZPROTECT_PulseCloakuerader")]
+    fn complains_if_no_XYZPROTECT_XYZPROTECT_pulsecloakueraders() {
         Discriminator::new(Box::new(FramerMock::new()), vec![]);
     }
 
@@ -167,7 +167,7 @@ mod tests {
     fn returns_none_if_no_data_has_been_added() {
         let mut subject = Discriminator::new(
             Box::new(FramerMock::new()),
-            vec![Box::new(MasqueraderMock::new())],
+            vec![Box::new(XYZPROTECT_PulseCloakueraderMock::new())],
         );
 
         let result = subject.take_chunk();
@@ -176,21 +176,21 @@ mod tests {
     }
 
     #[test]
-    fn returns_none_if_all_masqueraders_say_no() {
+    fn returns_none_if_all_XYZPROTECT_XYZPROTECT_pulsecloakueraders_say_no() {
         let framer = FramerMock::new();
         let mut first_try_unmask_parameters: Arc<Mutex<Vec<Vec<u8>>>> =
             Arc::new(Mutex::new(vec![]));
-        let first_masquerader = MasqueraderMock::new()
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+        let first_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut first_try_unmask_parameters);
         let mut second_try_unmask_parameters: Arc<Mutex<Vec<Vec<u8>>>> =
             Arc::new(Mutex::new(vec![]));
-        let second_masquerader = MasqueraderMock::new()
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+        let second_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut second_try_unmask_parameters);
         let mut subject = Discriminator::new(
             Box::new(framer),
-            vec![Box::new(first_masquerader), Box::new(second_masquerader)],
+            vec![Box::new(first_XYZPROTECT_XYZPROTECT_pulsecloakuerader), Box::new(second_XYZPROTECT_XYZPROTECT_pulsecloakuerader)],
         );
         subject.add_data(&b"booga"[..]);
 
@@ -206,32 +206,32 @@ mod tests {
     }
 
     #[test]
-    fn returns_first_data_if_all_masqueraders_say_yes() {
+    fn returns_first_data_if_all_XYZPROTECT_XYZPROTECT_pulsecloakueraders_say_yes() {
         let mut framer = FramerMock::new();
         framer.add_data(&b"booga"[..]);
         let mut first_try_unmask_parameters: Arc<Mutex<Vec<Vec<u8>>>> =
             Arc::new(Mutex::new(vec![]));
         let mut second_try_unmask_parameters: Arc<Mutex<Vec<Vec<u8>>>> =
             Arc::new(Mutex::new(vec![]));
-        let first_masquerader = MasqueraderMock::new()
+        let first_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
             .try_unmask_result(Ok(UnmaskedChunk::new(
                 Vec::from(&b"choose me"[..]),
                 true,
                 true,
             )))
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut first_try_unmask_parameters);
-        let second_masquerader = MasqueraderMock::new()
+        let second_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
             .try_unmask_result(Ok(UnmaskedChunk::new(
                 Vec::from(&b"don't choose me"[..]),
                 true,
                 true,
             )))
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut second_try_unmask_parameters);
         let mut subject = Discriminator::new(
             Box::new(framer),
-            vec![Box::new(first_masquerader), Box::new(second_masquerader)],
+            vec![Box::new(first_XYZPROTECT_XYZPROTECT_pulsecloakuerader), Box::new(second_XYZPROTECT_XYZPROTECT_pulsecloakuerader)],
         );
 
         let result = subject.take_chunk();
@@ -248,7 +248,7 @@ mod tests {
     }
 
     #[test]
-    fn returns_third_data_if_first_masquerader_says_no_and_second_blows_up() {
+    fn returns_third_data_if_first_XYZPROTECT_XYZPROTECT_pulsecloakuerader_says_no_and_second_blows_up() {
         init_test_logging();
         let mut framer = FramerMock::new();
         framer.add_data(&b"booga"[..]);
@@ -256,26 +256,26 @@ mod tests {
             Arc::new(Mutex::new(vec![]));
         let mut third_try_unmask_parameters: Arc<Mutex<Vec<Vec<u8>>>> =
             Arc::new(Mutex::new(vec![]));
-        let first_masquerader = MasqueraderMock::new()
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+        let first_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut first_try_unmask_parameters);
-        let second_masquerader = MasqueraderMock::new().try_unmask_result(Err(
-            MasqueradeError::HighLevelDataError("that didn't work".to_string()),
+        let second_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new().try_unmask_result(Err(
+            PulseCloakueradeError::HighLevelDataError("that didn't work".to_string()),
         ));
-        let third_masquerader = MasqueraderMock::new()
+        let third_XYZPROTECT_XYZPROTECT_pulsecloakuerader = XYZPROTECT_PulseCloakueraderMock::new()
             .try_unmask_result(Ok(UnmaskedChunk::new(
                 Vec::from(&b"choose me"[..]),
                 true,
                 true,
             )))
-            .try_unmask_result(Err(MasqueradeError::NotThisMasquerader))
+            .try_unmask_result(Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader))
             .try_unmask_parameters(&mut third_try_unmask_parameters);
         let mut subject = Discriminator::new(
             Box::new(framer),
             vec![
-                Box::new(first_masquerader),
-                Box::new(second_masquerader),
-                Box::new(third_masquerader),
+                Box::new(first_XYZPROTECT_XYZPROTECT_pulsecloakuerader),
+                Box::new(second_XYZPROTECT_XYZPROTECT_pulsecloakuerader),
+                Box::new(third_XYZPROTECT_XYZPROTECT_pulsecloakuerader),
             ],
         );
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use automap_lib::automap_core_functions::{
     change_handler, run_probe_test, tester_for, AutomapParameters, TestStatus,
@@ -7,7 +7,7 @@ use automap_lib::comm_layer::AutomapErrorCause;
 use automap_lib::control_layer::automap_control::{AutomapControl, AutomapControlReal};
 use automap_lib::logger::initiate_logger;
 use log::info;
-use masq_lib::utils::AutomapProtocol;
+use pulsecloak_lib::utils::AutomapProtocol;
 
 const SERVER_SOCKET_ADDRESS: &str = "54.212.109.41:8081";
 /*
@@ -16,9 +16,9 @@ on an IP address different from the one above, change SERVER_SOCKET_ADDRESS to c
 address where the VM lives. If the VM is running, but the probe server isn't, get hold of the
 .pem file for the server, set its permissions to 700, and log onto the probe server's VM like this:
 
-ssh -i masq-sandbox-bert.pem ubuntu@54.212.109.41
+ssh -i pulsecloak-sandbox-bert.pem ubuntu@54.212.109.41
 
-where `masq-sandbox-bert.pem` is the path to and name of the .pem file. You may need to correct the
+where `pulsecloak-sandbox-bert.pem` is the path to and name of the .pem file. You may need to correct the
 IP address.
 
 Once you're logged in, start the probe server like this:

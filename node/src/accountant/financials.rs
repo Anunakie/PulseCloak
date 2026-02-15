@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use std::fmt::Debug;
 
@@ -26,11 +26,11 @@ where
 pub(in crate::accountant) mod visibility_restricted_module {
     use crate::accountant::db_access_objects::utils::CustomQuery;
     use crate::accountant::financials::{fits_in_0_to_i64max_for_u64, OPCODE_FINANCIALS};
-    use masq_lib::constants::{
+    use pulsecloak_lib::constants::{
         REQUEST_WITH_MUTUALLY_EXCLUSIVE_PARAMS, REQUEST_WITH_NO_VALUES, VALUE_EXCEEDS_ALLOWED_LIMIT,
     };
-    use masq_lib::messages::UiFinancialsRequest;
-    use masq_lib::ui_gateway::{MessageBody, MessagePath};
+    use pulsecloak_lib::messages::UiFinancialsRequest;
+    use pulsecloak_lib::ui_gateway::{MessageBody, MessagePath};
     use std::fmt::{Debug, Display};
 
     pub fn check_query_is_within_tech_limits<N>(
@@ -113,9 +113,9 @@ mod tests {
     use super::visibility_restricted_module::check_query_is_within_tech_limits;
     use crate::accountant::db_access_objects::utils::CustomQuery;
     use crate::accountant::financials::fits_in_0_to_i64max_for_u64;
-    use masq_lib::constants::VALUE_EXCEEDS_ALLOWED_LIMIT;
-    use masq_lib::messages::TopRecordsOrdering::Age;
-    use masq_lib::ui_gateway::{MessageBody, MessagePath};
+    use pulsecloak_lib::constants::VALUE_EXCEEDS_ALLOWED_LIMIT;
+    use pulsecloak_lib::messages::TopRecordsOrdering::Age;
+    use pulsecloak_lib::ui_gateway::{MessageBody, MessagePath};
     use std::fmt::{Debug, Display};
     use std::time::SystemTime;
 

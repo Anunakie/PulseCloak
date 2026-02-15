@@ -1,8 +1,8 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::sub_lib::stream_handler_pool::TransmitDataMsg;
-use masq_lib::logger::Logger;
-use masq_lib::utils::index_of;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::index_of;
 use serde::de::Visitor;
 use serde::Deserialize;
 use serde::Deserializer;
@@ -242,8 +242,8 @@ mod tests {
     use super::*;
     use crate::sub_lib::dispatcher::Endpoint;
     use crate::sub_lib::stream_handler_pool::TransmitDataMsg;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::net::SocketAddr;
     use std::str::FromStr;
 

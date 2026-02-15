@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::sub_lib::proxy_client::InboundServerData;
 use crate::sub_lib::sequencer::Sequencer;
 use crate::sub_lib::stream_key::StreamKey;
@@ -6,7 +6,7 @@ use crate::sub_lib::tokio_wrappers::ReadHalfWrapper;
 use crate::sub_lib::utils::indicates_dead_stream;
 use actix::Recipient;
 use crossbeam_channel::{Receiver, Sender};
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 use std::net::SocketAddr;
 use tokio::prelude::Async;
 use tokio::prelude::Future;
@@ -132,8 +132,8 @@ mod tests {
     use crate::test_utils::tokio_wrapper_mocks::ReadHalfWrapperMock;
     use actix::{Actor, System};
     use crossbeam_channel::unbounded;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::io::Error;
     use std::io::ErrorKind;
     use std::net::SocketAddr;

@@ -6,8 +6,8 @@ labels: ''
 
 ---
 
-**MASQ Node Version**
-Need the full version of MASQ Node (e.g. MASQNode 0.4.2)
+**PulseCloak Node Version**
+Need the full version of PulseCloak Node (e.g. PulseCloakNode 0.4.2)
 
 **Describe the bug**
 A clear and concise description of what the bug is.

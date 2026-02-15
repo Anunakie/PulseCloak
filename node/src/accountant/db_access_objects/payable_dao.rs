@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_big_integer::big_int_db_processor::KeyVariants::{
     PendingPayableRowid, WalletAddress,
@@ -19,7 +19,7 @@ use crate::database::rusqlite_wrappers::ConnectionWrapper;
 use crate::sub_lib::wallet::Wallet;
 #[cfg(test)]
 use ethereum_types::{BigEndianHash, U256};
-use masq_lib::utils::ExpectValue;
+use pulsecloak_lib::utils::ExpectValue;
 #[cfg(test)]
 use rusqlite::OptionalExtension;
 use rusqlite::{Error, Row};
@@ -551,8 +551,8 @@ mod tests {
         DbInitializationConfig, DbInitializer, DbInitializerReal, DATABASE_FILE,
     };
     use crate::test_utils::make_wallet;
-    use masq_lib::messages::TopRecordsOrdering::{Age, Balance};
-    use masq_lib::test_utils::utils::ensure_node_home_directory_exists;
+    use pulsecloak_lib::messages::TopRecordsOrdering::{Age, Balance};
+    use pulsecloak_lib::test_utils::utils::ensure_node_home_directory_exists;
     use rusqlite::{Connection, OpenFlags};
     use rusqlite::{ToSql};
     use std::path::Path;

@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 pub mod dot_graph;
 pub mod gossip;
@@ -59,20 +59,20 @@ use gossip_acceptor::GossipAcceptorReal;
 use gossip_producer::GossipProducer;
 use gossip_producer::GossipProducerReal;
 use itertools::Itertools;
-use masq_lib::blockchains::chains::Chain;
-use masq_lib::constants::{EXIT_COUNTRY_MISSING_COUNTRIES_ERROR, PAYLOAD_ZERO_SIZE};
-use masq_lib::crash_point::CrashPoint;
-use masq_lib::exit_locations::ExitLocationSet;
-use masq_lib::logger::Logger;
-use masq_lib::messages::{
+use pulsecloak_lib::blockchains::chains::Chain;
+use pulsecloak_lib::constants::{EXIT_COUNTRY_MISSING_COUNTRIES_ERROR, PAYLOAD_ZERO_SIZE};
+use pulsecloak_lib::crash_point::CrashPoint;
+use pulsecloak_lib::exit_locations::ExitLocationSet;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::{
     ExitLocation, FromMessageBody, ToMessageBody, UiConnectionStage, UiConnectionStatusRequest,
     UiGetNeighborhoodGraphRequest, UiGetNeighborhoodGraphResponse, UiSetExitLocationRequest,
     UiSetExitLocationResponse,
 };
-use masq_lib::messages::{UiConnectionStatusResponse, UiShutdownRequest};
-use masq_lib::ui_gateway::MessagePath::Conversation;
-use masq_lib::ui_gateway::{MessageBody, MessageTarget, NodeFromUiMessage, NodeToUiMessage};
-use masq_lib::utils::{exit_process, ExpectValue, NeighborhoodModeLight};
+use pulsecloak_lib::messages::{UiConnectionStatusResponse, UiShutdownRequest};
+use pulsecloak_lib::ui_gateway::MessagePath::Conversation;
+use pulsecloak_lib::ui_gateway::{MessageBody, MessageTarget, NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::utils::{exit_process, ExpectValue, NeighborhoodModeLight};
 use neighborhood_database::NeighborhoodDatabase;
 use node_record::NodeRecord;
 use std::collections::HashSet;
@@ -391,7 +391,7 @@ impl Neighborhood {
         let neighbor_configs = neighborhood_mode.neighbor_configs();
         if mode == NeighborhoodModeLight::ZeroHop && !neighbor_configs.is_empty() {
             panic!(
-                "A zero-hop MASQ Node is not decentralized and cannot have a --neighbors setting"
+                "A zero-hop PulseCloak Node is not decentralized and cannot have a --neighbors setting"
             )
         }
         let neighborhood_database = NeighborhoodDatabase::new(
@@ -1362,7 +1362,7 @@ impl Neighborhood {
     //
     // Return value is the least undesirable route that will either go from the origin to the
     // target in hops_remaining or more hops with no cycles, or from the origin hops_remaining hops
-    // out into the MASQ Network. No round trips; if you want a round trip, call this method twice.
+    // out into the PulseCloak Network. No round trips; if you want a round trip, call this method twice.
     // If the return value is None, no qualifying route was found.
     #[allow(clippy::too_many_arguments)]
     fn find_best_route_segment<'a>(
@@ -2203,15 +2203,15 @@ mod tests {
     use std::time::Instant;
     use tokio::prelude::Future;
 
-    use masq_lib::constants::{DEFAULT_CHAIN, TLS_PORT};
-    use masq_lib::messages::{
+    use pulsecloak_lib::constants::{DEFAULT_CHAIN, TLS_PORT};
+    use pulsecloak_lib::messages::{
         CountryGroups, ToMessageBody, UiConnectionChangeBroadcast, UiConnectionStage,
     };
-    use masq_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
-    use masq_lib::ui_gateway::MessageBody;
-    use masq_lib::ui_gateway::MessagePath::Conversation;
-    use masq_lib::ui_gateway::MessageTarget;
-    use masq_lib::utils::running_test;
+    use pulsecloak_lib::test_utils::utils::{ensure_node_home_directory_exists, TEST_DEFAULT_CHAIN};
+    use pulsecloak_lib::ui_gateway::MessageBody;
+    use pulsecloak_lib::ui_gateway::MessagePath::Conversation;
+    use pulsecloak_lib::ui_gateway::MessageTarget;
+    use pulsecloak_lib::utils::running_test;
 
     use crate::db_config::persistent_configuration::PersistentConfigError;
     use crate::neighborhood::gossip::Gossip_0v1;
@@ -2265,7 +2265,7 @@ mod tests {
         ConnectionProgress, ConnectionStage, OverallConnectionStage,
     };
     use crate::test_utils::unshared_test_utils::notify_handlers::NotifyLaterHandleMock;
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
 
     lazy_static! {
         static ref CRYPTDE_PAIR: CryptDEPair = CryptDEPair::null();
@@ -2462,7 +2462,7 @@ mod tests {
 
     #[test]
     #[should_panic(
-        expected = "Neighbor masq://eth-ropsten:AQIDBA@1.2.3.4:1234 is not on the mainnet blockchain"
+        expected = "Neighbor pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234 is not on the mainnet blockchain"
     )]
     fn cant_create_mainnet_neighborhood_with_non_mainnet_neighbors() {
         let cryptde = CRYPTDE_PAIR.main.as_ref();
@@ -2471,7 +2471,7 @@ mod tests {
             NeighborhoodConfig {
                 mode: NeighborhoodMode::ConsumeOnly(vec![NodeDescriptor::try_from((
                     cryptde,
-                    "masq://eth-ropsten:AQIDBA@1.2.3.4:1234",
+                    "pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234",
                 ))
                 .unwrap()]),
                 min_hops: MIN_HOPS_FOR_TEST,
@@ -2487,7 +2487,7 @@ mod tests {
 
     #[test]
     #[should_panic(
-        expected = "Neighbor masq://eth-mainnet:AQIDBA@1.2.3.4:1234 is on the mainnet blockchain"
+        expected = "Neighbor pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234 is on the mainnet blockchain"
     )]
     fn cant_create_non_mainnet_neighborhood_with_mainnet_neighbors() {
         let cryptde = CRYPTDE_PAIR.main.as_ref();
@@ -2496,7 +2496,7 @@ mod tests {
             NeighborhoodConfig {
                 mode: NeighborhoodMode::ConsumeOnly(vec![NodeDescriptor::try_from((
                     cryptde,
-                    "masq://eth-mainnet:AQIDBA@1.2.3.4:1234",
+                    "pulsecloak://eth-mainnet:AQIDBA@1.2.3.4:1234",
                 ))
                 .unwrap()]),
                 min_hops: MIN_HOPS_FOR_TEST,
@@ -6416,7 +6416,7 @@ mod tests {
         let cryptde: &dyn CryptDE = CRYPTDE_PAIR.main.as_ref();
         let debut_target = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(), // Used to provide default cryptde
-            "masq://eth-ropsten:AQIDBA@1.2.3.4:1234",
+            "pulsecloak://eth-ropsten:AQIDBA@1.2.3.4:1234",
         ))
         .unwrap();
         let (hopper, _, hopper_recording) = make_recorder();

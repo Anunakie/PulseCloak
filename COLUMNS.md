@@ -1,7 +1,7 @@
 # Card Wall Columns and Procedures
 
 ### Card Wall
-Our [Card Wall](https://github.com/orgs/MASQ-Project/projects/1) is the most dynamic public indication of the immediate
+Our [Card Wall](https://github.com/orgs/PulseCloak-Project/projects/1) is the most dynamic public indication of the immediate
 status of our project, as well as the best source of short-term information about our past accomplishments and future
 plans. Longer-term information is made publicly available on our Discord server and more statically in various
 published blogs and other documents. But the Card Wall is a lot like the scoreboard for a football game: a glance at it

@@ -1,10 +1,10 @@
-// Copyright (c) 2019-2021, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019-2021, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 #![cfg(target_os = "macos")]
 
 use crate::comm_layer::pcp_pmp_common::FindRoutersCommand;
 use crate::comm_layer::AutomapError;
-use masq_lib::utils::to_string;
+use pulsecloak_lib::utils::to_string;
 use std::net::IpAddr;
 use std::str::FromStr;
 

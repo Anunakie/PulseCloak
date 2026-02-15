@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 
 use crate::accountant::db_access_objects::utils::{DaoFactoryReal, VigilantRusqliteFlatten};
 use crate::database::rusqlite_wrappers::ConnectionWrapper;
@@ -152,7 +152,7 @@ mod tests {
     use crate::database::db_initializer::{DbInitializer, DbInitializerReal};
     use crate::test_utils::make_paying_wallet;
     use crate::test_utils::make_wallet;
-    use masq_lib::test_utils::utils::{
+    use pulsecloak_lib::test_utils::utils::{
         ensure_node_home_directory_does_not_exist, ensure_node_home_directory_exists,
     };
 

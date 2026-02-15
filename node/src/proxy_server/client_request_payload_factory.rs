@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::proxy_server::protocol_pack::from_ibcd;
 use crate::sub_lib::cryptde::CryptDE;
 use crate::sub_lib::cryptde::PlainData;
@@ -6,7 +6,7 @@ use crate::sub_lib::dispatcher::InboundClientData;
 use crate::sub_lib::proxy_server::ClientRequestPayload_0v1;
 use crate::sub_lib::sequence_buffer::SequencedPacket;
 use crate::sub_lib::stream_key::StreamKey;
-use masq_lib::logger::Logger;
+use pulsecloak_lib::logger::Logger;
 
 pub trait ClientRequestPayloadFactory {
     fn make(
@@ -74,9 +74,9 @@ mod tests {
     use crate::bootstrapper::CryptDEPair;
     use crate::sub_lib::proxy_server::ProxyProtocol;
     use lazy_static::lazy_static;
-    use masq_lib::constants::HTTP_PORT;
-    use masq_lib::test_utils::logging::init_test_logging;
-    use masq_lib::test_utils::logging::TestLogHandler;
+    use pulsecloak_lib::constants::HTTP_PORT;
+    use pulsecloak_lib::test_utils::logging::init_test_logging;
+    use pulsecloak_lib::test_utils::logging::TestLogHandler;
     use std::net::SocketAddr;
     use std::str::FromStr;
     use std::time::SystemTime;

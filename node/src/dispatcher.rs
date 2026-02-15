@@ -1,4 +1,4 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::bootstrapper::{Bootstrapper, CryptDEPair};
 use crate::stream_messages::{PoolBindMessage, RemovedStreamType};
 use crate::sub_lib::dispatcher::InboundClientData;
@@ -14,11 +14,11 @@ use actix::Context;
 use actix::Handler;
 use actix::Recipient;
 use lazy_static::lazy_static;
-use masq_lib::logger::Logger;
-use masq_lib::messages::{
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::messages::{
     FromMessageBody, ToMessageBody, UiDescriptorRequest, UiDescriptorResponse,
 };
-use masq_lib::ui_gateway::{MessageTarget, NodeFromUiMessage, NodeToUiMessage};
+use pulsecloak_lib::ui_gateway::{MessageTarget, NodeFromUiMessage, NodeToUiMessage};
 use std::net::{IpAddr, Ipv4Addr};
 
 pub const CRASH_KEY: &str = "DISPATCHER";
@@ -232,11 +232,11 @@ mod tests {
     use crate::test_utils::unshared_test_utils::prove_that_crash_request_handler_is_hooked_up;
     use actix::System;
     use lazy_static::lazy_static;
-    use masq_lib::blockchains::chains::Chain;
-    use masq_lib::constants::HTTP_PORT;
-    use masq_lib::messages::{ToMessageBody, UiDescriptorResponse};
-    use masq_lib::test_utils::logging::{init_test_logging, TestLogHandler};
-    use masq_lib::ui_gateway::MessageTarget;
+    use pulsecloak_lib::blockchains::chains::Chain;
+    use pulsecloak_lib::constants::HTTP_PORT;
+    use pulsecloak_lib::messages::{ToMessageBody, UiDescriptorResponse};
+    use pulsecloak_lib::test_utils::logging::{init_test_logging, TestLogHandler};
+    use pulsecloak_lib::ui_gateway::MessageTarget;
     use std::convert::TryFrom;
     use std::net::{IpAddr, Ipv4Addr, SocketAddr};
     use std::str::FromStr;
@@ -247,7 +247,7 @@ mod tests {
         static ref CRYPTDE_PAIR: CryptDEPair = CryptDEPair::null();
         static ref NODE_DESCRIPTOR: NodeDescriptor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXgXEN6zQ@12.23.45.67:1234"
+            "pulsecloak://eth-ropsten:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXgXEN6zQ@12.23.45.67:1234"
         ))
         .unwrap();
     }
@@ -595,7 +595,7 @@ mod tests {
         );
         TestLogHandler::new().exists_log_containing(
             format!(
-                "INFO: Bootstrapper: MASQ Node local descriptor: {}",
+                "INFO: Bootstrapper: PulseCloak Node local descriptor: {}",
                 new_node_descriptor.to_string(CRYPTDE_PAIR.main.as_ref())
             )
             .as_str(),
@@ -610,7 +610,7 @@ mod tests {
         let mut bootstrapper_config = BootstrapperConfig::new();
         let node_descriptor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@13.23.13.23:4545",
+            "pulsecloak://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@13.23.13.23:4545",
         ))
         .unwrap();
         bootstrapper_config.node_descriptor = node_descriptor.clone();
@@ -657,7 +657,7 @@ mod tests {
         let mut bootstrapper_config = BootstrapperConfig::new();
         let node_descriptor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@0.0.0.0:4545",
+            "pulsecloak://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@0.0.0.0:4545",
         ))
         .unwrap();
         bootstrapper_config.node_descriptor = node_descriptor;
@@ -702,7 +702,7 @@ mod tests {
         let mut bootstrapper_config = BootstrapperConfig::new();
         let node_descriptor = NodeDescriptor::try_from((
             CRYPTDE_PAIR.main.as_ref(),
-            "masq://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@0.0.0.0:4545",
+            "pulsecloak://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@0.0.0.0:4545",
         ))
         .unwrap();
         bootstrapper_config.node_descriptor = node_descriptor;
@@ -737,12 +737,12 @@ mod tests {
             &NodeToUiMessage {
                 target: MessageTarget::ClientId(1234),
                 body: UiDescriptorResponse {
-                    node_descriptor_opt: Some ("masq://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@1.2.3.4:4545".to_string()),
+                    node_descriptor_opt: Some ("pulsecloak://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@1.2.3.4:4545".to_string()),
                 }
                 .tmb(4321)
             }
         );
-        TestLogHandler::new().exists_log_containing("INFO: Bootstrapper: MASQ Node local descriptor: masq://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@1.2.3.4:4545");
+        TestLogHandler::new().exists_log_containing("INFO: Bootstrapper: PulseCloak Node local descriptor: pulsecloak://eth-mainnet:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@1.2.3.4:4545");
     }
 
     #[test]

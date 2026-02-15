@@ -1,11 +1,11 @@
-// Copyright (c) 2019, MASQ (https://masq.ai) and/or its affiliates. All rights reserved.
+// Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 #![cfg(test)]
 
 use crate::database::db_initializer::ExternalData;
 use crate::database::db_migrations::migrator_utils::{DBMigDeclarator, StatementObject};
 use crate::database::rusqlite_wrappers::TransactionSafeWrapper;
-use masq_lib::logger::Logger;
-use masq_lib::utils::to_string;
+use pulsecloak_lib::logger::Logger;
+use pulsecloak_lib::utils::to_string;
 use std::cell::RefCell;
 use std::sync::{Arc, Mutex};
 
