@@ -6,15 +6,12 @@
     "main": ".webpack/main",
     "private": "true",
     "workspaces": [
-        "packages/browser",
-        "packages/electron-chrome-extensions"
+        "packages/browser"
     ],
     "scripts": {
-        "build": "yarn run build:electron-chrome-extensions",
-        "build:electron-chrome-extensions": "yarn --cwd ./packages/electron-chrome-extensions build",
-        "start": "yarn build && yarn --cwd ./packages/browser start",
-        "package": "yarn build && yarn --cwd ./packages/browser package",
-        "make": "yarn build && yarn --cwd ./packages/browser make",
+        "start": "yarn --cwd ./packages/browser start",
+        "package": "yarn --cwd ./packages/browser package",
+        "make": "yarn --cwd ./packages/browser make",
         "start:debug": "cross-env DEBUG='electron-chrome-extensions:*' yarn start"
     },
     "license": "GPL-3.0",

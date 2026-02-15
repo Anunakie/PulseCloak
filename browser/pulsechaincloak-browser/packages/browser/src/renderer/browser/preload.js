@@ -1,6 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
-import { injectBrowserAction } from '../../../../electron-chrome-extensions/dist/browser-action';
+import { injectBrowserAction } from 'electron-chrome-extensions/browser-action';
 injectBrowserAction();
 
 contextBridge.exposeInMainWorld('darkMode', {

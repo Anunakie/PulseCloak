@@ -19,6 +19,11 @@ module.exports = {
                     from: require.resolve('electron-chrome-web-store/preload'),
                     to: 'chrome-web-store.preload.js',
                 },
+                {
+                    // Copy the electron-chrome-extensions preload script to webpack output
+                    from: require.resolve('electron-chrome-extensions/preload'),
+                    to: 'chrome-extension-api.preload.js',
+                },
             ],
         }),
     ],
