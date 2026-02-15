@@ -1,3 +1,6 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+
 module.exports = {
     /**
      * This is the main entry point for your application, it's the first file
@@ -8,4 +11,15 @@ module.exports = {
     module: {
         rules: require('./webpack.rules'),
     },
+    plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    // Copy the electron-chrome-web-store preload script to webpack output
+                    from: require.resolve('electron-chrome-web-store/preload'),
+                    to: 'chrome-web-store.preload.js',
+                },
+            ],
+        }),
+    ],
 };

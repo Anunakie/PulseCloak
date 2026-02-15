@@ -2,8 +2,10 @@ import { getTabSession, getDefaultSession } from '../session';
 import tabsManager from '../tabs';
 import windowManager from '../window';
 const { ElectronChromeExtensions } = require('@pulsechaincloak/electron-chrome-extensions');
+const { installChromeWebStore } = require('electron-chrome-web-store');
 const path = require('path');
 const fs = require('fs');
+const { app } = require('electron');
 
 let electronChromeExtensions;
 
@@ -107,4 +109,22 @@ export const initExtensions = async () => {
             window.destroy();
         },
     });
+
+    // Initialize Chrome Web Store support for installing extensions
+    // This enables the "Add to PulseChainCloak" button on chromewebstore.google.com
+    const extensionsPath = path.join(app.getPath('userData'), 'Extensions');
+    console.log('[WebStore] Extensions path:', extensionsPath);
+
+    try {
+        await installChromeWebStore({
+            session: tabSession,
+            extensionsPath: extensionsPath,
+            loadExtensions: true,
+            allowUnpackedExtensions: false,
+            autoUpdate: true,
+        });
+        console.log('[WebStore] Chrome Web Store support initialized successfully');
+    } catch (err) {
+        console.error('[WebStore] Failed to initialize Chrome Web Store support:', err);
+    }
 };

@@ -143,3 +143,4 @@ node_ui/static/binaries/
 # Large binary files - too big for GitHub
 browser-extract/
 .a0proj/
+browser/rabby-fork

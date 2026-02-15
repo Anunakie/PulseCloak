@@ -26,6 +26,7 @@
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "@vercel/webpack-asset-relocator-loader": "1.7.3",
         "babel-loader": "^9.1.2",
+        "copy-webpack-plugin": "^13.0.1",
         "css-loader": "^6.0.0",
         "electron": "24.3.1",
         "node-loader": "^2.0.0",
@@ -34,6 +35,7 @@
         "style-loader": "^3.0.0"
     },
     "dependencies": {
+        "electron-chrome-web-store": "^0.13.0",
         "electron-log": "^5.0.0-beta.24",
         "electron-squirrel-startup": "^1.0.0",
         "electron-store": "^8.1.0",
