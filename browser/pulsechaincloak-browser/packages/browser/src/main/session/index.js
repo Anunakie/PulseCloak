@@ -37,13 +37,20 @@ export const initSession = async (s) => {
     // Initialize ad & tracker blocking on this session
     initAdBlock(session);
 
-    // Note: onHeadersReceived is set after onBeforeRequest in the adblock module
-    // We set CSP headers here separately
+    // CSP header handling:
+    // - Skip chrome-extension:// and devtools:// URLs entirely (they need their own CSP to function)
+    // - For regular web pages, pass through original headers without CSP override
+    //   (the previous '*' CSP value was invalid syntax and broke extension popup rendering)
     session.webRequest.onHeadersReceived((details, callback) => {
+        // Don't override CSP for extension pages - they need their own CSP to function
+        if (details.url.startsWith('chrome-extension://') ||
+            details.url.startsWith('devtools://')) {
+            callback({ cancel: false });
+            return;
+        }
         callback({
             responseHeaders: {
                 ...details.responseHeaders,
-                'Content-Security-Policy': `'*'`,
             },
         });
     });
