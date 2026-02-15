@@ -252,6 +252,21 @@ body {
     to { transform: rotate(360deg); }
 }
 
+/* ===== Extension Action Buttons ===== */
+.extensionActions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 8px;
+    padding: 0 4px;
+}
+
+.extensionActions browser-action-list {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
 /* ===== Privacy Tools (Shield + History) ===== */
 .privacyTools {
     display: flex;

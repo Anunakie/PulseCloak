@@ -189,7 +189,9 @@ const App = () => {
         };
         fetchAdblockStats();
         const interval = setInterval(fetchAdblockStats, 3000);
-    
+        return () => clearInterval(interval);
+    }, []);
+
     // ===== RENDER: Mesh Panel Content =====
     const renderMeshContent = () => {
         return (
@@ -364,8 +366,6 @@ const App = () => {
         );
     };
 
-    return () => clearInterval(interval);
-    }, []);
 
     // Load history limit on mount
     useEffect(() => {

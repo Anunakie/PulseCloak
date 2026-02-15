@@ -134,6 +134,7 @@ const initMain = async () => {
         tabs.forEach((tab) => {
             tab.hide();
         });
+    });
 
     ipcMain.handle('tab:close-tab', async (event, arg) => {
         const tabId = arg.id;
@@ -150,7 +151,6 @@ const initMain = async () => {
             tabsManager.selectTab(nextId);
         }
         return true;
-    });
     });
 
     ipcMain.handle('tab:show-active', async (event) => {
