@@ -2,7 +2,7 @@
 use crate::pulsecloak_node_client::PulseCloakNodeClient;
 use crate::pulsecloak_real_node::STANDARD_CLIENT_TIMEOUT_MILLIS;
 use node_lib::hopper::live_cores_package::LiveCoresPackage;
-use node_lib::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
+use node_lib::masquerader::Masquerader;
 use node_lib::sub_lib::cryptde::CryptDE;
 use node_lib::sub_lib::cryptde::PlainData;
 use node_lib::sub_lib::cryptde::PublicKey;
@@ -25,7 +25,7 @@ impl<'a> PulseCloakCoresClient<'a> {
     pub fn transmit_package(
         &mut self,
         incipient_cores_package: IncipientCoresPackage,
-        XYZPROTECT_XYZPROTECT_pulsecloakuerader: &dyn XYZPROTECT_PulseCloakuerader,
+        masquerader: &dyn Masquerader,
         recipient_key: PublicKey,
     ) {
         let (live_cores_package, _) =
@@ -36,21 +36,21 @@ impl<'a> PulseCloakCoresClient<'a> {
             .cryptde
             .encode(&recipient_key, &PlainData::new(&serialized_lcp[..]))
             .unwrap();
-        let XYZPROTECT_pulsecloakueraded = XYZPROTECT_XYZPROTECT_pulsecloakuerader
+        let masqueraded = masquerader
             .mask(encoded_serialized_package.as_slice())
             .unwrap_or_else(|_| {
                 panic!("PulseCloakuerading {}-byte serialized LCP", serialized_lcp.len())
             });
-        self.delegate.send_chunk(&XYZPROTECT_pulsecloakueraded);
+        self.delegate.send_chunk(&masqueraded);
     }
 
-    pub fn XYZPROTECT_pulsecloakuerade_live_cores_package(
+    pub fn masquerade_live_cores_package(
         live_cores_package: LiveCoresPackage,
-        XYZPROTECT_XYZPROTECT_pulsecloakuerader: &dyn XYZPROTECT_PulseCloakuerader,
+        masquerader: &dyn Masquerader,
     ) -> Vec<u8> {
         let serialized_lcp = serde_cbor::ser::to_vec(&live_cores_package)
             .unwrap_or_else(|_| panic!("Serializing LCP: {:?}", live_cores_package));
-        XYZPROTECT_XYZPROTECT_pulsecloakuerader
+        masquerader
             .mask(&serialized_lcp[..])
             .unwrap_or_else(|_| panic!("PulseCloakuerading {}-byte serialized LCP", serialized_lcp.len()))
     }

@@ -1,7 +1,7 @@
 // Copyright (c) 2019, PulseCloak (https://pulsechaincloak.io) and/or its affiliates. All rights reserved.
 use crate::discriminator::Discriminator;
 use crate::discriminator::DiscriminatorFactory;
-use crate::XYZPROTECT_null_XYZPROTECT_XYZPROTECT_pulsecloakuerader::NullXYZPROTECT_PulseCloakuerader;
+use crate::null_masquerader::NullMasquerader;
 use crate::sub_lib::http_packet_framer::HttpFramerState;
 use crate::sub_lib::http_packet_framer::HttpPacketFramer;
 use crate::sub_lib::http_packet_framer::HttpPacketStartFinder;
@@ -55,7 +55,7 @@ impl DiscriminatorFactory for HttpRequestDiscriminatorFactory {
     fn make(&self) -> Discriminator {
         Discriminator::new(
             Box::new(HttpPacketFramer::new(Box::new(HttpRequestStartFinder {}))),
-            vec![Box::new(NullXYZPROTECT_PulseCloakuerader::new())],
+            vec![Box::new(NullMasquerader::new())],
         )
     }
 

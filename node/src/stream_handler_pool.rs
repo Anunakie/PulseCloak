@@ -2,8 +2,8 @@
 
 use crate::bootstrapper::PortConfiguration;
 use crate::discriminator::DiscriminatorFactory;
-use crate::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
-use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
+use crate::json_masquerader::JsonMasquerader;
+use crate::masquerader::Masquerader;
 use crate::stream_messages::*;
 use crate::stream_reader::StreamReaderReal;
 use crate::stream_writer_sorted::StreamWriterSorted;
@@ -517,8 +517,8 @@ impl StreamHandlerPool {
         );
         debug!(self.logger, "Masking {} bytes", msg.context.data.len());
         let packet = if msg.context.sequence_number.is_none() {
-            let XYZPROTECT_XYZPROTECT_pulsecloakuerader = self.traffic_analyzer.get_XYZPROTECT_XYZPROTECT_pulsecloakuerader();
-            match XYZPROTECT_XYZPROTECT_pulsecloakuerader.mask(msg.context.data.as_slice()) {
+            let masquerader = self.traffic_analyzer.get_masquerader();
+            match masquerader.mask(msg.context.data.as_slice()) {
                 Ok(masked_data) => SequencedPacket::new(masked_data, 0, false),
                 Err(e) => {
                     return Err(format!(
@@ -767,14 +767,14 @@ impl StreamStartSuccessHandler {
 }
 
 trait TrafficAnalyzer {
-    fn get_XYZPROTECT_XYZPROTECT_pulsecloakuerader(&self) -> Box<dyn XYZPROTECT_PulseCloakuerader>;
+    fn get_masquerader(&self) -> Box<dyn Masquerader>;
 }
 
 struct TrafficAnalyzerReal {}
 
 impl TrafficAnalyzer for TrafficAnalyzerReal {
-    fn get_XYZPROTECT_XYZPROTECT_pulsecloakuerader(&self) -> Box<dyn XYZPROTECT_PulseCloakuerader> {
-        Box::new(JsonXYZPROTECT_PulseCloakuerader::new())
+    fn get_masquerader(&self) -> Box<dyn Masquerader> {
+        Box::new(JsonMasquerader::new())
     }
 }
 
@@ -786,9 +786,9 @@ mod tests {
     use crate::bootstrapper::CryptDEPair;
     use crate::http_request_start_finder::HttpRequestDiscriminatorFactory;
     use crate::json_discriminator_factory::JsonDiscriminatorFactory;
-    use crate::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
-    use crate::XYZPROTECT_XYZPROTECT_pulsecloakuerader::XYZPROTECT_PulseCloakuerader;
-    use crate::node_test_utils::{check_timestamp, FailingXYZPROTECT_PulseCloakuerader};
+    use crate::json_masquerader::JsonMasquerader;
+    use crate::masquerader::Masquerader;
+    use crate::node_test_utils::{check_timestamp, FailingMasquerader};
     use crate::sub_lib::dispatcher::InboundClientData;
     use crate::sub_lib::neighborhood::{
         ConnectionProgressEvent, ConnectionProgressMessage, NodeQueryResponseMetadata,
@@ -837,8 +837,8 @@ mod tests {
     struct TrafficAnalyzerMock {}
 
     impl TrafficAnalyzer for TrafficAnalyzerMock {
-        fn get_XYZPROTECT_XYZPROTECT_pulsecloakuerader(&self) -> Box<dyn XYZPROTECT_PulseCloakuerader> {
-            Box::new(FailingXYZPROTECT_PulseCloakuerader {})
+        fn get_masquerader(&self) -> Box<dyn Masquerader> {
+            Box::new(FailingMasquerader {})
         }
     }
 
@@ -1408,11 +1408,11 @@ mod tests {
     fn stream_handler_pool_creates_nonexistent_stream_for_reading_and_writing() {
         use crossbeam_channel::unbounded;
         let public_key = PublicKey::from(vec![0, 1, 2, 3]);
-        let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+        let masquerader = JsonMasquerader::new();
         let incoming_unmasked = b"Incoming data".to_vec();
-        let incoming_masked = XYZPROTECT_XYZPROTECT_pulsecloakuerader.mask(&incoming_unmasked).unwrap();
+        let incoming_masked = masquerader.mask(&incoming_unmasked).unwrap();
         let outgoing_unmasked = b"Outgoing data".to_vec();
-        let outgoing_masked = XYZPROTECT_XYZPROTECT_pulsecloakuerader.mask(&outgoing_unmasked).unwrap();
+        let outgoing_masked = masquerader.mask(&outgoing_unmasked).unwrap();
         let outgoing_masked_len = outgoing_masked.len();
         let (dispatcher, dispatcher_awaiter, dispatcher_recording_arc) = make_recorder();
         let (neighborhood, neighborhood_awaiter, neighborhood_recording_arc) = make_recorder();
@@ -1878,7 +1878,7 @@ mod tests {
             sequence_number: None,
             data: b"worlds".to_vec(),
         };
-        let expected_data = JsonXYZPROTECT_PulseCloakuerader::new().mask(&msg_a.data).unwrap();
+        let expected_data = JsonMasquerader::new().mask(&msg_a.data).unwrap();
 
         let local_addr = SocketAddr::from_str("1.2.3.4:80").unwrap();
         let poll_write_params_arc = Arc::new(Mutex::new(Vec::new()));
@@ -1938,7 +1938,7 @@ mod tests {
         });
         let subject_subs = rx.recv().unwrap();
 
-        let expected_data = JsonXYZPROTECT_PulseCloakuerader::new().mask(&msg_a.data).unwrap();
+        let expected_data = JsonMasquerader::new().mask(&msg_a.data).unwrap();
         subject_subs
             .node_query_response
             .try_send(DispatcherNodeQueryResponse {
@@ -2073,8 +2073,8 @@ mod tests {
         let hello = b"hello".to_vec();
         let worlds = b"worlds".to_vec();
 
-        let masked_hello = JsonXYZPROTECT_PulseCloakuerader::new().mask(&hello).unwrap();
-        let masked_worlds = JsonXYZPROTECT_PulseCloakuerader::new().mask(&worlds).unwrap();
+        let masked_hello = JsonMasquerader::new().mask(&hello).unwrap();
+        let masked_worlds = JsonMasquerader::new().mask(&worlds).unwrap();
 
         let reader = ReadHalfWrapperMock::new().poll_read_result(vec![], Ok(Async::NotReady));
         let write_stream_params_arc = Arc::new(Mutex::new(vec![]));

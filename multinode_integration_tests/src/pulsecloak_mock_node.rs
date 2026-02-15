@@ -9,8 +9,8 @@ use crate::multinode_gossip::{Introduction, MultinodeGossip, SingleNode};
 use pulsecloak_lib::blockchains::chains::Chain;
 use pulsecloak_lib::test_utils::utils::TEST_DEFAULT_MULTINODE_CHAIN;
 use node_lib::hopper::live_cores_package::LiveCoresPackage;
-use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
-use node_lib::XYZPROTECT_XYZPROTECT_pulsecloakuerader::{PulseCloakueradeError, XYZPROTECT_PulseCloakuerader};
+use node_lib::json_masquerader::JsonMasquerader;
+use node_lib::masquerader::{MasqueradeError, Masquerader};
 use node_lib::neighborhood::gossip::Gossip_0v1;
 use node_lib::neighborhood::node_record::NodeRecord;
 use node_lib::sub_lib::cryptde::CryptData;
@@ -256,14 +256,14 @@ impl PulseCloakMockNode {
         &self,
         transmit_port: u16,
         package: IncipientCoresPackage,
-        XYZPROTECT_XYZPROTECT_pulsecloakuerader: &dyn XYZPROTECT_PulseCloakuerader,
+        masquerader: &dyn Masquerader,
         target_key: &PublicKey,
         target_addr: SocketAddr,
     ) -> Result<(), Error> {
         let (lcp, _) =
             LiveCoresPackage::from_incipient(package, self.signing_cryptde().unwrap()).unwrap();
         let encrypted_data = encodex(self.signing_cryptde().unwrap(), target_key, &lcp).unwrap();
-        let masked_data = XYZPROTECT_XYZPROTECT_pulsecloakuerader.mask(encrypted_data.as_slice()).unwrap();
+        let masked_data = masquerader.mask(encrypted_data.as_slice()).unwrap();
         let data_hunk = DataHunk::new(
             SocketAddr::new(self.ip_address(), transmit_port),
             target_addr,
@@ -279,7 +279,7 @@ impl PulseCloakMockNode {
         target_key: &PublicKey,
         target_addr: SocketAddr,
     ) -> Result<(), Error> {
-        let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+        let masquerader = JsonMasquerader::new();
         let route = Route::single_hop(target_key, self.signing_cryptde().unwrap()).unwrap();
         let package = IncipientCoresPackage::new(
             self.signing_cryptde().unwrap(),
@@ -291,7 +291,7 @@ impl PulseCloakMockNode {
         self.transmit_package(
             transmit_port,
             package,
-            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
+            &masquerader,
             target_key,
             target_addr,
         )
@@ -362,7 +362,7 @@ impl PulseCloakMockNode {
 
     pub fn wait_for_package(
         &self,
-        XYZPROTECT_XYZPROTECT_pulsecloakuerader: &dyn XYZPROTECT_PulseCloakuerader,
+        masquerader: &dyn Masquerader,
         timeout: Duration,
     ) -> Result<(SocketAddr, SocketAddr, LiveCoresPackage), Error> {
         let stop_at = Instant::now().add(timeout);
@@ -378,9 +378,9 @@ impl PulseCloakMockNode {
                 Err(e) => return Err(e),
                 Ok(data_hunk) => {
                     accumulated_data.extend(data_hunk.data);
-                    match XYZPROTECT_XYZPROTECT_pulsecloakuerader.try_unmask(&accumulated_data) {
-                        Err(PulseCloakueradeError::NotThisXYZPROTECT_PulseCloakuerader) => {
-                            panic!("Wrong XYZPROTECT_PulseCloakuerader supplied to wait_for_package")
+                    match masquerader.try_unmask(&accumulated_data) {
+                        Err(MasqueradeError::NotThisMasquerader) => {
+                            panic!("Wrong Masquerader supplied to wait_for_package")
                         }
                         Err(_) => continue,
                         Ok(unmasked_chunk) => {
@@ -411,7 +411,7 @@ impl PulseCloakMockNode {
         let exit_cryptde = exit_node_cryptde.unwrap_or_else(|| cryptde.clone());
         loop {
             if let Ok((_, _, live_cores_package)) =
-                self.wait_for_package(&JsonXYZPROTECT_PulseCloakuerader::new(), Duration::from_secs(2))
+                self.wait_for_package(&JsonMasquerader::new(), Duration::from_secs(2))
             {
                 let (_, intended_exit_public_key) =
                     CryptDENull::extract_key_pair(public_key.len(), &live_cores_package.payload);
@@ -429,8 +429,8 @@ impl PulseCloakMockNode {
     }
 
     pub fn wait_for_gossip(&self, timeout: Duration) -> Option<(Gossip_0v1, IpAddr)> {
-        let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
-        match self.wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, timeout) {
+        let masquerader = JsonMasquerader::new();
+        match self.wait_for_package(&masquerader, timeout) {
             Ok((from, _, package)) => {
                 let incoming_cores_package = match package.to_expired(
                     from,
@@ -456,8 +456,8 @@ impl PulseCloakMockNode {
         &self,
         timeout: Duration,
     ) -> Option<(GossipFailure_0v1, IpAddr)> {
-        let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
-        match self.wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, timeout) {
+        let masquerader = JsonMasquerader::new();
+        match self.wait_for_package(&masquerader, timeout) {
             Ok((from, _, package)) => {
                 let incoming_cores_package = package
                     .to_expired(

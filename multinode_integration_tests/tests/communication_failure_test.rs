@@ -11,7 +11,7 @@ use multinode_integration_tests_lib::pulsecloak_real_node::{
     STANDARD_CLIENT_TIMEOUT_MILLIS,
 };
 use multinode_integration_tests_lib::neighborhood_constructor::construct_neighborhood;
-use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
+use node_lib::json_masquerader::JsonMasquerader;
 use node_lib::neighborhood::gossip::AccessibleGossipRecord;
 use node_lib::neighborhood::neighborhood_database::NeighborhoodDatabase;
 use node_lib::neighborhood::node_record::NodeRecord;
@@ -166,7 +166,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         let good_exit_node = node_map.remove(&good_exit_node_public_key).unwrap();
         (originating_node, bad_exit_node, good_exit_node)
     };
-    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let masquerader = JsonMasquerader::new();
     let originating_node_alias_cryptde = CryptDENull::from(
         originating_node.alias_public_key(),
         TEST_DEFAULT_MULTINODE_CHAIN,
@@ -191,7 +191,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         .transmit_package(
             bad_exit_node.port_list()[0],
             dns_fail_pkg,
-            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
+            &masquerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )
@@ -216,7 +216,7 @@ fn dns_resolution_failure_first_automatic_retry_succeeds() {
         .transmit_package(
             good_exit_node.port_list()[0],
             client_response_pkg,
-            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
+            &masquerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )
@@ -360,7 +360,7 @@ fn dns_resolution_failure_no_longer_blacklists_exit_node_for_all_hosts() {
         (originating_node, node_list)
     };
     let mut client: PulseCloakNodeClient = originating_node.make_client(8080, 5000);
-    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let masquerader = JsonMasquerader::new();
     let originating_node_alias_cryptde = CryptDENull::from(
         &originating_node.alias_public_key(),
         TEST_DEFAULT_MULTINODE_CHAIN,
@@ -385,7 +385,7 @@ fn dns_resolution_failure_no_longer_blacklists_exit_node_for_all_hosts() {
         node.transmit_package(
             node.port_list()[0],
             dns_fail_pkg,
-            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
+            &masquerader,
             originating_node.main_public_key(),
             originating_node.socket_addr(PortSelector::First),
         )

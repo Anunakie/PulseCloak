@@ -9,7 +9,7 @@ use multinode_integration_tests_lib::pulsecloak_node::PulseCloakNode;
 use multinode_integration_tests_lib::pulsecloak_node::PortSelector;
 use multinode_integration_tests_lib::pulsecloak_node_cluster::PulseCloakNodeCluster;
 use multinode_integration_tests_lib::pulsecloak_real_node::NodeStartupConfigBuilder;
-use node_lib::json_XYZPROTECT_XYZPROTECT_pulsecloakuerader::JsonXYZPROTECT_PulseCloakuerader;
+use node_lib::json_masquerader::JsonMasquerader;
 use node_lib::sub_lib::cryptde::PublicKey;
 use node_lib::sub_lib::cryptde_null::CryptDENull;
 use node_lib::sub_lib::dispatcher::Component;
@@ -65,7 +65,7 @@ fn establishes_pulsecloak_node_cluster_from_nothing() {
 #[test]
 fn server_relays_cores_package() {
     let cluster = PulseCloakNodeCluster::start().unwrap();
-    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let masquerader = JsonMasquerader::new();
     let server = PulseCloakCoresServer::new(cluster.chain);
     let cryptde = server.main_cryptde();
     let mut client = PulseCloakCoresClient::new(server.local_addr(), cryptde);
@@ -87,7 +87,7 @@ fn server_relays_cores_package() {
     )
     .unwrap();
 
-    client.transmit_package(incipient, &XYZPROTECT_XYZPROTECT_pulsecloakuerader, cryptde.public_key().clone());
+    client.transmit_package(incipient, &masquerader, cryptde.public_key().clone());
     let package = server.wait_for_package(Duration::from_millis(1000));
     let expired = package
         .to_expired(
@@ -104,7 +104,7 @@ fn server_relays_cores_package() {
 
 #[test]
 fn one_mock_node_talks_to_another() {
-    let XYZPROTECT_XYZPROTECT_pulsecloakuerader = JsonXYZPROTECT_PulseCloakuerader::new();
+    let masquerader = JsonMasquerader::new();
     let mut cluster = PulseCloakNodeCluster::start().unwrap();
     cluster.start_mock_node_with_public_key(vec![5550], &PublicKey::new(&[1, 2, 3, 4]));
     cluster.start_mock_node_with_public_key(vec![5551], &PublicKey::new(&[2, 3, 4, 5]));
@@ -136,13 +136,13 @@ fn one_mock_node_talks_to_another() {
         .transmit_package(
             5550,
             incipient_cores_package,
-            &XYZPROTECT_XYZPROTECT_pulsecloakuerader,
+            &masquerader,
             &mock_node_2.main_public_key(),
             mock_node_2.socket_addr(PortSelector::First),
         )
         .unwrap();
     let (package_from, package_to, package) = mock_node_2
-        .wait_for_package(&XYZPROTECT_XYZPROTECT_pulsecloakuerader, Duration::from_millis(1000))
+        .wait_for_package(&masquerader, Duration::from_millis(1000))
         .unwrap();
     let expired_cores_package = package
         .to_expired(
