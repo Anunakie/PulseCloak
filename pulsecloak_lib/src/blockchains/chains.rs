@@ -5,6 +5,7 @@ use crate::constants::{
     BASE_MAINNET_FULL_IDENTIFIER, BASE_SEPOLIA_FULL_IDENTIFIER, DEFAULT_CHAIN,
     DEV_CHAIN_FULL_IDENTIFIER, ETH_MAINNET_FULL_IDENTIFIER, ETH_ROPSTEN_FULL_IDENTIFIER,
     POLYGON_AMOY_FULL_IDENTIFIER, POLYGON_MAINNET_FULL_IDENTIFIER,
+    PULSE_MAINNET_FULL_IDENTIFIER, PULSE_TESTNET_FULL_IDENTIFIER,
 };
 use serde_derive::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
@@ -17,6 +18,8 @@ pub enum Chain {
     PolyAmoy,
     BaseMainnet,
     BaseSepolia,
+    PulseMainnet,
+    PulseTestnet,
     Dev,
 }
 
@@ -28,7 +31,11 @@ impl Default for Chain {
 
 impl From<&str> for Chain {
     fn from(str: &str) -> Self {
-        if str == POLYGON_MAINNET_FULL_IDENTIFIER {
+        if str == PULSE_TESTNET_FULL_IDENTIFIER {
+            Chain::PulseTestnet
+        } else if str == PULSE_MAINNET_FULL_IDENTIFIER {
+            Chain::PulseMainnet
+        } else if str == POLYGON_MAINNET_FULL_IDENTIFIER {
             Chain::PolyMainnet
         } else if str == ETH_MAINNET_FULL_IDENTIFIER {
             Chain::EthMainnet
@@ -57,6 +64,8 @@ impl Display for Chain {
             Chain::PolyAmoy => POLYGON_AMOY_FULL_IDENTIFIER,
             Chain::BaseMainnet => BASE_MAINNET_FULL_IDENTIFIER,
             Chain::BaseSepolia => BASE_SEPOLIA_FULL_IDENTIFIER,
+            Chain::PulseMainnet => PULSE_MAINNET_FULL_IDENTIFIER,
+            Chain::PulseTestnet => PULSE_TESTNET_FULL_IDENTIFIER,
             Chain::Dev => DEV_CHAIN_FULL_IDENTIFIER,
         };
         write!(f, "{}", chain_name)
@@ -79,7 +88,7 @@ impl Chain {
     }
 
     fn mainnets() -> &'static [Chain] {
-        &[Chain::PolyMainnet, Chain::BaseMainnet, Chain::EthMainnet]
+        &[Chain::PolyMainnet, Chain::BaseMainnet, Chain::EthMainnet, Chain::PulseMainnet]
     }
 }
 
@@ -183,6 +192,8 @@ mod tests {
             Chain::PolyAmoy,
             Chain::BaseMainnet,
             Chain::BaseSepolia,
+            Chain::PulseMainnet,
+            Chain::PulseTestnet,
             Chain::Dev,
         ];
 
@@ -200,6 +211,8 @@ mod tests {
                 POLYGON_AMOY_FULL_IDENTIFIER.to_string(),
                 BASE_MAINNET_FULL_IDENTIFIER.to_string(),
                 BASE_SEPOLIA_FULL_IDENTIFIER.to_string(),
+                PULSE_MAINNET_FULL_IDENTIFIER.to_string(),
+                PULSE_TESTNET_FULL_IDENTIFIER.to_string(),
                 DEV_CHAIN_FULL_IDENTIFIER.to_string(),
             ]
         );

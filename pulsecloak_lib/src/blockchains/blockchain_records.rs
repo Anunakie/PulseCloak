@@ -8,11 +8,27 @@ use crate::constants::{
     ETH_ROPSTEN_CONTRACT_CREATION_BLOCK, ETH_ROPSTEN_FULL_IDENTIFIER,
     MULTINODE_TESTNET_CONTRACT_CREATION_BLOCK, POLYGON_AMOY_CONTRACT_CREATION_BLOCK,
     POLYGON_AMOY_FULL_IDENTIFIER, POLYGON_MAINNET_CONTRACT_CREATION_BLOCK,
-    POLYGON_MAINNET_FULL_IDENTIFIER,
+    POLYGON_MAINNET_FULL_IDENTIFIER, PULSE_MAINNET_CONTRACT_CREATION_BLOCK,
+    PULSE_MAINNET_FULL_IDENTIFIER, PULSE_TESTNET_CONTRACT_CREATION_BLOCK,
+    PULSE_TESTNET_FULL_IDENTIFIER,
 };
 use ethereum_types::{Address, H160};
 
-pub const CHAINS: [BlockchainRecord; 7] = [
+pub const CHAINS: [BlockchainRecord; 9] = [
+    BlockchainRecord {
+        self_id: Chain::PulseTestnet,
+        num_chain_id: 943,
+        literal_identifier: PULSE_TESTNET_FULL_IDENTIFIER,
+        contract: PULSE_TESTNET_CONTRACT_ADDRESS,
+        contract_creation_block: PULSE_TESTNET_CONTRACT_CREATION_BLOCK,
+    },
+    BlockchainRecord {
+        self_id: Chain::PulseMainnet,
+        num_chain_id: 369,
+        literal_identifier: PULSE_MAINNET_FULL_IDENTIFIER,
+        contract: PULSE_MAINNET_CONTRACT_ADDRESS,
+        contract_creation_block: PULSE_MAINNET_CONTRACT_CREATION_BLOCK,
+    },
     BlockchainRecord {
         self_id: Chain::PolyMainnet,
         num_chain_id: 137,
@@ -73,6 +89,18 @@ pub struct BlockchainRecord {
     pub contract_creation_block: u64,
 }
 
+// TODO: Replace with actual $CLOAK or $NEON token contract address on PulseChain mainnet
+const PULSE_MAINNET_CONTRACT_ADDRESS: Address = H160([
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+]);
+
+// TODO: Replace with actual $CLOAK or $NEON token contract address on PulseChain testnet
+const PULSE_TESTNET_CONTRACT_ADDRESS: Address = H160([
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+]);
+
 // $tPulseCloak (Amoy)
 const POLYGON_AMOY_TESTNET_CONTRACT_ADDRESS: Address = H160([
     0xd9, 0x8c, 0x3e, 0xbd, 0x6b, 0x7f, 0x9b, 0x7c, 0xda, 0x24, 0x49, 0xec, 0xac, 0x00, 0xd1, 0xe5,
@@ -122,6 +150,8 @@ mod tests {
     #[test]
     fn record_returns_correct_blockchain_record() {
         let test_array = [
+            assert_returns_correct_record(Chain::PulseTestnet, 943),
+            assert_returns_correct_record(Chain::PulseMainnet, 369),
             assert_returns_correct_record(Chain::EthMainnet, 1),
             assert_returns_correct_record(Chain::EthRopsten, 3),
             assert_returns_correct_record(Chain::PolyMainnet, 137),
@@ -141,6 +171,8 @@ mod tests {
     #[test]
     fn from_str_works() {
         let test_array = [
+            assert_from_str(Chain::PulseTestnet),
+            assert_from_str(Chain::PulseMainnet),
             assert_from_str(Chain::PolyMainnet),
             assert_from_str(Chain::PolyAmoy),
             assert_from_str(Chain::EthMainnet),
@@ -166,6 +198,8 @@ mod tests {
     #[test]
     fn chains_are_ordered_by_their_significance_for_users() {
         let test_array = [
+            Chain::PulseTestnet,
+            Chain::PulseMainnet,
             Chain::PolyMainnet,
             Chain::EthMainnet,
             Chain::BaseMainnet,
@@ -282,6 +316,38 @@ mod tests {
     }
 
     #[test]
+    fn pulse_mainnet_record_is_properly_declared() {
+        let examined_chain = Chain::PulseMainnet;
+        let chain_record = return_examined(examined_chain);
+        assert_eq!(
+            chain_record,
+            &BlockchainRecord {
+                num_chain_id: 369,
+                self_id: examined_chain,
+                literal_identifier: "pulse-mainnet",
+                contract: PULSE_MAINNET_CONTRACT_ADDRESS,
+                contract_creation_block: PULSE_MAINNET_CONTRACT_CREATION_BLOCK,
+            }
+        );
+    }
+
+    #[test]
+    fn pulse_testnet_record_is_properly_declared() {
+        let examined_chain = Chain::PulseTestnet;
+        let chain_record = return_examined(examined_chain);
+        assert_eq!(
+            chain_record,
+            &BlockchainRecord {
+                num_chain_id: 943,
+                self_id: examined_chain,
+                literal_identifier: "pulse-testnet",
+                contract: PULSE_TESTNET_CONTRACT_ADDRESS,
+                contract_creation_block: PULSE_TESTNET_CONTRACT_CREATION_BLOCK,
+            }
+        );
+    }
+
+    #[test]
     fn multinode_testnet_chain_record_is_properly_declared() {
         let examined_chain = Chain::Dev;
         let chain_record = return_examined(examined_chain);
@@ -304,6 +370,8 @@ mod tests {
     #[test]
     fn chain_from_chain_identifier_opt_works() {
         let test_array = [
+            assert_chain_from_chain_identifier_opt("pulse-testnet", Some(Chain::PulseTestnet)),
+            assert_chain_from_chain_identifier_opt("pulse-mainnet", Some(Chain::PulseMainnet)),
             assert_chain_from_chain_identifier_opt("eth-mainnet", Some(Chain::EthMainnet)),
             assert_chain_from_chain_identifier_opt("eth-ropsten", Some(Chain::EthRopsten)),
             assert_chain_from_chain_identifier_opt("polygon-mainnet", Some(Chain::PolyMainnet)),

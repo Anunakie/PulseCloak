@@ -4,7 +4,7 @@ use crate::constants::{
     BASE_MAINNET_FULL_IDENTIFIER, BASE_SEPOLIA_FULL_IDENTIFIER, DEFAULT_GAS_PRICE, DEFAULT_UI_PORT,
     DEV_CHAIN_FULL_IDENTIFIER, ETH_MAINNET_FULL_IDENTIFIER, ETH_ROPSTEN_FULL_IDENTIFIER,
     HIGHEST_USABLE_PORT, LOWEST_USABLE_INSECURE_PORT, POLYGON_AMOY_FULL_IDENTIFIER,
-    POLYGON_MAINNET_FULL_IDENTIFIER,
+    POLYGON_MAINNET_FULL_IDENTIFIER, PULSE_MAINNET_FULL_IDENTIFIER, PULSE_TESTNET_FULL_IDENTIFIER,
 };
 use crate::crash_point::CrashPoint;
 use clap::{App, Arg};
@@ -21,8 +21,9 @@ pub const BLOCKCHAIN_SERVICE_HELP: &str =
      (you need to specify `--chain base-mainnet` as the chain argument): \n\
      https://mainnet.base.org \nhttps://base.llamarpc.com \nhttps://1rpc.io/base \nhttps://base-rpc.publicnode.com";
 pub const CHAIN_HELP: &str =
-    "The blockchain network PulseCloak Node will configure itself to use. You must ensure the \
-    Ethereum client specified by --blockchain-service-url communicates with the same blockchain network.";
+    "The blockchain network PulseCloak Node will configure itself to use. Default: pulse-testnet. \
+    You must ensure the blockchain client specified by --blockchain-service-url communicates \
+    with the same blockchain network.";
 pub const CONFIG_FILE_HELP: &str =
     "Optional TOML file containing configuration that doesn't often change. Should contain only \
      scalar items, string or numeric, whose names are exactly the same as the command-line parameters \
@@ -68,10 +69,11 @@ pub const LOG_LEVEL_HELP: &str =
 pub const NEIGHBORS_HELP: &str = "One or more Node descriptors for running Nodes in the PulseCloak \
      One or more Node descriptors for active Nodes in the PulseCloak Network to which you'd like your Node to connect \
      on startup. A Node descriptor looks similar to one of these:\n\n\
-     pulsecloak://polygon-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342\n\
-     pulsecloak://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542\n\
-     pulsecloak://base-mainnet:ZjPLnb9RrgsRM1D9edqH8jx9DkbPZSWqqFqLnmdKhsk@112.55.78.0:7878\n\
-     pulsecloak://polygon-amoy:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504\n\
+     pulsecloak://pulse-testnet:xK7pQ2mNvR4sT8wL1jF6hY9cA3bE5dG0iU@10.20.30.40:9342\n\
+     pulsecloak://pulse-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342\n\
+     pulsecloak://polygon-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542\n\
+     pulsecloak://eth-mainnet:ZjPLnb9RrgsRM1D9edqH8jx9DkbPZSWqqFqLnmdKhsk@112.55.78.0:7878\n\
+     pulsecloak://base-mainnet:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504\n\
      pulsecloak://base-sepolia:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@150.60.42.72:6642/4789/5254\n\n\
      Notice each of the different chain identifiers in the pulsecloak protocol prefix - they determine a family of chains \
      and also the network the descriptor belongs to (mainnet or a testnet). See also the last descriptor which shows \
@@ -261,7 +263,9 @@ pub fn data_directory_arg(help: &str) -> Arg {
 
 pub fn official_chain_names() -> &'static [&'static str] {
     &[
-        POLYGON_MAINNET_FULL_IDENTIFIER,
+        PULSE_TESTNET_FULL_IDENTIFIER,
+        PULSE_MAINNET_FULL_IDENTIFIER,
+        POLYGON_MAINNET_FULL_IDENTIFIER, PULSE_MAINNET_FULL_IDENTIFIER, PULSE_TESTNET_FULL_IDENTIFIER,
         ETH_MAINNET_FULL_IDENTIFIER,
         BASE_MAINNET_FULL_IDENTIFIER,
         BASE_SEPOLIA_FULL_IDENTIFIER,
@@ -747,8 +751,9 @@ mod tests {
         );
         assert_eq!(
             CHAIN_HELP,
-            "The blockchain network PulseCloak Node will configure itself to use. You must ensure the \
-             Ethereum client specified by --blockchain-service-url communicates with the same blockchain network."
+            "The blockchain network PulseCloak Node will configure itself to use. Default: pulse-testnet. \
+             You must ensure the blockchain client specified by --blockchain-service-url communicates \
+             with the same blockchain network."
         );
         assert_eq!(
             CONFIG_FILE_HELP,
@@ -815,9 +820,9 @@ mod tests {
             "One or more Node descriptors for running Nodes in the PulseCloak \
              One or more Node descriptors for active Nodes in the PulseCloak Network to which you'd like your Node to connect \
              on startup. A Node descriptor looks similar to one of these:\n\n\
-                  pulsecloak://polygon-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342\n\
-                  pulsecloak://eth-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542\n\
-                  pulsecloak://base-mainnet:ZjPLnb9RrgsRM1D9edqH8jx9DkbPZSWqqFqLnmdKhsk@112.55.78.0:7878\n\
+                  pulsecloak://pulse-testnet:xK7pQ2mNvR4sT8wL1jF6hY9cA3bE5dG0iU@10.20.30.40:9342\n\
+                  pulsecloak://pulse-mainnet:d2U3Dv1BqtS5t_Zz3mt9_sCl7AgxUlnkB4jOMElylrU@172.50.48.6:9342\n\
+                  pulsecloak://polygon-mainnet:gBviQbjOS3e5ReFQCvIhUM3i02d1zPleo1iXg_EN6zQ@86.75.30.9:5542\n\
                   pulsecloak://polygon-amoy:A6PGHT3rRjaeFpD_rFi3qGEXAVPq7bJDfEUZpZaIyq8@14.10.50.6:10504\n\
                   pulsecloak://base-sepolia:OHsC2CAm4rmfCkaFfiynwxflUgVTJRb2oY5mWxNCQkY@150.60.42.72:6642/4789/5254\n\n\
              Notice each of the different chain identifiers in the pulsecloak protocol prefix - they determine a family of chains \

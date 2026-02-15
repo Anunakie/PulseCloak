@@ -298,7 +298,7 @@ impl BlockchainInterfaceWeb3 {
     pub fn web3_gas_limit_const_part(chain: Chain) -> u128 {
         match chain {
             Chain::EthMainnet | Chain::EthRopsten | Chain::Dev => 55_000,
-            Chain::PolyMainnet | Chain::PolyAmoy | Chain::BaseMainnet | Chain::BaseSepolia => {
+            Chain::PolyMainnet | Chain::PolyAmoy | Chain::BaseMainnet | Chain::BaseSepolia | Chain::PulseMainnet | Chain::PulseTestnet => {
                 70_000
             }
         }
