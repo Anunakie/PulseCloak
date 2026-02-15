@@ -2,6 +2,13 @@ import { injectBrowserAction } from 'electron-chrome-extensions/browser-action'
 
 const { contextBridge, ipcRenderer } = require('electron')
 
+// Expose navigation API for ALL chrome-extension:// pages (including new-tab.html)
+if (location.protocol === 'chrome-extension:') {
+  contextBridge.exposeInMainWorld('pulseCloakNav', {
+    navigate: function(url) { return ipcRenderer.invoke('navigate:url', url) },
+  })
+}
+
 // Inject <browser-action-list> element into WebUI
 if (location.protocol === 'chrome-extension:' && location.pathname === '/webui.html') {
   injectBrowserAction()

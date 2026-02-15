@@ -317,24 +317,48 @@
         return 'https://www.google.com/search?q=' + encodeURIComponent(trimmed);
       }
 
-      // Search bar: navigate this tab directly
-      document.getElementById('searchInput').addEventListener('keypress', function(e) {
+      // Navigate helper: tries IPC first, then chrome.tabs, then location
+      function navigateTo(url) {
+        if (!url) return;
+        console.log('[PulseCloak] Navigating to:', url);
+        // Method 1: IPC to main process (most reliable in extension context)
+        if (typeof window.pulseCloakNav !== 'undefined' && window.pulseCloakNav.navigate) {
+          console.log('[PulseCloak] Using IPC navigation');
+          window.pulseCloakNav.navigate(url);
+          return;
+        }
+        // Method 2: chrome.tabs API (requires tabs permission)
+        if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.update) {
+          console.log('[PulseCloak] Using chrome.tabs.update');
+          chrome.tabs.getCurrent(function(tab) {
+            if (tab && tab.id) {
+              chrome.tabs.update(tab.id, { url: url });
+            } else {
+              chrome.tabs.update({ url: url });
+            }
+          });
+          return;
+        }
+        // Method 3: Direct location (fallback)
+        console.log('[PulseCloak] Using window.location fallback');
+        window.location.href = url;
+      }
+
+      // Search bar: navigate on Enter
+      document.getElementById('searchInput').addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
+          e.preventDefault();
           var url = resolveNavigationUrl(e.target.value);
-          if (url) {
-            window.location.href = url;
-          }
+          navigateTo(url);
         }
       });
 
-      // Quick-link clicks: navigate this tab directly
+      // Quick-link clicks
       document.querySelectorAll('.quick-link').forEach(function(link) {
         link.addEventListener('click', function(e) {
           e.preventDefault();
           var url = link.getAttribute('href');
-          if (url) {
-            window.location.href = url;
-          }
+          navigateTo(url);
         });
       });
 
@@ -358,7 +382,7 @@
 
         installLink.addEventListener('click', function(e) {
           e.preventDefault();
-          window.location.href = 'https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm';
+          navigateTo('https://chromewebstore.google.com/detail/ublock-origin/cjpalhdlnbpafiamejdnhcphjbkeiagm');
         });
       })();
     </script>

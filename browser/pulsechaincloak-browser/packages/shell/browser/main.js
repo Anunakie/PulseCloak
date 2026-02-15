@@ -141,6 +141,16 @@ class Browser {
 
   async init() {
     this.initSession()
+
+    // IPC handler for navigation from extension pages (new-tab.html search bar)
+    ipcMain.handle('navigate:url', (event, url) => {
+      // Find the tab that sent this request and navigate it
+      const webContents = event.sender
+      if (webContents && !webContents.isDestroyed()) {
+        webContents.loadURL(url)
+      }
+      return { success: true }
+    })
     setupMenu(this)
 
     if ('registerPreloadScript' in this.session) {
