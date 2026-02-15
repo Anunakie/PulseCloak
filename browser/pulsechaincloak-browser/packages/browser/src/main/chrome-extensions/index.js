@@ -1,7 +1,7 @@
 import { getTabSession, getDefaultSession } from '../session';
 import tabsManager from '../tabs';
 import windowManager from '../window';
-const { ElectronChromeExtensions } = require('electron-chrome-extensions');
+const { ElectronChromeExtensions } = require('@pulsechaincloak/electron-chrome-extensions');
 const { installChromeWebStore } = require('electron-chrome-web-store');
 const path = require('path');
 const fs = require('fs');
@@ -67,7 +67,7 @@ export const initExtensions = async () => {
 
     electronChromeExtensions = new ElectronChromeExtensions({
         session: tabSession,
-        license: 'GPL-3.0',
+        modulePath: path.join(__dirname, '../../../electron-chrome-extensions/'),
         async createTab(details, event) {
             // Optionally implemented for chrome.tabs.create support
             console.log('createTab');

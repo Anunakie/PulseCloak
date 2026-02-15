@@ -49,14 +49,7 @@ export class Options {
         },
     };
     static DEVTOOLS = {};
-    static EXTENSION_POPUP = {
-        frame: true,
-        webPreferences: {
-            sandbox: true,
-            contextIsolation: true,
-            nodeIntegration: false,
-        },
-    };
+    static EXTENSION_POPUP = { frame: true, webPreferences: {} };
 }
 
 const windows = new Map();
@@ -89,34 +82,13 @@ class WindowManager {
     }
 
     getWindowForExtensionPopup(details) {
-        const tabSession = getTabSession();
-
-        // Position popup near top-right of main window
-        const mainWin = windows.get(Window.MAIN);
-        let x, y;
-        if (mainWin && !mainWin.isDestroyed()) {
-            const bounds = mainWin.getBounds();
-            x = bounds.x + bounds.width - 400;
-            y = bounds.y + 80;
-        }
-
-        const window = new BrowserWindow({
-            frame: true,
-            width: details.width || 360,
-            height: details.height || 600,
-            x,
-            y,
-            resizable: true,
-            skipTaskbar: true,
-            webPreferences: {
-                session: tabSession,
-                sandbox: true,
-                contextIsolation: true,
-                nodeIntegration: false,
-            },
-        });
+        const options = Options.EXTENSION_POPUP;
+        options.webPreferences.session = getTabSession();
+        options.width = details.width;
+        options.height = details.height;
+        const window = new BrowserWindow(options);
         window.setMenuBarVisibility(false);
-        // Do NOT call loadURL here - electron-chrome-extensions handles URL loading
+        window.webContents.loadURL(details.url);
         windows.set(window.id, window);
         return window;
     }
