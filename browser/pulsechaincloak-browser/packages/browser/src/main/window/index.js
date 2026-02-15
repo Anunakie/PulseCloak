@@ -49,7 +49,14 @@ export class Options {
         },
     };
     static DEVTOOLS = {};
-    static EXTENSION_POPUP = { frame: true, webPreferences: {} };
+    static EXTENSION_POPUP = {
+        frame: true,
+        webPreferences: {
+            sandbox: true,
+            contextIsolation: true,
+            nodeIntegration: false,
+        },
+    };
 }
 
 const windows = new Map();
@@ -82,13 +89,18 @@ class WindowManager {
     }
 
     getWindowForExtensionPopup(details) {
-        const options = Options.EXTENSION_POPUP;
-        options.webPreferences.session = getTabSession();
-        options.width = details.width;
-        options.height = details.height;
-        // options.x = details.left;
-        // options.y = details.top;
-        const window = new BrowserWindow(options);
+        const tabSession = getTabSession();
+        const window = new BrowserWindow({
+            frame: true,
+            width: details.width || 400,
+            height: details.height || 600,
+            webPreferences: {
+                session: tabSession,
+                sandbox: true,
+                contextIsolation: true,
+                nodeIntegration: false,
+            },
+        });
         window.setMenuBarVisibility(false);
         window.webContents.loadURL(details.url);
         windows.set(window.id, window);

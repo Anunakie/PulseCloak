@@ -2537,6 +2537,11 @@ const App = () => {
                     </div>
                 </form>
 
+                {/* Extension Action Buttons */}
+                <div className={styles.extensionActions}>
+                    <browser-action-list partition="persist:tabs6"></browser-action-list>
+                </div>
+
                 {/* Privacy Tools */}
                 <div className={styles.privacyTools}>
                     {/* Spaces Button */}
