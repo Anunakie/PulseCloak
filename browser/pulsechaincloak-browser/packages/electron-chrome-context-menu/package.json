@@ -13,9 +13,15 @@
     "context",
     "menu"
   ],
-  "repository": "https://github.com/samuelmaddock/electron-browser-shell",
+  "repository": "https://github.com/samuelmaddock/electron-desktop-shell",
   "author": "Samuel Maddock <sam@samuelmaddock.com>",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "electron": ">=9.0.0"
   },

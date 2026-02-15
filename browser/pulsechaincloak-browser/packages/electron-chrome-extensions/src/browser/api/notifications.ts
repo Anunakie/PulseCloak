@@ -26,7 +26,7 @@ const getBody = (opts: chrome.notifications.NotificationOptions) => {
 }
 
 const getUrgency = (
-  priority?: number,
+  priority?: number
 ): Required<Electron.NotificationConstructorOptions>['urgency'] => {
   if (typeof priority !== 'number') {
     return 'normal'
@@ -56,8 +56,7 @@ export class NotificationsAPI {
     handle('notifications.getPermissionLevel', this.getPermissionLevel)
     handle('notifications.update', this.update)
 
-    const sessionExtensions = ctx.session.extensions || ctx.session
-    sessionExtensions.on('extension-unloaded', (event, extension) => {
+    this.ctx.session.on('extension-unloaded', (event, extension) => {
       for (const [key, notification] of this.registry) {
         if (key.startsWith(extension.id)) {
           notification.close()
@@ -158,7 +157,7 @@ export class NotificationsAPI {
   private update = (
     { extension }: ExtensionEvent,
     id: string,
-    opts: chrome.notifications.NotificationOptions,
+    opts: chrome.notifications.NotificationOptions
   ) => {
     const notificationId = createScopedIdentifier(extension, id)
 

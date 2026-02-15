@@ -19,10 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import * as childProcess from 'node:child_process'
-import * as nodeCrypto from 'node:crypto'
-import * as path from 'node:path'
-import * as http from 'node:http'
+import * as childProcess from 'child_process'
+import * as path from 'path'
+import * as http from 'http'
 import * as v8 from 'v8'
 import { SuiteFunction, TestFunction } from 'mocha'
 
@@ -87,7 +86,7 @@ class RemoteControlApp {
               resolve(ret.result)
             }
           })
-        },
+        }
       )
       req.write(js)
       req.end()
@@ -133,4 +132,4 @@ export async function getFiles(directoryPath: string, { filter = null }: any = {
   return files
 }
 
-export const uuid = () => nodeCrypto.randomUUID()
+export const uuid = () => require('uuid').v4()

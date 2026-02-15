@@ -2,21 +2,20 @@
 
 > Chrome extension API support for Electron.
 
-Electron provides [basic support for Chrome extensions](https://www.electronjs.org/docs/api/extensions) out of the box. However, it only supports a subset of APIs with a focus on DevTools. Concepts like tabs, popups, and extension actions aren't known to Electron.
+Electron provides [basic support for Chrome extensions](https://www.electronjs.org/docs/api/extensions)  out of the box. However, it only supports a subset of APIs with a focus on DevTools. Concepts like tabs, popups, and extension actions aren't known to Electron.
 
 This library aims to bring extension support in Electron up to the level you'd come to expect from a browser like Google Chrome. API behavior is customizable so you can define how to handle things like tab or window creation specific to your application's needs.
 
 ## Install
 
 ```
-npm install electron-chrome-extensions
+npm install @masq-project/electron-chrome-extensions
 ```
 
 ## Screenshots
-
-| uBlock Origin                                                                                                                                                          | Dark Reader                                                                                                                                                          |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <img src="https://raw.githubusercontent.com/samuelmaddock/electron-browser-shell/master/packages/electron-chrome-extensions/screenshot-ublock-origin.png" width="405"> | <img src="https://raw.githubusercontent.com/samuelmaddock/electron-browser-shell/master/packages/electron-chrome-extensions/screenshot-dark-reader.png" width="391"> |
+| uBlock Origin                                                                                                                                                        | Dark Reader                                                                                                                                                        |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/MASQ-Project/electron-browser-shell/blob/master/packages/electron-chrome-extensions/screenshot-ublock-origin.png?raw=true" width="405"> | <img src="https://github.com/MASQ-Project/electron-browser-shell/blob/master/packages/electron-chrome-extensions/screenshot-dark-reader.png?raw=true" width="391"> |
 
 ## Usage
 
@@ -28,7 +27,9 @@ Simple browser using Electron's [default session](https://www.electronjs.org/doc
 const { app, BrowserWindow } = require('electron')
 const { ElectronChromeExtensions } = require('electron-chrome-extensions')
 
-app.whenReady().then(() => {
+(async function main() {
+  await app.whenReady()
+
   const extensions = new ElectronChromeExtensions()
   const browserWindow = new BrowserWindow()
 
@@ -37,20 +38,22 @@ app.whenReady().then(() => {
 
   browserWindow.loadURL('https://samuelmaddock.com')
   browserWindow.show()
-})
+}())
 ```
 
 ### Advanced
 
 Multi-tab browser with full support for Chrome extension APIs.
 
-> For a complete example, see the [`electron-browser-shell`](https://github.com/samuelmaddock/electron-browser-shell) project.
+> For a complete example, see the [`electron-browser-shell`](https://github.com/MASQ-Project/electron-browser-shell) project.
 
 ```js
 const { app, session, BrowserWindow } = require('electron')
 const { ElectronChromeExtensions } = require('electron-chrome-extensions')
 
-app.whenReady().then(() => {
+(async function main() {
+  await app.whenReady()
+
   const browserSession = session.fromPartition('persist:custom')
 
   const extensions = new ElectronChromeExtensions({
@@ -66,24 +69,17 @@ app.whenReady().then(() => {
     },
     createWindow(details) {
       // Optionally implemented for chrome.windows.create support
-    },
-    removeWindow(browserWindow) {
-      // Optionally implemented for chrome.windows.remove support
-    },
-    requestPermissions(extension, permissions) {
-      // Optionally implemented for chrome.permissions.request support
-    },
+    }
   })
 
   const browserWindow = new BrowserWindow({
     webPreferences: {
-      // Use same session given to Extensions class
+      // Same session given to Extensions class
       session: browserSession,
-      // Required for extension preload scripts
+      // Recommended options for loading remote content
       sandbox: true,
-      // Recommended for loading remote content
-      contextIsolation: true,
-    },
+      contextIsolation: true
+    }
   })
 
   // Adds the active tab of the browser
@@ -91,35 +87,7 @@ app.whenReady().then(() => {
 
   browserWindow.loadURL('https://samuelmaddock.com')
   browserWindow.show()
-})
-```
-
-### Packaging the preload script
-
-This module uses a [preload script](https://www.electronjs.org/docs/latest/tutorial/tutorial-preload#what-is-a-preload-script).
-When packaging your application, it's required that the preload script is included. This can be
-handled in two ways:
-
-1. Include `node_modules` in your packaged app. This allows `electron-chrome-extensions/preload` to
-   be resolved.
-2. In the case of using JavaScript bundlers, you may need to copy the preload script next to your
-   app's entry point script. You can try using
-   [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin),
-   [vite-plugin-static-copy](https://github.com/sapphi-red/vite-plugin-static-copy),
-   or [rollup-plugin-copy](https://github.com/vladshcherbin/rollup-plugin-copy) depending on your app's
-   configuration.
-
-Here's an example for webpack configurations:
-
-```js
-module.exports = {
-  entry: './index.js',
-  plugins: [
-    new CopyWebpackPlugin({
-      patterns: [require.resolve('electron-chrome-extensions/preload')],
-    }),
-  ],
-}
+}())
 ```
 
 ## API
@@ -130,35 +98,30 @@ module.exports = {
 
 #### `new ElectronChromeExtensions([options])`
 
-- `options` Object
-  - `license` String - Distribution license compatible with your application. See LICENSE.md for more details. \
-     Valid options include `GPL-3.0`, `Patron-License-2020-11-19`
-  - `session` Electron.Session (optional) - Session which should support
+* `options` Object (optional)
+  * `modulePath` String (optional) - Path to electron-chrome-extensions module files. Might be needed if JavaScript bundlers like Webpack are used in your build process.
+  * `preloadPath` String (optional) - Path to [`preload.js`] compiled from (./src/preload.ts), which just inject extensions APIs for `chrome-extension://`. We might want to customize path to our customized `preload.js` which includes `import '@masq-project/electron-chrome-extensions/dist/preload'`. If not provided, default to `<modulePath>/dist/preload.js`
+  * `session` Electron.Session (optional) - Session which should support
     Chrome extension APIs. `session.defaultSession` is used by default.
-  - `createTab(details) => Promise<[Electron.WebContents, Electron.BrowserWindow]>` (optional) -
+  * `createTab(details) => Promise<[Electron.WebContents, Electron.BrowserWindow]>` (optional) -
     Called when `chrome.tabs.create` is invoked by an extension. Allows the
     application to handle how tabs are created.
-    - `details` [chrome.tabs.CreateProperties](https://developer.chrome.com/docs/extensions/reference/tabs/#method-create)
-  - `selectTab(webContents, browserWindow)` (optional) - Called when
+    * `details` [chrome.tabs.CreateProperties](https://developer.chrome.com/docs/extensions/reference/tabs/#method-create)
+  * `selectTab(webContents, browserWindow)` (optional) - Called when
     `chrome.tabs.update` is invoked by an extension with the option to set the
     active tab.
-    - `webContents` Electron.WebContents - The tab to be activated.
-    - `browserWindow` Electron.BrowserWindow - The window which owns the tab.
-  - `removeTab(webContents, browserWindow)` (optional) - Called when
+    * `webContents` Electron.WebContents - The tab to be activated.
+    * `browserWindow` Electron.BrowserWindow - The window which owns the tab.
+  * `removeTab(webContents, browserWindow)` (optional) - Called when
     `chrome.tabs.remove` is invoked by an extension.
-    - `webContents` Electron.WebContents - The tab to be removed.
-    - `browserWindow` Electron.BrowserWindow - The window which owns the tab.
-  - `createWindow(details) => Promise<Electron.BrowserWindow>`
+    * `webContents` Electron.WebContents - The tab to be removed.
+    * `browserWindow` Electron.BrowserWindow - The window which owns the tab.
+  * `createWindow(details) => Promise<Electron.BrowserWindow>`
     (optional) - Called when `chrome.windows.create` is invoked by an extension.
-    - `details` [chrome.windows.CreateData](https://developer.chrome.com/docs/extensions/reference/windows/#method-create)
-  - `removeWindow(browserWindow) => Promise<Electron.BrowserWindow>`
+    * `details` [chrome.windows.CreateData](https://developer.chrome.com/docs/extensions/reference/windows/#method-create)
+  * `removeWindow(browserWindow) => Promise<Electron.BrowserWindow>`
     (optional) - Called when `chrome.windows.remove` is invoked by an extension.
-    - `browserWindow` Electron.BrowserWindow
-  - `assignTabDetails(details, webContents) => void` (optional) - Called when `chrome.tabs` creates
-    an object for tab details to be sent to an extension background script. Provide this function to
-    assign custom details such as `discarded`, `frozen`, or `groupId`.
-    - `details` [chrome.tabs.Tab](https://developer.chrome.com/docs/extensions/reference/api/tabs#type-Tab)
-    - `webContents` Electron.WebContents - The tab for which details are being created.
+    * `browserWindow` Electron.BrowserWindow
 
 ```ts
 new ElectronChromeExtensions({
@@ -172,12 +135,12 @@ new ElectronChromeExtensions({
   createWindow(details) {
     const window = new BrowserWindow()
     return window
-  },
+  }
 })
 ```
 
 For a complete usage example, see the browser implementation in the
-[`electron-browser-shell`](https://github.com/samuelmaddock/electron-browser-shell/blob/master/packages/shell/browser/main.js)
+[`electron-browser-shell`](https://github.com/MASQ-Project/electron-browser-shell/blob/master/packages/shell/browser/main.js)
 project.
 
 #### Instance Methods
@@ -204,40 +167,19 @@ Notify the extension system that a tab has been selected as the active tab.
 Returns [`Electron.MenuItem[]`](https://www.electronjs.org/docs/api/menu-item#class-menuitem) -
 An array of all extension context menu items given the context.
 
-##### `extensions.getURLOverrides()`
-
-Returns `Object` which maps special URL types to an extension URL. See [chrome_urls_overrides](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/chrome_url_overrides) for a list of
-supported URL types.
-
-Example:
-
-```js
-{
-  newtab: 'chrome-extension://<id>/newtab.html'
-}
-```
-
 #### Instance Events
 
 ##### Event: 'browser-action-popup-created'
 
 Returns:
 
-- `popup` PopupView - An instance of the popup.
+* `popup` PopupView - An instance of the popup.
 
 Emitted when a popup is created by the `chrome.browserAction` API.
 
-##### Event: 'url-overrides-updated'
-
-Returns:
-
-- `urlOverrides` Object - A map of url types to extension URLs.
-
-Emitted after an extension is loaded with [chrome_urls_overrides](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/chrome_url_overrides) set.
-
 ### Element: `<browser-action-list>`
 
-<img src="https://raw.githubusercontent.com/samuelmaddock/electron-browser-shell/master/packages/electron-chrome-extensions/screenshot-browser-action.png" width="438">
+<img src="https://github.com/MASQ-Project/electron-browser-shell/blob/master/packages/electron-chrome-extensions/screenshot-browser-action.png?raw=true" width="438">
 
 The `<browser-action-list>` element provides a row of [browser actions](https://developer.chrome.com/extensions/browserAction) which may be pressed to activate the `chrome.browserAction.onClicked` event or display the extension popup.
 
@@ -248,16 +190,13 @@ To enable the element on a webpage, you must define a preload script which injec
 - `partition` string (optional) - The `Electron.Session` partition which extensions are loaded in. Defaults to the session in which `<browser-action-list>` lives.
 - `tab` string (optional) - The tab's `Electron.WebContents` ID to use for displaying
   the relevant browser action state. Defaults to the active tab of the current browser window.
-- `alignment` string (optional) - How the popup window should be aligned relative to the extension action. Defaults to `bottom left`. Use any assortment of `top`, `bottom`, `left`, and `right`.
 
 #### Browser action example
 
 ##### Preload
-
 Inject the browserAction API to make the `<browser-action-list>` element accessible in your application.
-
 ```js
-import { injectBrowserAction } from 'electron-chrome-extensions/browser-action'
+import { injectBrowserAction } from 'electron-chrome-extensions/dist/browser-action'
 
 // Inject <browser-action-list> element into our page
 if (location.href === 'webui://browser-chrome.html') {
@@ -268,9 +207,7 @@ if (location.href === 'webui://browser-chrome.html') {
 > The use of `import` implies that your preload script must be compiled using a JavaScript bundler like Webpack.
 
 ##### Webpage
-
 Add the `<browser-action-list>` element with attributes appropriate for your application.
-
 ```html
 <!-- Show actions for the same session and active tab of current window. -->
 <browser-action-list></browser-action-list>
@@ -280,26 +217,6 @@ Add the `<browser-action-list>` element with attributes appropriate for your app
 
 <!-- Show actions for custom session and a specific tab of current window. -->
 <browser-action-list partition="persist:custom" tab="1"></browser-action-list>
-
-<!-- If extensions are displayed in the bottom left of your browser UI, then
-     you can align the popup to the top right of the extension action. -->
-<browser-action-list alignment="top right"></browser-action-list>
-```
-
-##### Main process
-
-For extension icons to appear in the list, the `crx://` protocol needs to be handled in the Session
-where it's intended to be displayed.
-
-```js
-import { app, session } from 'electron'
-import { ElectronChromeExtensions } from 'electron-chrome-extensions'
-
-app.whenReady().then(() => {
-  // Provide the session where your app will display <browser-action-list>
-  const appSession = session.defaultSession
-  ElectronChromeExtensions.handleCRXProtocol(appSession)
-})
 ```
 
 ##### Custom CSS
@@ -334,21 +251,20 @@ The following APIs are supported, in addition to [those already built-in to Elec
 <details>
 <summary>Click to reveal supported APIs</summary>
 
-### [`chrome.action`](https://developer.chrome.com/extensions/action)
+### [`chrome.browserAction`](https://developer.chrome.com/extensions/browserAction)
 
-- [x] chrome.action.setTitle
-- [x] chrome.action.getTitle
-- [x] chrome.action.setIcon
-- [x] chrome.action.setPopup
-- [x] chrome.action.getPopup
-- [x] chrome.action.setBadgeText
-- [x] chrome.action.getBadgeText
-- [x] chrome.action.setBadgeBackgroundColor
-- [x] chrome.action.getBadgeBackgroundColor
-- [ ] chrome.action.enable
-- [ ] chrome.action.disable
-- [x] chrome.action.openPopup
-- [x] chrome.action.onClicked
+- [x] chrome.browserAction.setTitle
+- [x] chrome.browserAction.getTitle
+- [x] chrome.browserAction.setIcon
+- [x] chrome.browserAction.setPopup
+- [x] chrome.browserAction.getPopup
+- [x] chrome.browserAction.setBadgeText
+- [x] chrome.browserAction.getBadgeText
+- [x] chrome.browserAction.setBadgeBackgroundColor
+- [x] chrome.browserAction.getBadgeBackgroundColor
+- [ ] chrome.browserAction.enable
+- [ ] chrome.browserAction.disable
+- [x] chrome.browserAction.onClicked
 
 ### [`chrome.commands`](https://developer.chrome.com/extensions/commands)
 
@@ -444,13 +360,6 @@ See [Electron's Notification tutorial](https://www.electronjs.org/docs/tutorial/
 - [ ] chrome.tabs.onReplaced
 - [x] chrome.tabs.onZoomChange
 
-> [!NOTE]
-> Electron does not provide tab functionality such as discarded, frozen, or group IDs. If an
-> application developer wishes to implement this functionality, emit a `"tab-updated"` event on the
-> tab's WebContents for `chrome.tabs.onUpdated` to be made aware of changes. Tab properties can be
-> assigned using the `assignTabDetails` option provided to the `ElectronChromeExtensions`
-> constructor.
-
 ### [`chrome.webNavigation`](https://developer.chrome.com/extensions/webNavigation)
 
 - [x] chrome.webNavigation.getFrame (Electron 12+)
@@ -477,25 +386,23 @@ See [Electron's Notification tutorial](https://www.electronjs.org/docs/tutorial/
 - [x] chrome.windows.onCreated
 - [x] chrome.windows.onRemoved
 - [x] chrome.windows.onFocusChanged
-- [x] chrome.windows.onBoundsChanged
+- [ ] chrome.windows.onBoundsChanged
 </details>
 
 ## Limitations
 
 ### electron-chrome-extensions
-
-- The latest version of Electron is recommended. Minimum support requires Electron v35.0.0-beta.8.
+- The latest version of Electron is recommended. Minimum support requires Electron v9.
+- Chrome's Manifest V3 extensions are not yet supported.
 - All background scripts are persistent.
 
 ### electron
-
 - Usage of Electron's `webRequest` API will prevent `chrome.webRequest` listeners from being called.
 - Chrome extensions are not supported in non-persistent/incognito sessions.
 - `chrome.webNavigation.onDOMContentLoaded` is only emitted for the top frame until [support for iframes](https://github.com/electron/electron/issues/27344) is added.
-- Service worker preload scripts require Electron's sandbox to be enabled. This is the default behavior, but might be overridden by the `--no-sandbox` flag or `sandbox: false` in the `webPreferences` of a `BrowserWindow`. Check for the `--no-sandbox` flag using `ps -eaf | grep <appname>`.
 
 ## License
 
 GPL-3
 
-For proprietary use, please [contact me](mailto:sam@samuelmaddock.com?subject=electron-chrome-extensions%20license) or [sponsor me on GitHub](https://github.com/sponsors/samuelmaddock/) under the appropriate tier to [acquire a proprietary-use license](https://github.com/samuelmaddock/electron-browser-shell/blob/master/LICENSE-PATRON.md). These contributions help make development and maintenance of this project more sustainable and show appreciation for the work thus far.
+For proprietary use, please [contact Samuel Maddock](mailto:sam@samuelmaddock.com?subject=electron-chrome-extensions%20license) or [sponsor him on GitHub](https://github.com/sponsors/samuelmaddock/) under the appropriate tier to [acquire a proprietary-use license](https://github.com/samuelmaddock/electron-browser-shell/blob/master/LICENSE-PATRON.md). These contributions help make development and maintenance of this project more sustainable and show appreciation for the work thus far.

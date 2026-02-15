@@ -19,7 +19,7 @@ const logEvent = (eventName) => {
   if (eventName) eventLog.push(eventName)
   if (typeof activeTabId === 'undefined') return
 
-  eventLog.forEach((eventName) => {
+  eventLog.forEach(eventName => {
     chrome.tabs.sendMessage(activeTabId, { name: 'logEvent', args: eventName })
   })
 
@@ -36,5 +36,3 @@ chrome.tabs.query({ active: true, windowId: chrome.windows.WINDOW_ID_CURRENT }, 
   activeTabId = tab.id
   logEvent()
 })
-
-console.log('background-script-evaluated')

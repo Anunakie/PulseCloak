@@ -10,9 +10,8 @@ import {
   matchSize,
   ResizeType,
 } from './common'
-import debug from 'debug'
 
-const d = debug('electron-chrome-extensions:browserAction')
+const debug = require('debug')('electron-chrome-extensions:browserAction')
 
 if (!app.isReady()) {
   protocol.registerSchemesAsPrivileged([{ scheme: 'crx', privileges: { bypassCSP: true } }])
@@ -35,28 +34,21 @@ interface ActivateDetails {
   extensionId: string
   tabId: number
   anchorRect: { x: number; y: number; width: number; height: number }
-  alignment?: string
 }
 
 const getBrowserActionDefaults = (extension: Electron.Extension): ExtensionAction | undefined => {
   const manifest = getExtensionManifest(extension)
-  const browserAction =
-    manifest.manifest_version === 3
-      ? manifest.action
-      : manifest.manifest_version === 2
-        ? manifest.browser_action
-        : undefined
-  if (typeof browserAction === 'object') {
-    const manifestAction: chrome.runtime.ManifestAction = browserAction
+  const { browser_action } = manifest
+  if (typeof browser_action === 'object') {
     const action: ExtensionAction = {}
 
-    action.title = manifestAction.default_title || manifest.name
+    action.title = browser_action.default_title || manifest.name
 
     const iconPath = getIconPath(extension)
     if (iconPath) action.icon = { path: iconPath }
 
-    if (manifestAction.default_popup) {
-      action.popup = manifestAction.default_popup
+    if (browser_action.default_popup) {
+      action.popup = browser_action.default_popup
     }
 
     return action
@@ -101,12 +93,12 @@ export class BrowserActionAPI {
     const setDetails = (
       { extension }: ExtensionEvent,
       details: any,
-      propName: ExtensionActionKey,
+      propName: ExtensionActionKey
     ) => {
       const { tabId } = details
-      let value = details[propName]
+      let value = (details as any)[propName] || undefined
 
-      if (typeof value === 'undefined' || value === null) {
+      if (typeof value === 'undefined') {
         const defaults = getBrowserActionDefaults(extension)
         value = defaults ? defaults[propName] : value
       }
@@ -139,24 +131,15 @@ export class BrowserActionAPI {
     handleProp('Title', 'title')
     handleProp('Popup', 'popup')
 
-    handle('browserAction.getUserSettings', (): chrome.action.UserSettings => {
-      // TODO: allow extension pinning
-      return { isOnToolbar: true }
-    })
-
     // setIcon is unique in that it can pass in a variety of properties. Here we normalize them
     // to use 'icon'.
     handle(
       'browserAction.setIcon',
       (event, { tabId, ...details }: chrome.browserAction.TabIconDetails) => {
-        // TODO: icon paths need to be resolved relative to the sender url. In
-        // the case of service workers, we need an API to get the script url.
         setDetails(event, { tabId, icon: details }, 'icon')
         setDetails(event, { tabId, iconModified: Date.now() }, 'iconModified')
-      },
+      }
     )
-
-    handle('browserAction.openPopup', this.openPopup)
 
     // browserAction preload API
     const preloadOpts = { allowRemote: true, extensionContext: false }
@@ -165,23 +148,21 @@ export class BrowserActionAPI {
     handle(
       'browserAction.addObserver',
       (event) => {
-        if (event.type != 'frame') return
-        const observer = event.sender
-        this.observers.add(observer)
-        observer.once?.('destroyed', () => {
-          this.observers.delete(observer)
+        const { sender: webContents } = event
+        this.observers.add(webContents)
+        webContents.once('destroyed', () => {
+          this.observers.delete(webContents)
         })
       },
-      preloadOpts,
+      preloadOpts
     )
     handle(
       'browserAction.removeObserver',
       (event) => {
-        if (event.type != 'frame') return
-        const { sender: observer } = event
-        this.observers.delete(observer)
+        const { sender: webContents } = event
+        this.observers.delete(webContents)
       },
-      preloadOpts,
+      preloadOpts
     )
 
     this.ctx.store.on('active-tab-changed', () => {
@@ -202,18 +183,24 @@ export class BrowserActionAPI {
   }
 
   private setupSession(session: Electron.Session) {
-    const sessionExtensions = session.extensions || session
-    sessionExtensions.on('extension-loaded', (event, extension) => {
+    session.on('extension-loaded', (event, extension) => {
       this.processExtension(extension)
     })
 
-    sessionExtensions.on('extension-unloaded', (event, extension) => {
+    session.on('extension-unloaded', (event, extension) => {
       this.removeActions(extension.id)
     })
+
+    session.protocol.registerBufferProtocol('crx', this.handleCrxRequest)
   }
 
-  handleCRXRequest(request: GlobalRequest): GlobalResponse {
-    d('%s', request.url)
+  private handleCrxRequest = (
+    request: Electron.ProtocolRequest,
+    callback: (response: Electron.ProtocolResponse) => void
+  ) => {
+    debug('%s', request.url)
+
+    let response: Electron.ProtocolResponse
 
     try {
       const url = new URL(request.url)
@@ -228,8 +215,7 @@ export class BrowserActionAPI {
           const imageSize = parseInt(fragments[2], 10)
           const resizeType = parseInt(fragments[3], 10) || ResizeType.Up
 
-          const sessionExtensions = this.ctx.session.extensions || this.ctx.session
-          const extension = sessionExtensions.getExtension(extensionId)
+          const extension = this.ctx.session.getExtension(extensionId)
 
           let iconDetails: chrome.browserAction.TabIconDetails | undefined
 
@@ -254,33 +240,33 @@ export class BrowserActionAPI {
               const imageData = matchSize(iconDetails.imageData as any, imageSize, resizeType)
               iconImage = imageData ? nativeImage.createFromDataURL(imageData) : undefined
             }
-
-            if (iconImage?.isEmpty()) {
-              d('crx: icon image is empty', iconDetails)
-            }
           }
 
           if (iconImage) {
-            return new Response(iconImage.toPNG(), {
-              status: 200,
-              headers: {
-                'Content-Type': 'image/png',
-              },
-            })
+            response = {
+              statusCode: 200,
+              mimeType: 'image/png',
+              data: iconImage.toPNG(),
+            }
+          } else {
+            response = { statusCode: 400 }
           }
 
-          d('crx: no icon image for %s', extensionId)
-          return new Response(null, { status: 400 })
+          break
         }
         default: {
-          d('crx: invalid request %s', requestType)
-          return new Response(null, { status: 400 })
+          response = { statusCode: 400 }
         }
       }
     } catch (e) {
       console.error(e)
-      return new Response(null, { status: 500 })
+
+      response = {
+        statusCode: 500,
+      }
     }
+
+    callback(response)
   }
 
   private getAction(extensionId: string) {
@@ -305,32 +291,8 @@ export class BrowserActionAPI {
 
   private getPopupUrl(extensionId: string, tabId: number) {
     const action = this.getAction(extensionId)
-    const tabPopupValue = action.tabs[tabId]?.popup
-    const actionPopupValue = action.popup
-
-    let popupPath: string | undefined
-
-    if (typeof tabPopupValue !== 'undefined') {
-      popupPath = tabPopupValue
-    } else if (typeof actionPopupValue !== 'undefined') {
-      popupPath = actionPopupValue
-    }
-
-    let url: string | undefined
-
-    // Allow absolute URLs
-    try {
-      url = popupPath && new URL(popupPath).href
-    } catch {}
-
-    // Fallback to relative path
-    if (!url) {
-      try {
-        url = popupPath && new URL(popupPath, `chrome-extension://${extensionId}`).href
-      } catch {}
-    }
-
-    return url
+    const popupPath = action.tabs[tabId]?.popup || action.popup || undefined
+    return popupPath && `chrome-extension://${extensionId}/${popupPath}`
   }
 
   // TODO: Make private for v4 major release.
@@ -365,12 +327,11 @@ export class BrowserActionAPI {
     return { activeTabId: activeTab?.id, actions }
   }
 
-  private activate({ type, sender }: ExtensionEvent, details: ActivateDetails) {
-    if (type != 'frame') return
+  private activate(extEvt: ExtensionEvent, details: ActivateDetails) {
     const { eventType, extensionId, tabId } = details
 
-    d(
-      `activate [eventType: ${eventType}, extensionId: '${extensionId}', tabId: ${tabId}, senderId: ${sender?.id}]`,
+    debug(
+      `activate [eventType: ${eventType}, extensionId: '${extensionId}', tabId: ${tabId}, senderId: ${extEvt.sender.id}]`
     )
 
     switch (eventType) {
@@ -378,7 +339,7 @@ export class BrowserActionAPI {
         this.activateClick(details)
         break
       case 'contextmenu':
-        this.activateContextMenu(details)
+        this.activateContextMenu(details, extEvt)
         break
       default:
         console.debug(`Ignoring unknown browserAction.activate event '${eventType}'`)
@@ -386,14 +347,14 @@ export class BrowserActionAPI {
   }
 
   private activateClick(details: ActivateDetails) {
-    const { extensionId, tabId, anchorRect, alignment } = details
+    const { extensionId, tabId, anchorRect } = details
 
     if (this.popup) {
       const toggleExtension = !this.popup.isDestroyed() && this.popup.extensionId === extensionId
       this.popup.destroy()
       this.popup = undefined
       if (toggleExtension) {
-        d('skipping activate to close popup')
+        debug('skipping activate to close popup')
         return
       }
     }
@@ -418,25 +379,23 @@ export class BrowserActionAPI {
         parent: win,
         url: popupUrl,
         anchorRect,
-        alignment,
       })
 
-      d(`opened popup: ${popupUrl}`)
+      debug(`opened popup: ${popupUrl}`)
 
       this.ctx.emit('browser-action-popup-created', this.popup)
     } else {
-      d(`dispatching onClicked for ${extensionId}`)
+      debug(`dispatching onClicked for ${extensionId}`)
 
       const tabDetails = this.ctx.store.tabDetailsCache.get(tab.id)
       this.ctx.router.sendEvent(extensionId, 'browserAction.onClicked', tabDetails)
     }
   }
 
-  private activateContextMenu(details: ActivateDetails) {
+  private activateContextMenu(details: ActivateDetails, event: ExtensionEvent) {
     const { extensionId, anchorRect } = details
 
-    const sessionExtensions = this.ctx.session.extensions || this.ctx.session
-    const extension = sessionExtensions.getExtension(extensionId)
+    const extension = this.ctx.session.getExtension(extensionId)
     if (!extension) {
       throw new Error(`Unregistered extension '${extensionId}'`)
     }
@@ -451,16 +410,15 @@ export class BrowserActionAPI {
       click: () => {
         const homePageUrl =
           manifest.homepage_url || `https://chrome.google.com/webstore/detail/${extension.id}`
-        this.ctx.store.createTab({ url: homePageUrl })
+        this.ctx.store.createTab({ url: homePageUrl }, event)
       },
     })
 
     appendSeparator()
 
-    // TODO(mv3): need to build 'action' menu items?
     const contextMenuItems: MenuItem[] = this.ctx.store.buildMenuItems(
       extensionId,
-      'browser_action',
+      'browser_action'
     )
     if (contextMenuItems.length > 0) {
       contextMenuItems.forEach((item) => menu.append(item))
@@ -474,48 +432,13 @@ export class BrowserActionAPI {
       label: 'Options',
       enabled: typeof optionsPageUrl === 'string',
       click: () => {
-        this.ctx.store.createTab({ url: optionsPageUrl })
+        this.ctx.store.createTab({ url: optionsPageUrl }, event)
       },
     })
-
-    if (process.env.NODE_ENV === 'development' && process.env.DEBUG) {
-      append({
-        label: 'Remove extension',
-        click: () => {
-          d(`removing extension "${extension.name}" (${extension.id})`)
-          sessionExtensions.removeExtension(extension.id)
-        },
-      })
-    }
 
     menu.popup({
       x: Math.floor(anchorRect.x),
       y: Math.floor(anchorRect.y + anchorRect.height),
-    })
-  }
-
-  private openPopup = (event: ExtensionEvent, options?: chrome.action.OpenPopupOptions) => {
-    const window =
-      typeof options?.windowId === 'number'
-        ? this.ctx.store.getWindowById(options.windowId)
-        : this.ctx.store.getCurrentWindow()
-    if (!window || window.isDestroyed()) {
-      d('openPopup: window %d destroyed', window?.id)
-      return
-    }
-
-    const activeTab = this.ctx.store.getActiveTabFromWindow(window)
-    if (!activeTab) return
-
-    const [width] = window.getSize()
-    const anchorSize = 64
-
-    this.activateClick({
-      eventType: 'click',
-      extensionId: event.extension.id,
-      tabId: activeTab?.id,
-      // TODO(mv3): get anchor position
-      anchorRect: { x: width - anchorSize, y: 0, width: anchorSize, height: anchorSize },
     })
   }
 
@@ -524,11 +447,10 @@ export class BrowserActionAPI {
     this.queuedUpdate = true
     queueMicrotask(() => {
       this.queuedUpdate = false
-      if (this.observers.size === 0) return
-      d(`dispatching update to ${this.observers.size} observer(s)`)
+      debug(`dispatching update to ${this.observers.size} observer(s)`)
       Array.from(this.observers).forEach((observer) => {
         if (!observer.isDestroyed()) {
-          observer.send?.('browserAction.update')
+          observer.send('browserAction.update')
         }
       })
     })

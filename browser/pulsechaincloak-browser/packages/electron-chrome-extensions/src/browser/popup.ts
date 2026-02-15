@@ -1,9 +1,6 @@
-import { EventEmitter } from 'node:events'
 import { BrowserWindow, Session } from 'electron'
-import { getAllWindows } from './api/common'
-import debug from 'debug'
 
-const d = debug('electron-chrome-extensions:popup')
+const debug = require('debug')('electron-chrome-extensions:popup')
 
 export interface PopupAnchorRect {
   x: number
@@ -15,18 +12,12 @@ export interface PopupAnchorRect {
 interface PopupViewOptions {
   extensionId: string
   session: Session
-  parent: Electron.BaseWindow
+  parent: BrowserWindow
   url: string
   anchorRect: PopupAnchorRect
-  alignment?: string
 }
 
-const supportsPreferredSize = () => {
-  const major = parseInt(process.versions.electron.split('.').shift() || '', 10)
-  return major >= 12
-}
-
-export class PopupView extends EventEmitter {
+export class PopupView {
   static POSITION_PADDING = 5
 
   static BOUNDS = {
@@ -37,26 +28,21 @@ export class PopupView extends EventEmitter {
   }
 
   browserWindow?: BrowserWindow
-  parent?: Electron.BaseWindow
+  parent?: BrowserWindow
   extensionId: string
 
   private anchorRect: PopupAnchorRect
   private destroyed: boolean = false
-  private hidden: boolean = true
-  private alignment?: string
 
   /** Preferred size changes are only received in Electron v12+ */
-  private usingPreferredSize = supportsPreferredSize()
+  private usingPreferredSize = false
 
   private readyPromise: Promise<void>
 
   constructor(opts: PopupViewOptions) {
-    super()
-
     this.parent = opts.parent
     this.extensionId = opts.extensionId
     this.anchorRect = opts.anchorRect
-    this.alignment = opts.alignment
 
     this.browserWindow = new BrowserWindow({
       show: false,
@@ -65,19 +51,20 @@ export class PopupView extends EventEmitter {
       movable: false,
       maximizable: false,
       minimizable: false,
-      // https://github.com/electron/electron/issues/47579
-      fullscreenable: false,
       resizable: false,
       skipTaskbar: true,
       backgroundColor: '#ffffff',
-      roundedCorners: false,
       webPreferences: {
         session: opts.session,
         sandbox: true,
         nodeIntegration: false,
         nodeIntegrationInWorker: false,
+        nativeWindowOpen: true,
+        worldSafeExecuteJavaScript: true,
         contextIsolation: true,
-        enablePreferredSizeMode: true,
+        ...({
+          enablePreferredSizeMode: true,
+        } as any),
       },
     })
 
@@ -92,11 +79,6 @@ export class PopupView extends EventEmitter {
     this.readyPromise = this.load(opts.url)
   }
 
-  private show() {
-    this.hidden = false
-    this.browserWindow?.show()
-  }
-
   private async load(url: string): Promise<void> {
     const win = this.browserWindow!
 
@@ -108,10 +90,7 @@ export class PopupView extends EventEmitter {
 
     if (this.destroyed) return
 
-    if (this.usingPreferredSize) {
-      // Set small initial size so the preferred size grows to what's needed
-      this.setSize({ width: PopupView.BOUNDS.minWidth, height: PopupView.BOUNDS.minHeight })
-    } else {
+    if (!this.usingPreferredSize) {
       // Set large initial size to avoid overflow
       this.setSize({ width: PopupView.BOUNDS.maxWidth, height: PopupView.BOUNDS.maxHeight })
 
@@ -121,9 +100,9 @@ export class PopupView extends EventEmitter {
 
       await this.queryPreferredSize()
       if (this.destroyed) return
-
-      this.show()
     }
+
+    win.show()
   }
 
   destroy = () => {
@@ -131,7 +110,7 @@ export class PopupView extends EventEmitter {
 
     this.destroyed = true
 
-    d(`destroying ${this.extensionId}`)
+    debug(`destroying ${this.extensionId}`)
 
     if (this.parent) {
       if (!this.parent.isDestroyed()) {
@@ -169,38 +148,34 @@ export class PopupView extends EventEmitter {
     if (!this.browserWindow || !this.parent) return
 
     const width = Math.floor(
-      Math.min(PopupView.BOUNDS.maxWidth, Math.max(rect.width || 0, PopupView.BOUNDS.minWidth)),
+      Math.min(PopupView.BOUNDS.maxWidth, Math.max(rect.width || 0, PopupView.BOUNDS.minWidth))
     )
 
     const height = Math.floor(
-      Math.min(PopupView.BOUNDS.maxHeight, Math.max(rect.height || 0, PopupView.BOUNDS.minHeight)),
+      Math.min(PopupView.BOUNDS.maxHeight, Math.max(rect.height || 0, PopupView.BOUNDS.minHeight))
     )
 
-    const size = { width, height }
-    d(`setSize`, size)
-
-    this.emit('will-resize', size)
+    debug(`setSize`, { width, height })
 
     this.browserWindow?.setBounds({
       ...this.browserWindow.getBounds(),
-      ...size,
+      width,
+      height,
     })
-
-    this.emit('resized')
   }
 
   private maybeClose = () => {
     // Keep open if webContents is being inspected
     if (!this.browserWindow?.isDestroyed() && this.browserWindow?.webContents.isDevToolsOpened()) {
-      d('preventing close due to DevTools being open')
+      debug('preventing close due to DevTools being open')
       return
     }
 
     // For extension popups with a login form, the user may need to access a
     // program outside of the app. Closing the popup would then add
     // inconvenience.
-    if (!getAllWindows().some((win) => win.isFocused())) {
-      d('preventing close due to focus residing outside of the app')
+    if (!BrowserWindow.getFocusedWindow()) {
+      debug('preventing close due to focus residing outside of the app')
       return
     }
 
@@ -211,44 +186,23 @@ export class PopupView extends EventEmitter {
     if (!this.browserWindow || !this.parent) return
 
     const winBounds = this.parent.getBounds()
-    const winContentBounds = this.parent.getContentBounds()
-    const nativeTitlebarHeight = winBounds.height - winContentBounds.height
-
     const viewBounds = this.browserWindow.getBounds()
 
+    // TODO: support more orientations than just top-right
     let x = winBounds.x + this.anchorRect.x + this.anchorRect.width - viewBounds.width
-    let y =
-      winBounds.y +
-      nativeTitlebarHeight +
-      this.anchorRect.y +
-      this.anchorRect.height +
-      PopupView.POSITION_PADDING
-
-    // If aligned to a differently then we need to offset the popup position
-    if (this.alignment?.includes('right')) x = winBounds.x + this.anchorRect.x
-    if (this.alignment?.includes('top'))
-      y =
-        winBounds.y +
-        nativeTitlebarHeight -
-        viewBounds.height +
-        this.anchorRect.y -
-        PopupView.POSITION_PADDING
+    let y = winBounds.y + this.anchorRect.y + this.anchorRect.height + PopupView.POSITION_PADDING
 
     // Convert to ints
     x = Math.floor(x)
     y = Math.floor(y)
 
-    const position = { x, y }
-    d(`updatePosition`, position)
-
-    this.emit('will-move', position)
+    debug(`updatePosition`, { x, y })
 
     this.browserWindow.setBounds({
       ...this.browserWindow.getBounds(),
-      ...position,
+      x,
+      y,
     })
-
-    this.emit('moved')
   }
 
   /** Backwards compat for Electron <12 */
@@ -259,7 +213,7 @@ export class PopupView extends EventEmitter {
       `((${() => {
         const rect = document.body.getBoundingClientRect()
         return { width: rect.width, height: rect.height }
-      }})())`,
+      }})())`
     )
 
     if (this.destroyed) return
@@ -269,12 +223,9 @@ export class PopupView extends EventEmitter {
   }
 
   private updatePreferredSize = (event: Electron.Event, size: Electron.Size) => {
-    d('updatePreferredSize', size)
+    debug('updatePreferredSize', size)
     this.usingPreferredSize = true
     this.setSize(size)
     this.updatePosition()
-
-    // Wait to reveal popup until it's sized and positioned correctly
-    if (this.hidden) this.show()
   }
 }

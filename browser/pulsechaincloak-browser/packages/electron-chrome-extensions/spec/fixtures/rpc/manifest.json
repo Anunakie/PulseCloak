@@ -16,11 +16,5 @@
     "persistent": true
   },
   "manifest_version": 2,
-  "permissions": [
-    "contextMenus",
-    "nativeMessaging",
-    "webRequest",
-    "webRequestBlocking",
-    "<all_urls>"
-  ]
+  "permissions": ["contextMenus", "webRequest", "webRequestBlocking", "<all_urls>"]
 }

@@ -1,0 +1,47 @@
+{
+    "name": "pulsechaincloak-browser",
+    "productName": "PulseChainCloak Browser",
+    "version": "0.1.0",
+    "description": "PulseChainCloak Browser - Privacy-focused browser for PulseChain mesh network",
+    "main": ".webpack/main",
+    "scripts": {
+        "start": "electron-forge start",
+        "package": "electron-forge package",
+        "make": "electron-forge make",
+        "publish": "electron-forge publish",
+        "lint": "echo \"No linting configured\""
+    },
+    "license": "GPL-3.0",
+    "author": "PulseChainCloak Community",
+    "devDependencies": {
+        "@babel/core": "^7.22.1",
+        "@babel/preset-env": "^7.22.4",
+        "@babel/preset-react": "^7.22.3",
+        "@electron-forge/cli": "^6.1.1",
+        "@electron-forge/maker-deb": "^6.1.1",
+        "@electron-forge/maker-rpm": "^6.1.1",
+        "@electron-forge/maker-squirrel": "^6.1.1",
+        "@electron-forge/maker-zip": "^6.1.1",
+        "@electron-forge/plugin-webpack": "^6.1.1",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
+        "@vercel/webpack-asset-relocator-loader": "1.7.3",
+        "babel-loader": "^9.1.2",
+        "css-loader": "^6.0.0",
+        "electron": "24.3.1",
+        "node-loader": "^2.0.0",
+        "react-refresh": "^0.14.0",
+        "sass-loader": "^13.3.1",
+        "style-loader": "^3.0.0"
+    },
+    "dependencies": {
+        "electron-log": "^5.0.0-beta.24",
+        "electron-squirrel-startup": "^1.0.0",
+        "electron-store": "^8.1.0",
+        "ethers": "5.7.2",
+        "gun": "^0.2020.1241",
+        "ipfs-http-client": "56.0.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.11.2"
+    }
+}

@@ -1,14 +1,10 @@
 import { ipcRenderer, contextBridge, webFrame } from 'electron'
+import { EventEmitter } from 'events'
 
-/**
- * Injects `<browser-action>` custom element into the current webpage.
- */
 export const injectBrowserAction = () => {
   const actionMap = new Map<string, any>()
+  const internalEmitter = new EventEmitter()
   const observerCounts = new Map<string, number>()
-
-  // Reuse `process` to avoid bundling custom EventEmitter
-  const internalEmitter = process as NodeJS.EventEmitter
 
   const invoke = <T>(name: string, partition: string, ...args: any[]): Promise<T> => {
     return ipcRenderer.invoke('crx-msg-remote', partition, name, ...args)
@@ -19,15 +15,14 @@ export const injectBrowserAction = () => {
     extensionId: string
     tabId: number
     anchorRect: { x: number; y: number; width: number; height: number }
-    alignment?: string
   }
 
-  const __browserAction__ = {
+  const browserAction = {
     addEventListener(name: string, listener: (...args: any[]) => void) {
-      internalEmitter.addListener(`-actions-${name}`, listener)
+      internalEmitter.addListener(name, listener)
     },
     removeEventListener(name: string, listener: (...args: any[]) => void) {
-      internalEmitter.removeListener(`-actions-${name}`, listener)
+      internalEmitter.removeListener(name, listener)
     },
 
     getAction(extensionId: string) {
@@ -38,7 +33,7 @@ export const injectBrowserAction = () => {
       for (const action of state.actions) {
         actionMap.set(action.id, action)
       }
-      queueMicrotask(() => internalEmitter.emit('-actions-update', state))
+      queueMicrotask(() => internalEmitter.emit('update', state))
       return state
     },
 
@@ -62,26 +57,20 @@ export const injectBrowserAction = () => {
 
       if (count === 0) {
         invoke('browserAction.removeObserver', partition)
-        observerCounts.delete(partition)
       }
     },
   }
 
   ipcRenderer.on('browserAction.update', () => {
     for (const partition of observerCounts.keys()) {
-      __browserAction__.getState(partition)
+      browserAction.getState(partition)
     }
   })
 
   // Function body to run in the main world.
   // IMPORTANT: This must be self-contained, no closure variables can be used!
-  function mainWorldScript() {
+  function mainWorldScript(bA: typeof browserAction) {
     const DEFAULT_PARTITION = '_self'
-
-    // Access from globalThis to prevent accessing incorrect minified variable.
-    // Fallback to `__browserAction__` when context isolation is disabled.
-    const browserAction: typeof __browserAction__ =
-      (globalThis as any).browserAction || __browserAction__
 
     class BrowserActionElement extends HTMLButtonElement {
       private updateId?: number
@@ -117,16 +106,8 @@ export const injectBrowserAction = () => {
         }
       }
 
-      get alignment(): string {
-        return this.getAttribute('alignment') || ''
-      }
-
-      set alignment(alignment: string) {
-        this.setAttribute('alignment', alignment)
-      }
-
       static get observedAttributes() {
-        return ['id', 'tab', 'partition', 'alignment']
+        return ['id', 'tab', 'partition']
       }
 
       constructor() {
@@ -162,11 +143,10 @@ export const injectBrowserAction = () => {
       private activate(event: Event) {
         const rect = this.getBoundingClientRect()
 
-        browserAction.activate(this.partition || DEFAULT_PARTITION, {
+        bA.activate(this.partition || DEFAULT_PARTITION, {
           eventType: event.type,
           extensionId: this.id,
           tabId: this.tab,
-          alignment: this.alignment,
           anchorRect: {
             x: rect.left,
             y: rect.top,
@@ -206,35 +186,18 @@ export const injectBrowserAction = () => {
       private updateIcon(info: any) {
         const iconSize = 32
         const resizeType = 2
-        const searchParams = new URLSearchParams({
-          tabId: `${this.tab}`,
-          partition: `${this.partition || DEFAULT_PARTITION}`,
-        })
-        if (info.iconModified) {
-          searchParams.append('t', info.iconModified)
-        }
-        const iconUrl = `crx://extension-icon/${this.id}/${iconSize}/${resizeType}?${searchParams.toString()}`
+        const timeParam = info.iconModified ? `&t=${info.iconModified}` : ''
+        const iconUrl = `crx://extension-icon/${this.id}/${iconSize}/${resizeType}?tabId=${this.tab}${timeParam}`
         const bgImage = `url(${iconUrl})`
 
         if (this.pendingIcon) {
-          this.pendingIcon.onload = this.pendingIcon.onerror = () => {}
           this.pendingIcon = undefined
         }
 
         // Preload icon to prevent it from blinking
         const img = (this.pendingIcon = new Image())
-        img.onerror = () => {
-          if (this.isConnected) {
-            this.classList.toggle('no-icon', true)
-            if (this.title) {
-              this.dataset.letter = this.title.charAt(0)
-            }
-            this.pendingIcon = undefined
-          }
-        }
         img.onload = () => {
           if (this.isConnected) {
-            this.classList.toggle('no-icon', false)
             this.style.backgroundImage = bgImage
             this.pendingIcon = undefined
           }
@@ -245,7 +208,7 @@ export const injectBrowserAction = () => {
       private updateCallback() {
         this.updateId = undefined
 
-        const action = browserAction.getAction(this.id)
+        const action = bA.getAction(this.id)
 
         const activeTabId = this.tab
         const tabInfo = activeTabId > -1 ? action.tabs[activeTabId] : {}
@@ -297,16 +260,8 @@ export const injectBrowserAction = () => {
         }
       }
 
-      get alignment(): string {
-        return this.getAttribute('alignment') || ''
-      }
-
-      set alignment(alignment: string) {
-        this.setAttribute('alignment', alignment)
-      }
-
       static get observedAttributes() {
-        return ['tab', 'partition', 'alignment']
+        return ['tab', 'partition']
       }
 
       constructor() {
@@ -338,25 +293,6 @@ export const injectBrowserAction = () => {
 
 .action:hover {
   background-color: var(--browser-action-hover-bg, rgba(255, 255, 255, 0.3));
-}
-
-.action.no-icon::after {
-  content: attr(data-letter);
-  text-transform: uppercase;
-  font-size: .7rem;
-  background-color: #757575;
-  color: white;
-  border-radius: 4px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;
-  height: 80%;
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  justify-content: center;
 }
 
 .badge {
@@ -400,24 +336,24 @@ export const injectBrowserAction = () => {
 
       private startObserving() {
         if (this.observing) return
-        browserAction.addEventListener('update', this.update)
-        browserAction.addObserver(this.partition || DEFAULT_PARTITION)
+        bA.addEventListener('update', this.update)
+        bA.addObserver(this.partition || DEFAULT_PARTITION)
         this.observing = true
       }
 
       private stopObserving() {
         if (!this.observing) return
-        browserAction.removeEventListener('update', this.update)
-        browserAction.removeObserver(this.partition || DEFAULT_PARTITION)
+        bA.removeEventListener('update', this.update)
+        bA.removeObserver(this.partition || DEFAULT_PARTITION)
         this.observing = false
       }
 
       private fetchState = async () => {
         try {
-          await browserAction.getState(this.partition || DEFAULT_PARTITION)
+          await bA.getState(this.partition || DEFAULT_PARTITION)
         } catch {
           console.error(
-            `browser-action-list failed to update [tab: ${this.tab}, partition: '${this.partition}']`,
+            `browser-action-list failed to update [tab: ${this.tab}, partition: '${this.partition}']`
           )
         }
       }
@@ -426,10 +362,9 @@ export const injectBrowserAction = () => {
         const tabId =
           typeof this.tab === 'number' && this.tab >= 0 ? this.tab : state.activeTabId || -1
 
-        // Create or update action buttons
         for (const action of state.actions) {
           let browserActionNode = this.shadowRoot?.querySelector(
-            `[id=${action.id}]`,
+            `[id=${action.id}]`
           ) as BrowserActionElement
 
           if (!browserActionNode) {
@@ -438,25 +373,13 @@ export const injectBrowserAction = () => {
             }) as BrowserActionElement
             node.id = action.id
             node.className = 'action'
-            ;(node as any).alignment = this.alignment
             ;(node as any).part = 'action'
             browserActionNode = node
             this.shadowRoot?.appendChild(browserActionNode)
           }
 
           if (this.partition) browserActionNode.partition = this.partition
-          if (this.alignment) browserActionNode.alignment = this.alignment
           browserActionNode.tab = tabId
-        }
-
-        // Remove any actions no longer in use
-        const actionNodes = Array.from(
-          this.shadowRoot?.querySelectorAll('.action') as any,
-        ) as BrowserActionElement[]
-        for (const actionNode of actionNodes) {
-          if (!state.actions.some((action: any) => action.id === actionNode.id)) {
-            actionNode.remove()
-          }
         }
       }
     }
@@ -464,22 +387,15 @@ export const injectBrowserAction = () => {
     customElements.define('browser-action-list', BrowserActionListElement)
   }
 
-  if (process.contextIsolated) {
-    contextBridge.exposeInMainWorld('browserAction', __browserAction__)
+  try {
+    contextBridge.exposeInMainWorld('browserAction', browserAction)
 
     // Must execute script in main world to modify custom component registry.
-    if ('executeInMainWorld' in contextBridge) {
-      contextBridge.executeInMainWorld({
-        func: mainWorldScript,
-      })
-    } else {
-      // Deprecated electron@<35
-      webFrame.executeJavaScript(`(${mainWorldScript}());`)
-    }
-  } else {
+    webFrame.executeJavaScript(`(${mainWorldScript}(browserAction));`)
+  } catch {
     // When contextIsolation is disabled, contextBridge will throw an error.
     // If that's the case, we're in the main world so we can just execute our
     // function.
-    mainWorldScript()
+    mainWorldScript(browserAction)
   }
 }

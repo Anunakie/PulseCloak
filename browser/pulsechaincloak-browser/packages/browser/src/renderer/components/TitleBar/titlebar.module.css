@@ -1,0 +1,33 @@
+.titlebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: linear-gradient(180deg, #252535 0%, #1a1a25 100%);
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    -webkit-app-region: drag;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logoIcon {
+    font-size: 16px;
+}
+
+.logoText {
+    font-size: 13px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

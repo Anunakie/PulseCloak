@@ -1,0 +1,3672 @@
+/* PulseChainCloak Browser - App Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body, #root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #0a0a0f;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background: #0f0f1a;
+}
+
+/* ===== Tab Bar ===== */
+.tabBar {
+    display: flex;
+    align-items: center;
+    height: 68px;
+    min-height: 68px;
+    padding: 0 8px;
+    padding-top: 32px; /* space for title bar overlay */
+    background: linear-gradient(180deg, #1a1a28 0%, #151522 100%);
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+    -webkit-app-region: drag;
+    overflow: hidden;
+}
+
+.tabList {
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    gap: 2px;
+    -webkit-app-region: no-drag;
+    scrollbar-width: none;
+}
+
+.tabList::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    min-width: 100px;
+    max-width: 200px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+    border-bottom: none;
+    -webkit-app-region: no-drag;
+    user-select: none;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.tabActive {
+    background: rgba(0, 212, 255, 0.08) !important;
+    border-color: rgba(0, 212, 255, 0.2);
+    border-bottom: 2px solid #00d4ff;
+}
+
+.tabFavicon {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.tabTitle {
+    font-size: 11px;
+    color: #b0b0b0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tabCloseBtn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px 5px;
+    margin-left: 4px;
+    cursor: pointer;
+    border-radius: 4px;
+    opacity: 0.6;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.tab:hover .tabCloseBtn {
+    opacity: 1;
+    color: #ccc;
+}
+
+.tabCloseBtn:hover {
+    background: rgba(255, 80, 80, 0.3);
+    color: #ff5555;
+}
+
+
+.tabActive .tabTitle {
+    color: #e0e0e0;
+}
+
+.newTabBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(0, 212, 255, 0.08);
+    color: #00d4ff;
+    font-size: 20px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    -webkit-app-region: no-drag;
+    flex-shrink: 0;
+    margin-left: 6px;
+}
+
+.newTabBtn:hover {
+    background: rgba(0, 212, 255, 0.1);
+    color: #00d4ff;
+}
+
+/* ===== Navigation Bar ===== */
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 6px 10px;
+    height: 42px;
+    min-height: 42px;
+    background: linear-gradient(180deg, #151522 0%, #121220 100%);
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+    gap: 8px;
+}
+
+.navButtons {
+    display: flex;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.navBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #909090;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.navBtn:hover {
+    background: rgba(100, 200, 255, 0.1);
+    color: #00d4ff;
+}
+
+.navBtn:active {
+    transform: scale(0.92);
+}
+
+/* ===== URL Bar ===== */
+.urlForm {
+    flex: 1;
+    min-width: 0;
+}
+
+.urlBarContainer {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(100, 200, 255, 0.12);
+    border-radius: 20px;
+    padding: 5px 14px;
+    transition: all 0.2s ease;
+}
+
+.urlBarContainer:focus-within {
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.12);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.lockIcon {
+    color: #4ade80;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.urlInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #d0d0d0;
+    font-size: 13px;
+    outline: none;
+    min-width: 0;
+}
+
+.urlInput::placeholder {
+    color: #505060;
+}
+
+.urlInput::selection {
+    background: rgba(0, 212, 255, 0.3);
+}
+
+.loadingIndicator {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0, 212, 255, 0.2);
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Privacy Tools (Shield + History) ===== */
+.privacyTools {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.shieldContainer,
+.historyContainer {
+    position: relative;
+}
+
+.shieldBtn {
+    position: relative;
+    color: #4ade80 !important;
+}
+
+.shieldBtn:hover {
+    background: rgba(74, 222, 128, 0.12) !important;
+}
+
+.shieldBadge {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    min-width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.historyBtn {
+    color: #00d4ff !important;
+}
+
+.historyBtn:hover {
+    background: rgba(0, 212, 255, 0.12) !important;
+}
+
+/* ===== Dropdown (shared) ===== */
+.dropdown {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    width: 300px;
+    background: #1a1a2e;
+    border: 1px solid rgba(100, 200, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownIn 0.15s ease;
+}
+
+@keyframes dropdownIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdownHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.headerActions {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.smallBtn {
+    background: transparent;
+    border: none;
+    color: #808090;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+
+.smallBtn:hover {
+    background: rgba(100, 200, 255, 0.1);
+    color: #00d4ff;
+}
+
+.dangerBtn:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #ef4444 !important;
+}
+
+.dropdownBody {
+    padding: 10px 14px;
+}
+
+.statRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.statLabel {
+    font-size: 12px;
+    color: #808090;
+}
+
+.statValue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #00d4ff;
+}
+
+.statActive {
+    font-size: 12px;
+    font-weight: 600;
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.dropdownNote {
+    font-size: 11px;
+    color: #606070;
+    margin-top: 8px;
+    line-height: 1.4;
+}
+
+/* ===== History Dropdown ===== */
+.historyDropdown {
+    width: 360px;
+}
+
+.historyList {
+    max-height: 320px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 200, 255, 0.15) transparent;
+}
+
+.historyList::-webkit-scrollbar {
+    width: 5px;
+}
+
+.historyList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.historyList::-webkit-scrollbar-thumb {
+    background: rgba(100, 200, 255, 0.15);
+    border-radius: 3px;
+}
+
+.emptyHistory {
+    padding: 24px;
+    text-align: center;
+    color: #505060;
+    font-size: 12px;
+}
+
+.historyEntry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background 0.12s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.historyEntry:hover {
+    background: rgba(0, 212, 255, 0.06);
+}
+
+.historyEntry:last-child {
+    border-bottom: none;
+}
+
+.historyEntryIcon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.historyEntryIcon img {
+    border-radius: 2px;
+}
+
+.historyEntryContent {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.historyEntryTitle {
+    font-size: 12px;
+    color: #d0d0d0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.historyEntryUrl {
+    font-size: 10px;
+    color: #505060;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.historyEntryMeta {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.historyTime {
+    font-size: 10px;
+    color: #505060;
+    white-space: nowrap;
+}
+
+.deleteEntryBtn {
+    background: transparent;
+    border: none;
+    color: #505060;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 4px;
+    border-radius: 3px;
+    transition: all 0.12s ease;
+    line-height: 1;
+    opacity: 0;
+}
+
+.historyEntry:hover .deleteEntryBtn {
+    opacity: 1;
+}
+
+.deleteEntryBtn:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
+}
+
+/* ===== Settings Panel ===== */
+.settingsPanel {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.settingsLabel {
+    font-size: 12px;
+    color: #b0b0b0;
+    display: block;
+}
+
+.settingsInputRow {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.settingsInput {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(100, 200, 255, 0.15);
+    border-radius: 6px;
+    padding: 5px 10px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.settingsInput:focus {
+    border-color: rgba(0, 212, 255, 0.4);
+}
+
+.saveBtn {
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 6px;
+    padding: 5px 14px;
+    color: #00d4ff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.saveBtn:hover {
+    background: rgba(0, 212, 255, 0.25);
+}
+
+.settingsNote {
+    font-size: 10px;
+    color: #505060;
+    margin-top: 6px;
+}
+
+/* ===== Content Area ===== */
+.contentArea {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ===== Hidden elements ===== */
+.browser_actions {
+    display: none;
+}
+
+.tab_buttons {
+    display: none;
+}
+
+.tab_container {
+    display: none;
+}
+
+
+/* ===== Wallet Panel ===== */
+.walletContainer {
+    position: relative;
+}
+
+.walletBtn {
+    color: #a855f7 !important;
+    position: relative;
+}
+
+.walletBtn:hover {
+    background: rgba(168, 85, 247, 0.12) !important;
+}
+
+.walletActiveDot {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    border: 1px solid #1a1a2e;
+    pointer-events: none;
+}
+
+.walletDropdown {
+    width: 340px;
+}
+
+.walletHeader {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(6, 182, 212, 0.08));
+}
+
+.walletMsgBar {
+    padding: 6px 14px;
+    font-size: 11px;
+    color: #d0d0d0;
+    background: rgba(0, 212, 255, 0.08);
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+    word-break: break-all;
+}
+
+.walletMsgError {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #f87171 !important;
+}
+
+.walletMsgSuccess {
+    background: rgba(74, 222, 128, 0.1) !important;
+    color: #4ade80 !important;
+}
+
+.walletAddress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.walletAddress:hover {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.walletAddressText {
+    font-size: 12px;
+    color: #a0a0b0;
+    font-family: 'Courier New', monospace;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.walletCopyHint {
+    font-size: 9px;
+    color: #505060;
+    flex-shrink: 0;
+}
+
+.walletBalanceSection {
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+.walletBalanceLabel {
+    font-size: 10px;
+    color: #606070;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.walletBalanceValue {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e0e0e0;
+}
+
+.walletBalanceSymbol {
+    font-size: 14px;
+    color: #a855f7;
+    margin-left: 4px;
+    font-weight: 600;
+}
+
+.walletActions {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.walletActionBtn {
+    flex: 1;
+    padding: 7px 0;
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 8px;
+    background: rgba(168, 85, 247, 0.08);
+    color: #c084fc;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.walletActionBtn:hover {
+    background: rgba(168, 85, 247, 0.18);
+    border-color: rgba(168, 85, 247, 0.4);
+}
+
+.walletActionBtnDanger {
+    border-color: rgba(239, 68, 68, 0.25) !important;
+    background: rgba(239, 68, 68, 0.08) !important;
+    color: #f87171 !important;
+}
+
+.walletActionBtnDanger:hover {
+    background: rgba(239, 68, 68, 0.18) !important;
+}
+
+.walletTokensHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.walletTokensTitle {
+    font-size: 11px;
+    color: #808090;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.walletAddTokenBtn {
+    background: transparent;
+    border: none;
+    color: #a855f7;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 4px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    line-height: 1;
+}
+
+.walletAddTokenBtn:hover {
+    background: rgba(168, 85, 247, 0.12);
+}
+
+.walletTokenList {
+    max-height: 120px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(168, 85, 247, 0.15) transparent;
+}
+
+.walletTokenList::-webkit-scrollbar {
+    width: 4px;
+}
+
+.walletTokenList::-webkit-scrollbar-thumb {
+    background: rgba(168, 85, 247, 0.15);
+    border-radius: 2px;
+}
+
+.walletTokenItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.12s ease;
+}
+
+.walletTokenItem:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.walletTokenName {
+    font-size: 12px;
+    color: #d0d0d0;
+}
+
+.walletTokenSymbol {
+    font-size: 10px;
+    color: #606070;
+    margin-left: 4px;
+}
+
+.walletTokenBalance {
+    font-size: 12px;
+    color: #a0a0b0;
+    font-family: 'Courier New', monospace;
+}
+
+.walletEmptyTokens {
+    text-align: center;
+    padding: 12px;
+    font-size: 11px;
+    color: #505060;
+}
+
+/* Wallet Forms */
+.walletForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.walletFormTitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 4px;
+}
+
+.walletInput {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.walletInput:focus {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+.walletInput::placeholder {
+    color: #404050;
+}
+
+.walletTextarea {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    resize: vertical;
+    min-height: 60px;
+    font-family: 'Courier New', monospace;
+    transition: border-color 0.15s ease;
+}
+
+.walletTextarea:focus {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+.walletSubmitBtn {
+    width: 100%;
+    padding: 9px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.walletSubmitBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.walletSubmitBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.walletBackBtn {
+    background: transparent;
+    border: 1px solid rgba(100, 200, 255, 0.15);
+    border-radius: 8px;
+    padding: 7px 0;
+    color: #808090;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    width: 100%;
+}
+
+.walletBackBtn:hover {
+    background: rgba(100, 200, 255, 0.06);
+    color: #b0b0b0;
+}
+
+.walletSendSelect {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+.walletMnemonicBox {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 6px 0;
+}
+
+.walletMnemonicLabel {
+    font-size: 10px;
+    color: #4ade80;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.walletMnemonicText {
+    font-size: 12px;
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    word-break: break-word;
+    line-height: 1.5;
+}
+
+.walletMnemonicWarning {
+    font-size: 10px;
+    color: #f59e0b;
+    margin-top: 6px;
+}
+
+.walletSetupBtns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 0;
+}
+
+.walletCreateBtn {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.walletCreateBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.walletImportBtn {
+    width: 100%;
+    padding: 12px 0;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 10px;
+    background: transparent;
+    color: #c084fc;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.walletImportBtn:hover {
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.walletLockSection {
+    text-align: center;
+    padding: 16px 0;
+}
+
+.walletLockIcon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.walletLockText {
+    font-size: 12px;
+    color: #808090;
+    margin-bottom: 12px;
+}
+
+/* ===== Node Control Panel ===== */
+.nodeContainer {
+    position: relative;
+}
+
+.nodeBtn {
+    color: #06b6d4 !important;
+    position: relative;
+}
+
+.nodeBtn:hover {
+    background: rgba(6, 182, 212, 0.12) !important;
+}
+
+.nodeStatusIndicator {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid #1a1a2e;
+    pointer-events: none;
+}
+
+.nodeDropdown {
+    width: 380px;
+}
+
+.nodeHeader {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.08));
+}
+
+.nodeTabBar {
+    display: flex;
+    border-bottom: 1px solid rgba(100, 200, 255, 0.08);
+}
+
+.nodeTab {
+    flex: 1;
+    padding: 8px 0;
+    background: transparent;
+    border: none;
+    color: #606070;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+}
+
+.nodeTab:hover {
+    color: #a0a0b0;
+    background: rgba(6, 182, 212, 0.04);
+}
+
+.nodeTabActive {
+    color: #06b6d4 !important;
+    border-bottom-color: #06b6d4 !important;
+}
+
+.nodeStatusSection {
+    text-align: center;
+    padding: 14px 0;
+}
+
+.nodeStatusDot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.nodeStatusText {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e0e0e0;
+    text-transform: capitalize;
+}
+
+.nodeStartBtn {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-top: 10px;
+}
+
+.nodeStartBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.nodeStartBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.nodeStopBtn {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-top: 10px;
+}
+
+.nodeStopBtn:hover {
+    opacity: 0.9;
+}
+
+.nodeInfoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 12px;
+}
+
+.nodeInfoLabel {
+    color: #606070;
+}
+
+.nodeInfoValue {
+    color: #a0a0b0;
+    font-family: 'Courier New', monospace;
+}
+
+.nodeBinaryWarning {
+    padding: 10px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 8px;
+    font-size: 11px;
+    color: #f59e0b;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* Node Config Form */
+.nodeConfigForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nodeConfigLabel {
+    font-size: 11px;
+    color: #808090;
+    margin-bottom: 2px;
+}
+
+.nodeConfigInput {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.nodeConfigInput:focus {
+    border-color: rgba(6, 182, 212, 0.5);
+}
+
+.nodeConfigSelect {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: 6px;
+    padding: 7px 10px;
+    color: #d0d0d0;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+.nodeConfigSaveBtn {
+    width: 100%;
+    padding: 9px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-top: 4px;
+}
+
+.nodeConfigSaveBtn:hover {
+    opacity: 0.9;
+}
+
+/* Node Logs */
+.nodeLogViewer {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(100, 200, 255, 0.08);
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(6, 182, 212, 0.15) transparent;
+}
+
+.nodeLogViewer::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nodeLogViewer::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.15);
+    border-radius: 2px;
+}
+
+.nodeLogEntry {
+    padding: 2px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    line-height: 1.5;
+    word-break: break-all;
+}
+
+.nodeLogTime {
+    color: #404050;
+    margin-right: 6px;
+}
+
+.nodeLogInfo {
+    color: #808090;
+}
+
+.nodeLogError {
+    color: #f87171;
+}
+
+.nodeLogWarn {
+    color: #f59e0b;
+}
+
+.nodeLogEmpty {
+    padding: 20px;
+    text-align: center;
+    color: #404050;
+}
+
+.nodeLogActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.nodeLogClearBtn {
+    background: transparent;
+    border: 1px solid rgba(100, 200, 255, 0.12);
+    border-radius: 6px;
+    padding: 4px 12px;
+    color: #606070;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.nodeLogClearBtn:hover {
+    background: rgba(100, 200, 255, 0.06);
+    color: #a0a0b0;
+}
+
+/* ===== Pulse animation for running node ===== */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.nodePulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+
+/* ===== Additional Wallet Styles ===== */
+.walletMain {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.walletAddrRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.walletAddrRow:hover {
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.walletAddrText {
+    font-size: 12px;
+    color: #a0a0b0;
+    font-family: 'Courier New', monospace;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.walletCopyIcon {
+    font-size: 12px;
+    color: #505060;
+    flex-shrink: 0;
+}
+
+.walletBalanceBox {
+    text-align: center;
+    padding: 12px 0;
+}
+
+.walletBalanceAmount {
+    font-size: 24px;
+    font-weight: 700;
+    color: #e0e0e0;
+}
+
+.walletBalanceSymbol {
+    font-size: 14px;
+    color: #a855f7;
+    margin-left: 4px;
+    font-weight: 600;
+}
+
+.walletBtnPrimary {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.walletBtnPrimary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.walletBtnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.walletBtnSecondary {
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 8px;
+    background: transparent;
+    color: #c084fc;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.walletBtnSecondary:hover {
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.walletSubtitle {
+    font-size: 11px;
+    color: #808090;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.walletWarning {
+    font-size: 10px;
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.15);
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-top: 4px;
+}
+
+.walletEmptyText {
+    text-align: center;
+    padding: 12px;
+    font-size: 11px;
+    color: #505060;
+}
+
+.walletTokenHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.walletTokenRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    border-radius: 6px;
+    transition: background 0.12s ease;
+}
+
+.walletTokenRow:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.walletTokenSymbol {
+    font-size: 12px;
+    color: #d0d0d0;
+    font-weight: 600;
+}
+
+.walletTokenBal {
+    font-size: 12px;
+    color: #a0a0b0;
+    font-family: 'Courier New', monospace;
+}
+
+.mnemonicBox {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 6px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #e0e0e0;
+    word-break: break-word;
+    line-height: 1.6;
+}
+
+/* ===== Additional Node Styles ===== */
+.nodePanel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nodeStatusView {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nodeStatusRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+}
+
+.nodeActions {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.nodeBtnPrimary {
+    flex: 1;
+    padding: 9px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.nodeBtnPrimary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.nodeBtnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.nodeBtnDanger {
+    flex: 1;
+    padding: 9px 0;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.nodeBtnDanger:hover {
+    opacity: 0.9;
+}
+
+.nodeConfigView {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nodeTabBtn {
+    flex: 1;
+    padding: 8px 0;
+    background: transparent;
+    border: none;
+    color: #606070;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+}
+
+.nodeTabBtn:hover {
+    color: #a0a0b0;
+    background: rgba(6, 182, 212, 0.04);
+}
+
+.nodeWarning {
+    padding: 10px;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 8px;
+    font-size: 11px;
+    color: #f59e0b;
+    text-align: center;
+}
+
+.nodeLogsView {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nodeLogsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nodeLogsScroll {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(100, 200, 255, 0.08);
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(6, 182, 212, 0.15) transparent;
+}
+
+.nodeLogsScroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nodeLogsScroll::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.15);
+    border-radius: 2px;
+}
+
+.nodeLogsEmpty {
+    padding: 20px;
+    text-align: center;
+    color: #404050;
+    font-size: 11px;
+}
+
+.nodeLogLine {
+    padding: 2px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    line-height: 1.5;
+    word-break: break-all;
+    color: #808090;
+}
+
+.nodeLogMsg {
+    color: #a0a0b0;
+}
+
+/* ===== MESH PROXY STYLES ===== */
+
+.meshContainer {
+    position: relative;
+}
+
+.meshBtn {
+    position: relative;
+}
+
+.meshBtnActive {
+    color: #4ade80 !important;
+}
+
+.meshStatusIndicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid #1a1a2e;
+}
+
+.meshDropdown {
+    width: 300px;
+    right: 0;
+}
+
+.meshHeader {
+    border-bottom-color: rgba(74, 222, 128, 0.2);
+}
+
+.meshPanel {
+    padding: 4px 0;
+}
+
+.meshToggleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(74, 222, 128, 0.05);
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.meshToggleLabel {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.meshToggleBtn {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0;
+}
+
+.meshToggleOn {
+    background-color: #4ade80;
+}
+
+.meshToggleOff {
+    background-color: #4a4a5a;
+}
+
+.meshToggleKnob {
+    position: absolute;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: left 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.meshToggleOn .meshToggleKnob {
+    left: 23px;
+}
+
+.meshToggleOff .meshToggleKnob {
+    left: 3px;
+}
+
+.meshStatusRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+}
+
+.meshStatusDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.meshStatusLabel {
+    font-size: 12px;
+    color: #a0a0b0;
+}
+
+.meshWarning {
+    font-size: 11px;
+    color: #facc15;
+    background: rgba(250, 204, 21, 0.1);
+    border: 1px solid rgba(250, 204, 21, 0.2);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+}
+
+.meshConfigSection {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 8px;
+    margin-top: 4px;
+}
+
+.meshConfigLabel {
+    display: block;
+    font-size: 11px;
+    color: #808090;
+    margin-bottom: 8px;
+    padding: 0 4px;
+}
+
+.meshConfigInput {
+    width: 100%;
+    padding: 6px 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 12px;
+    margin-top: 4px;
+    box-sizing: border-box;
+}
+
+.meshConfigInput:focus {
+    outline: none;
+    border-color: #4ade80;
+}
+
+.meshPortRow {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.meshPortRow .meshConfigInput {
+    margin-top: 0;
+    flex: 1;
+}
+
+.meshPortSaveBtn {
+    padding: 6px 12px;
+    background: rgba(74, 222, 128, 0.15);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 4px;
+    color: #4ade80;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.meshPortSaveBtn:hover {
+    background: rgba(74, 222, 128, 0.25);
+}
+
+.meshInfoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.meshInfoLabel {
+    font-size: 11px;
+    color: #808090;
+}
+
+.meshInfoValue {
+    font-size: 12px;
+    color: #e0e0e0;
+    font-weight: 500;
+}
+
+/* URL bar mesh active indicator */
+.urlBarMeshActive {
+    border: 1px solid rgba(74, 222, 128, 0.4) !important;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.15) !important;
+}
+
+/* ===== SPACES STYLES ===== */
+
+.spacesContainer {
+    position: relative;
+}
+
+.spacesBtn {
+    position: relative;
+}
+
+.spacesDropdown {
+    width: 340px;
+    right: 0;
+}
+
+.spacesHeader {
+    border-bottom-color: rgba(20, 184, 166, 0.2);
+}
+
+.spacesList {
+    padding: 4px 0;
+}
+
+.spacesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.spacesCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.spacesCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.spacesCardDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.spacesCardName {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.spacesCardCount {
+    font-size: 11px;
+    color: #808090;
+}
+
+.spacesBtnPrimary {
+    width: 100%;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, #14b8a6, #06b6d4);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.spacesBtnPrimary:hover {
+    opacity: 0.9;
+}
+
+.spacesBtnSecondary {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #a0a0b0;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 6px;
+}
+
+.spacesBtnSecondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Spaces Create View */
+.spacesCreate {
+    padding: 4px 0;
+}
+
+.spacesSubtitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0 0 10px 0;
+}
+
+.spacesInput {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+.spacesInput:focus {
+    outline: none;
+    border-color: #14b8a6;
+}
+
+.spacesColorPicker {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.spacesColorBtn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+    padding: 0;
+}
+
+.spacesColorBtn:hover {
+    transform: scale(1.15);
+}
+
+.spacesColorSelected {
+    border-color: white !important;
+    transform: scale(1.15);
+}
+
+.spacesCreateActions {
+    display: flex;
+    gap: 8px;
+}
+
+.spacesCreateActions .spacesBtnPrimary,
+.spacesCreateActions .spacesBtnSecondary {
+    flex: 1;
+    margin-top: 0;
+}
+
+/* Spaces Detail View */
+.spacesDetail {
+    padding: 4px 0;
+}
+
+.spacesDetailHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.spacesBackBtn {
+    background: none;
+    border: none;
+    color: #a0a0b0;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.spacesBackBtn:hover {
+    color: #e0e0e0;
+}
+
+.spacesDetailDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.spacesDetailName {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e0e0e0;
+    flex: 1;
+}
+
+.spacesDeleteBtn {
+    background: none;
+    border: none;
+    color: #f87171;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    opacity: 0.6;
+    line-height: 1;
+}
+
+.spacesDeleteBtn:hover {
+    opacity: 1;
+}
+
+.spacesDappGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.spacesDappTile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.spacesDappTile:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.spacesDappAdd {
+    border-style: dashed;
+    opacity: 0.6;
+}
+
+.spacesDappAdd:hover {
+    opacity: 1;
+}
+
+.spacesDappIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.spacesDappLetter {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.spacesDappPlus {
+    font-size: 22px;
+    color: #808090;
+    font-weight: 300;
+}
+
+.spacesDappName {
+    font-size: 10px;
+    color: #a0a0b0;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80px;
+}
+
+.spacesDappRemove {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    background: none;
+    border: none;
+    color: #f87171;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    padding: 0;
+    line-height: 1;
+}
+
+.spacesDappTile:hover .spacesDappRemove {
+    opacity: 0.7;
+}
+
+.spacesDappRemove:hover {
+    opacity: 1 !important;
+}
+
+.spacesAddDappForm {
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: 4px;
+}
+
+.spacesAddDappForm .spacesBtnPrimary {
+    margin-top: 4px;
+}
+
+/* ===== CHAT STYLES ===== */
+.chatContainer {
+    position: relative;
+}
+
+.chatBtn {
+    position: relative;
+}
+
+.chatUnreadBadgeNav {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    line-height: 1;
+}
+
+.chatDropdown {
+    width: 340px;
+    max-height: 480px;
+    right: 0;
+}
+
+.chatHeader {
+    color: #14b8a6;
+}
+
+.chatEmpty {
+    padding: 24px 16px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+}
+
+.chatEmpty p {
+    margin-bottom: 12px;
+}
+
+.chatSubtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ccc;
+    margin: 0 0 10px 0;
+    padding: 0 12px;
+}
+
+.chatConvoList {
+    display: flex;
+    flex-direction: column;
+}
+
+.chatListHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #888;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chatNewBtn {
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.chatNewBtn:hover {
+    background: #0d9488;
+}
+
+.chatConvoItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.chatConvoItem:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.chatConvoAvatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(20, 184, 166, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.chatConvoInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.chatConvoAddr {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e0e0e0;
+    font-family: monospace;
+}
+
+.chatConvoPreview {
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+}
+
+.chatConvoMeta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.chatConvoTime {
+    font-size: 10px;
+    color: #666;
+}
+
+.chatUnreadBadge {
+    background: #14b8a6;
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+}
+
+.chatNewChat {
+    padding: 12px;
+}
+
+.chatAddrInput {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    font-family: monospace;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.chatAddrInput:focus {
+    border-color: #14b8a6;
+}
+
+.chatMsgBar {
+    font-size: 11px;
+    color: #f87171;
+    padding: 4px 0;
+}
+
+.chatNewActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.chatBtnPrimary {
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.chatBtnPrimary:hover {
+    background: #0d9488;
+}
+
+.chatBtnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.chatBtnSecondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ccc;
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.chatBtnSecondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.chatConvoView {
+    display: flex;
+    flex-direction: column;
+    height: 380px;
+}
+
+.chatConvoHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chatBackBtn {
+    background: none;
+    border: none;
+    color: #14b8a6;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.chatBackBtn:hover {
+    color: #0d9488;
+}
+
+.chatPeerAddr {
+    font-size: 12px;
+    font-weight: 600;
+    color: #e0e0e0;
+    font-family: monospace;
+}
+
+.chatMessageList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.chatEmptyMessages {
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    padding: 40px 0;
+}
+
+.chatBubbleRow {
+    display: flex;
+}
+
+.chatBubbleSent {
+    justify-content: flex-end;
+}
+
+.chatBubbleReceived {
+    justify-content: flex-start;
+}
+
+.chatBubbleSent .chatBubble {
+    background: #14b8a6;
+    color: #fff;
+    border-radius: 12px 12px 2px 12px;
+}
+
+.chatBubbleReceived .chatBubble {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border-radius: 12px 12px 12px 2px;
+}
+
+.chatBubble {
+    max-width: 75%;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.chatBubbleText {
+    margin-bottom: 2px;
+}
+
+.chatBubbleTime {
+    font-size: 9px;
+    opacity: 0.6;
+    text-align: right;
+}
+
+.chatInputRow {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.chatMsgInput {
+    flex: 1;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    color: #e0e0e0;
+    font-size: 12px;
+    outline: none;
+}
+
+.chatMsgInput:focus {
+    border-color: #14b8a6;
+}
+
+.chatSendBtn {
+    background: #14b8a6;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.chatSendBtn:hover {
+    background: #0d9488;
+}
+
+/* ===== IPFS STYLES ===== */
+.ipfsContainer {
+    position: relative;
+}
+
+.ipfsBtn {
+    position: relative;
+}
+
+.ipfsDropdown {
+    width: 360px;
+    max-height: 500px;
+    right: 0;
+}
+
+.ipfsHeader {
+    color: #14b8a6;
+}
+
+.ipfsMsgBar {
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 4px;
+    margin: 4px 12px;
+}
+
+.ipfsMsginfo {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.ipfsMsgsuccess {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+.ipfsMsgerror {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+
+.ipfsMsgInfo {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.ipfsMsgSuccess {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+}
+
+.ipfsMsgError {
+    background: rgba(248, 113, 113, 0.15);
+    color: #f87171;
+}
+
+.ipfsSubtitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ccc;
+    margin: 0 0 10px 0;
+    padding: 0 12px;
+}
+
+.ipfsToolbar {
+    display: flex;
+    gap: 6px;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    align-items: center;
+}
+
+.ipfsBtnPrimary {
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ipfsBtnPrimary:hover {
+    background: #0d9488;
+}
+
+.ipfsBtnPrimary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ipfsBtnSecondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ccc;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.ipfsBtnSecondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.ipfsConfigBtn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.ipfsConfigBtn:hover {
+    color: #14b8a6;
+}
+
+.ipfsApiStatusRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+}
+
+.ipfsApiDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.ipfsFileList {
+    overflow-y: auto;
+    max-height: 340px;
+}
+
+.ipfsEmpty {
+    padding: 24px 16px;
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+}
+
+.ipfsFileItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
+}
+
+.ipfsFileItem:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.ipfsFileIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: rgba(20, 184, 166, 0.12);
+    color: #14b8a6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.ipfsFileInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.ipfsFileName {
+    font-size: 12px;
+    font-weight: 500;
+    color: #e0e0e0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ipfsFileMeta {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.ipfsFileCid {
+    font-size: 10px;
+    color: #14b8a6;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.ipfsFileCid:hover {
+    text-decoration: underline;
+}
+
+.ipfsFileSize {
+    font-size: 10px;
+    color: #666;
+}
+
+.ipfsFileActions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.ipfsSmallBtn {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+}
+
+.ipfsSmallBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #14b8a6;
+}
+
+.ipfsDeleteBtn:hover {
+    color: #f87171 !important;
+}
+
+.ipfsDownloadView {
+    padding: 12px;
+}
+
+.ipfsCidInput {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    font-family: monospace;
+    outline: none;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+}
+
+.ipfsCidInput:focus {
+    border-color: #14b8a6;
+}
+
+.ipfsActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.ipfsConfigView {
+    padding: 12px;
+}
+
+.ipfsLabel {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+    margin-top: 8px;
+}
+
+.ipfsConfigInput {
+    width: 100%;
+    padding: 7px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.ipfsConfigInput:focus {
+    border-color: #14b8a6;
+}
+
+.ipfsFilesView {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ===== TOKEN PAYMENT STYLES ===== */
+.tokenContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tokenBtn {
+    color: #d4a853 !important;
+}
+
+.tokenBtn:hover {
+    color: #f0c060 !important;
+    background: rgba(212, 168, 83, 0.1) !important;
+}
+
+.tokenDropdown {
+    width: 340px;
+    right: 0;
+    max-height: 520px;
+}
+
+.tokenHeader {
+    background: linear-gradient(135deg, #1a3a3a 0%, #0d2626 100%) !important;
+    border-bottom: 2px solid #d4a853 !important;
+    color: #d4a853 !important;
+}
+
+.tokenNotice {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.tokenNoticeInfo {
+    background: rgba(20, 184, 166, 0.15);
+    color: #14b8a6;
+    border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.tokenNoticeSuccess {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.tokenNoticeError {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.tokenMainView {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tokenBalanceCard {
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.12) 0%, rgba(20, 184, 166, 0.08) 100%);
+    border: 1px solid rgba(212, 168, 83, 0.25);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+}
+
+.tokenBalanceLabel {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.tokenBalanceValue {
+    font-size: 28px;
+    font-weight: 700;
+    color: #d4a853;
+    line-height: 1.2;
+}
+
+.tokenBalanceSymbol {
+    font-size: 13px;
+    color: #14b8a6;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.tokenNotConfigured {
+    font-size: 10px;
+    color: #f59e0b;
+    margin-top: 6px;
+    padding: 3px 8px;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.tokenActions {
+    display: flex;
+    gap: 6px;
+}
+
+.tokenActionBtn {
+    flex: 1;
+    padding: 8px 4px;
+    background: rgba(212, 168, 83, 0.1);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 8px;
+    color: #d4a853;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.tokenActionBtn:hover {
+    background: rgba(212, 168, 83, 0.2);
+    border-color: rgba(212, 168, 83, 0.4);
+}
+
+.tokenInfoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 12px;
+}
+
+.tokenInfoLabel {
+    color: #888;
+}
+
+.tokenInfoValue {
+    color: #ccc;
+    font-family: monospace;
+    font-size: 11px;
+}
+
+.tokenAutoPayActive {
+    color: #22c55e !important;
+}
+
+/* Token Send View */
+.tokenSendView {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tokenBackBtn {
+    background: none;
+    border: none;
+    color: #14b8a6;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 4px;
+}
+
+.tokenBackBtn:hover {
+    color: #2dd4bf;
+}
+
+.tokenSubTitle {
+    margin: 0;
+    font-size: 14px;
+    color: #d4a853;
+    font-weight: 600;
+}
+
+.tokenFormGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tokenFormGroup label {
+    font-size: 11px;
+    color: #888;
+}
+
+.tokenInput {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+.tokenInput:focus {
+    border-color: #d4a853;
+}
+
+.tokenEstimateBtn {
+    background: rgba(20, 184, 166, 0.1);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    color: #14b8a6;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.tokenEstimateBtn:hover {
+    background: rgba(20, 184, 166, 0.2);
+}
+
+.tokenGasDisplay {
+    font-size: 11px;
+    color: #999;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 4px;
+}
+
+.tokenSendBtn {
+    padding: 10px;
+    background: linear-gradient(135deg, #d4a853 0%, #b8922e 100%);
+    border: none;
+    border-radius: 8px;
+    color: #1a1a2e;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tokenSendBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.tokenSendBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.tokenSmallBtn {
+    padding: 5px 10px;
+    background: rgba(212, 168, 83, 0.15);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 6px;
+    color: #d4a853;
+    font-size: 11px;
+    cursor: pointer;
+    margin-top: 4px;
+    align-self: flex-start;
+}
+
+.tokenSmallBtn:hover {
+    background: rgba(212, 168, 83, 0.25);
+}
+
+/* Token History View */
+.tokenHistoryView {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tokenHistoryList {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.tokenEmpty {
+    text-align: center;
+    color: #666;
+    font-size: 12px;
+    padding: 20px;
+}
+
+.tokenHistoryItem {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+.tokenHistoryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.tokenHistoryType {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.tokenTypeSend {
+    background: rgba(212, 168, 83, 0.15);
+    color: #d4a853;
+}
+
+.tokenTypeApprove {
+    background: rgba(20, 184, 166, 0.15);
+    color: #14b8a6;
+}
+
+.tokenHistoryAmount {
+    font-size: 12px;
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+.tokenHistoryAddr {
+    font-size: 10px;
+    color: #888;
+    font-family: monospace;
+}
+
+.tokenHistoryStatus {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.tokenStatuspending {
+    color: #f59e0b;
+}
+
+.tokenStatusconfirmed {
+    color: #22c55e;
+}
+
+.tokenStatusfailed {
+    color: #ef4444;
+}
+
+.tokenHistoryTime {
+    font-size: 10px;
+    color: #666;
+    margin-top: 2px;
+}
+
+/* Token Settings View */
+.tokenSettingsView {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tokenAutoPaySection {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.tokenAutoPayRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tokenAutoPayInfo {
+    font-size: 11px;
+    color: #888;
+    margin-top: 6px;
+}
+
+.tokenToggle {
+    width: 40px;
+    height: 22px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    padding: 0;
+}
+
+.tokenToggleOn {
+    background: #d4a853 !important;
+}
+
+.tokenToggleSlider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.tokenToggleOn .tokenToggleSlider {
+    transform: translateX(18px);
+}
+
+
+/* ===== BANDWIDTH SHARING STYLES ===== */
+.bandwidthContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.bandwidthBtn {
+    color: #14b8a6 !important;
+}
+
+.bandwidthBtn:hover {
+    color: #2dd4bf !important;
+    background: rgba(20, 184, 166, 0.1) !important;
+}
+
+.bandwidthBtnActive {
+    color: #22c55e !important;
+}
+
+.bandwidthBtnActive::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+}
+
+.bandwidthActiveDot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: bwPulse 2s infinite;
+}
+
+@keyframes bwPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.bandwidthDropdown {
+    width: 360px;
+    right: 0;
+    max-height: 560px;
+}
+
+.bandwidthHeader {
+    background: linear-gradient(135deg, #0d2e2e 0%, #0a1f1f 100%) !important;
+    border-bottom: 2px solid #14b8a6 !important;
+    color: #14b8a6 !important;
+}
+
+.bwNotice {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.bwNoticeInfo {
+    background: rgba(20, 184, 166, 0.15);
+    color: #14b8a6;
+    border: 1px solid rgba(20, 184, 166, 0.3);
+}
+
+.bwNoticeSuccess {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.bwNoticeError {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.bwMainView {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Sharing Toggle Card */
+.bwSharingCard {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+    border: 1px solid rgba(20, 184, 166, 0.2);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.bwSharingRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bwSharingLabel {
+    font-size: 13px;
+    color: #e0e0e0;
+    font-weight: 600;
+}
+
+.bwSharingStatus {
+    font-size: 11px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.bwSessionTimer {
+    font-size: 11px;
+    color: #14b8a6;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(20, 184, 166, 0.15);
+}
+
+.bwToggle {
+    width: 44px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.3s;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.bwToggleOn {
+    background: #22c55e !important;
+}
+
+.bwToggleSlider {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+.bwToggleOn .bwToggleSlider {
+    transform: translateX(20px);
+}
+
+/* Speed Meters */
+.bwSpeedRow {
+    display: flex;
+    gap: 8px;
+}
+
+.bwSpeedCard {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+}
+
+.bwSpeedLabel {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bwSpeedValue {
+    font-size: 16px;
+    font-weight: 700;
+    color: #14b8a6;
+    margin-top: 2px;
+}
+
+/* Bandwidth Stats */
+.bwStatsCard {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.bwStatsTitle {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.bwBarGroup {
+    margin-bottom: 8px;
+}
+
+.bwBarLabel {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.bwBarTrack {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bwBarFillUp {
+    height: 100%;
+    background: linear-gradient(90deg, #14b8a6, #22c55e);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.bwBarFillDown {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.bwNetContribution {
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    padding: 6px;
+    border-radius: 6px;
+    margin-top: 4px;
+}
+
+.bwNetPositive {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.bwNetNegative {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+/* Rewards Card */
+.bwRewardsCard {
+    background: linear-gradient(135deg, rgba(212, 168, 83, 0.08) 0%, rgba(20, 184, 166, 0.06) 100%);
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.bwRewardsTitle {
+    font-size: 12px;
+    color: #d4a853;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.bwRewardsRow {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.bwRewardItem {
+    flex: 1;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    padding: 8px 4px;
+}
+
+.bwRewardValue {
+    font-size: 14px;
+    font-weight: 700;
+    color: #d4a853;
+}
+
+.bwRewardLabel {
+    font-size: 10px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.bwRewardRate {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.bwClaimBtn {
+    width: 100%;
+    padding: 9px;
+    background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bwClaimBtn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.bwClaimBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Daily Chart */
+.bwChartCard {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.bwChartTitle {
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.bwChart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 80px;
+    padding: 0 4px;
+}
+
+.bwChartDay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.bwChartBars {
+    display: flex;
+    gap: 2px;
+    align-items: flex-end;
+    height: 60px;
+}
+
+.bwChartBarUp {
+    width: 12px;
+    background: linear-gradient(180deg, #14b8a6, #0d9488);
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+    transition: height 0.3s;
+}
+
+.bwChartBarDown {
+    width: 12px;
+    background: linear-gradient(180deg, #f59e0b, #d97706);
+    border-radius: 2px 2px 0 0;
+    min-height: 2px;
+    transition: height 0.3s;
+}
+
+.bwChartLabel {
+    font-size: 9px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.bwChartLegend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 10px;
+}
+
+.bwLegendUp {
+    color: #14b8a6;
+}
+
+.bwLegendDown {
+    color: #f59e0b;
+}
+
+/* Info Rows */
+.bwInfoRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #888;
+    padding: 2px 0;
+}
+
+.bwInfoRow span:last-child {
+    color: #ccc;
+}
+
+
+/* Home button active state */
+.homeBtnActive {
+    color: #00d4ff !important;
+    background: rgba(0, 212, 255, 0.15) !important;
+}

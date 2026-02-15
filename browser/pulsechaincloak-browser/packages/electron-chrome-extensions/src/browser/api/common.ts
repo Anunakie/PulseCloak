@@ -1,6 +1,6 @@
-import { promises as fs } from 'node:fs'
-import * as path from 'node:path'
-import { BaseWindow, BrowserWindow, nativeImage } from 'electron'
+import { promises as fs } from 'fs'
+import * as path from 'path'
+import { nativeImage } from 'electron'
 
 export interface TabContents extends Electron.WebContents {
   favicon?: string
@@ -36,14 +36,9 @@ export const getExtensionUrl = (extension: Electron.Extension, uri: string) => {
   } catch {}
 }
 
-export const resolveExtensionPath = (
-  extension: Electron.Extension,
-  uri: string,
-  requestPath?: string,
-) => {
-  // Resolve any relative paths.
-  const relativePath = path.join(requestPath || '/', uri)
-  const resPath = path.join(extension.path, relativePath)
+export const resolveExtensionPath = (extension: Electron.Extension, uri: string) => {
+  const relpath = uri.indexOf(extension.url) === 0 ? uri.slice(extension.url.length) : uri;
+  const resPath = path.join(extension.path, relpath);
 
   // prevent any parent traversals
   if (!resPath.startsWith(extension.path)) return
@@ -73,7 +68,7 @@ export enum ResizeType {
 export const matchSize = (
   imageSet: { [key: number]: string },
   size: number,
-  match: ResizeType,
+  match: ResizeType
 ): string | undefined => {
   // TODO: match based on size
   const first = parseInt(Object.keys(imageSet).pop()!, 10)
@@ -84,14 +79,10 @@ export const matchSize = (
 export const getIconPath = (
   extension: Electron.Extension,
   iconSize: number = 32,
-  resizeType = ResizeType.Up,
+  resizeType = ResizeType.Up
 ) => {
-  const manifest = getExtensionManifest(extension)
-  const { icons } = manifest
-
-  const default_icon: chrome.runtime.ManifestIcons | undefined = (
-    manifest.manifest_version === 3 ? manifest.action : manifest.browser_action
-  )?.default_icon
+  const { browser_action, icons } = getExtensionManifest(extension)
+  const { default_icon } = browser_action || {}
 
   if (typeof default_icon === 'string') {
     const iconPath = default_icon
@@ -121,10 +112,3 @@ export const matchesPattern = (pattern: string, url: string) => {
   const regexp = new RegExp(`^${pattern.split('*').map(escapePattern).join('.*')}$`)
   return url.match(regexp)
 }
-
-export const matchesTitlePattern = (pattern: string, title: string) => {
-  const regexp = new RegExp(`^${pattern.split('*').map(escapePattern).join('.*')}$`)
-  return title.match(regexp)
-}
-
-export const getAllWindows = () => [...BaseWindow.getAllWindows(), ...BrowserWindow.getAllWindows()]

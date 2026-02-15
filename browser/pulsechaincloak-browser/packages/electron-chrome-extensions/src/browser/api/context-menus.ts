@@ -48,17 +48,13 @@ const matchesConditions = (
     contextTypes: Set<ContextMenuType>
     targetUrl?: string
     documentUrl?: string
-  },
+  }
 ) => {
   if (props.visible === false) return false
 
   const { contextTypes, targetUrl, documentUrl } = conditions
 
-  const contexts = props.contexts
-    ? Array.isArray(props.contexts)
-      ? props.contexts
-      : [props.contexts]
-    : DEFAULT_CONTEXTS
+  const contexts = props.contexts || DEFAULT_CONTEXTS
   const inContext = contexts.some((context) => contextTypes.has(context as ContextMenuType))
   if (!inContext) return false
 
@@ -89,8 +85,7 @@ export class ContextMenusAPI {
     handle('contextMenus.remove', this.remove)
     handle('contextMenus.removeAll', this.removeAll)
 
-    const sessionExtensions = ctx.session.extensions || ctx.session
-    sessionExtensions.on('extension-unloaded', (event, extension) => {
+    this.ctx.session.on('extension-unloaded', (event, extension) => {
       if (this.menus.has(extension.id)) {
         this.menus.delete(extension.id)
       }
@@ -144,7 +139,7 @@ export class ContextMenusAPI {
     for (const item of menuItemTemplates) {
       const menuItem = itemMap.get(item.props.id)
       if (item.props.parentId) {
-        const parentMenuItem = itemMap.get(`${item.props.parentId}`)
+        const parentMenuItem = itemMap.get(item.props.parentId)
         if (parentMenuItem) {
           const submenu = (parentMenuItem.submenu || []) as Electron.MenuItemConstructorOptions[]
           submenu.push(menuItem!)
@@ -161,11 +156,7 @@ export class ContextMenusAPI {
         opts.submenu.forEach((item) => submenu.append(buildFromTemplate(item)))
         opts.submenu = submenu
       }
-      return new MenuItem({
-        ...opts,
-        // Force submenu type when submenu items are present
-        type: opts.type === 'normal' && opts.submenu ? 'submenu' : opts.type,
-      })
+      return new MenuItem(opts)
     }
 
     // Build all final MenuItems in-order
@@ -182,11 +173,11 @@ export class ContextMenusAPI {
 
   buildMenuItemsForParams(
     webContents: Electron.WebContents,
-    params: Electron.ContextMenuParams,
+    params: Electron.ContextMenuParams
   ): Electron.MenuItem[] {
     if (webContents.session !== this.ctx.session) return []
 
-    let menuItemOptions: ContextItemConstructorOptions[] = []
+    const menuItemOptions = []
 
     const conditions = {
       contextTypes: getContextTypesFromParams(params),
@@ -194,13 +185,9 @@ export class ContextMenusAPI {
       documentUrl: params.frameURL || params.pageURL,
     }
 
-    const sessionExtensions = this.ctx.session.extensions || this.ctx.session
-
     for (const [extensionId, propItems] of this.menus) {
-      const extension = sessionExtensions.getExtension(extensionId)
+      const extension = this.ctx.session.getExtension(extensionId)
       if (!extension) continue
-
-      const extensionMenuItemOptions: ContextItemConstructorOptions[] = []
 
       for (const [, props] of propItems) {
         if (matchesConditions(props, conditions)) {
@@ -209,48 +196,10 @@ export class ContextMenusAPI {
             props,
             webContents,
             params,
+            showIcon: true,
           }
-          extensionMenuItemOptions.push(menuItem)
+          menuItemOptions.push(menuItem)
         }
-      }
-
-      const topLevelItems = extensionMenuItemOptions.filter((opt) => !opt.props.parentId)
-
-      if (topLevelItems.length > 1) {
-        // Create new top-level item to group children
-        const groupId = `group${extension.id}`
-        const groupMenuItemOptions: ContextItemConstructorOptions = {
-          extension,
-          webContents,
-          props: {
-            id: groupId,
-            title: extension.name,
-          },
-          params,
-          showIcon: true,
-        }
-
-        // Reassign children to group item
-        const children = extensionMenuItemOptions.map((opt) =>
-          opt.props.parentId
-            ? opt
-            : {
-                ...opt,
-                props: {
-                  ...opt.props,
-                  parentId: groupId,
-                },
-              },
-        )
-
-        menuItemOptions = [...menuItemOptions, groupMenuItemOptions, ...children]
-      } else if (extensionMenuItemOptions.length > 0) {
-        // Set all top-level children to show icon
-        const children = extensionMenuItemOptions.map((opt) => ({
-          ...opt,
-          showIcon: !opt.props.parentId,
-        }))
-        menuItemOptions = [...menuItemOptions, ...children]
       }
     }
 
@@ -259,11 +208,10 @@ export class ContextMenusAPI {
 
   private buildMenuItemsForExtension(
     extensionId: string,
-    menuType: ContextMenuType,
+    menuType: ContextMenuType
   ): Electron.MenuItem[] {
     const extensionItems = this.menus.get(extensionId)
-    const sessionExtensions = this.ctx.session.extensions || this.ctx.session
-    const extension = sessionExtensions.getExtension(extensionId)
+    const extension = this.ctx.session.getExtension(extensionId)
     const activeTab = this.ctx.store.getActiveTabOfCurrentWindow()
 
     const menuItemOptions = []
@@ -318,7 +266,7 @@ export class ContextMenusAPI {
     extensionId: string,
     menuItemId: string,
     webContents: Electron.WebContents,
-    params?: Electron.ContextMenuParams,
+    params?: Electron.ContextMenuParams
   ) {
     if (webContents.isDestroyed()) return
 
@@ -335,8 +283,7 @@ export class ContextMenusAPI {
       frameId: -1, // TODO: match frameURL with webFrameMain in Electron 12
       frameUrl: params?.frameURL,
       editable: params?.isEditable || false,
-      // TODO(mv3): limit possible string enums
-      mediaType: params?.mediaType as any,
+      mediaType: params?.mediaType,
       wasChecked: false, // TODO
       pageUrl: params?.pageURL as any, // types are inaccurate
       linkUrl: params?.linkURL,

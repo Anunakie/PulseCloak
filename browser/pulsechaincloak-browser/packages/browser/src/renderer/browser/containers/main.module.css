@@ -1,0 +1,216 @@
+/* PulseChainCloak Browser - Welcome Page Styles */
+
+.welcomeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 50% 30%, rgba(0, 212, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 30% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+                linear-gradient(180deg, #0f0f1a 0%, #0a0a12 100%);
+    overflow: auto;
+}
+
+.welcomeContent {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 640px;
+    width: 100%;
+}
+
+/* Branding */
+.branding {
+    margin-bottom: 32px;
+}
+
+.logoIcon {
+    margin-bottom: 16px;
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.title {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #00d4ff 0%, #a855f7 50%, #06b6d4 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s ease infinite;
+    margin-bottom: 8px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+    100% { background-position: 0% center; }
+}
+
+.subtitle {
+    color: #606878;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* Search Bar */
+.searchForm {
+    margin-bottom: 40px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(100, 200, 255, 0.15);
+    border-radius: 24px;
+    padding: 12px 20px;
+    transition: all 0.25s ease;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.searchContainer:focus-within {
+    border-color: rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1), 0 0 40px rgba(168, 85, 247, 0.05);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.searchIcon {
+    color: #505868;
+    margin-right: 12px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.searchContainer:focus-within .searchIcon {
+    color: #00d4ff;
+}
+
+.searchInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 15px;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: #404858;
+}
+
+.searchInput::selection {
+    background: rgba(0, 212, 255, 0.3);
+}
+
+/* Quick Links */
+.quickLinks {
+    margin-bottom: 36px;
+}
+
+.sectionTitle {
+    color: #505868;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+}
+
+.linkGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.quickLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 8px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(100, 200, 255, 0.08);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: #c0c0c0;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.quickLink:hover {
+    background: rgba(0, 212, 255, 0.06);
+    border-color: rgba(0, 212, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.1);
+}
+
+.quickLink:active {
+    transform: translateY(0);
+}
+
+.linkIconWrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.linkLabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: #a0a8b4;
+}
+
+/* Features */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    font-size: 12px;
+    color: #606878;
+}
+
+.featureIcon {
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .linkGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+}

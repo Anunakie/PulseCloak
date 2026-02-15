@@ -1,52 +1,29 @@
 {
-  "name": "pulsechaincloak-browser",
-  "version": "1.0.0",
-  "description": "PulseChainCloak - Privacy browser and dMeshVPN for the PulseChain ecosystem.",
-  "private": true,
-  "workspaces": [
-    "packages/shell",
-    "packages/electron-chrome-extensions",
-    "packages/electron-chrome-context-menu",
-    "packages/electron-chrome-web-store"
-  ],
-  "scripts": {
-    "build": "yarn run build:context-menu && yarn run build:chrome-web-store && yarn run build:extensions && yarn run build:shell",
-    "build:chrome-web-store": "yarn --cwd ./packages/electron-chrome-web-store build",
-    "build:context-menu": "yarn --cwd ./packages/electron-chrome-context-menu build",
-    "build:extensions": "yarn --cwd ./packages/electron-chrome-extensions build",
-    "build:shell": "yarn --cwd ./packages/shell build",
-    "start": "yarn build:context-menu && yarn build:extensions && yarn build:chrome-web-store && yarn --cwd ./packages/shell start",
-    "start:debug": "cross-env DEBUG='electron*' yarn start",
-    "start:electron-dev": "cross-env ELECTRON_OVERRIDE_DIST_PATH=$(e show out --path) ELECTRON_ENABLE_LOGGING=1 yarn start",
-    "start:electron-dev:debug": "cross-env DEBUG='electron*' yarn start:electron-dev",
-    "start:electron-dev:trace": "cross-env ELECTRON_OVERRIDE_DIST_PATH=$(e show out --path) ELECTRON_ENABLE_LOGGING=1 yarn --cwd ./packages/shell start:trace",
-    "start:skip-build": "cross-env SHELL_DEBUG=true DEBUG='electron-chrome-extensions*' yarn --cwd ./packages/shell start",
-    "test": "yarn test:extensions",
-    "test:extensions": "yarn --cwd ./packages/electron-chrome-extensions test",
-    "prepare": "husky",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css}\"",
-    "generate-noncompliant": "cat noncompliant.txt | awk '{print tolower($0)}' | xargs -I {} node ./scripts/generate-hash.js {}"
-  },
-  "license": "GPL-3.0",
-  "author": "PulseChainCloak Team",
-  "dependencies": {},
-  "devDependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^15.2.10",
-    "prettier": "^3.4.1"
-  },
-  "repository": "https://github.com/Anunakie/PulseCloak.git",
-  "engines": {
-    "node": ">= 16.0.0",
-    "yarn": ">= 1.10.0 < 2.0.0"
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "semi": false,
-    "endOfLine": "lf"
-  }
+    "name": "pulsechaincloak-browser",
+    "productName": "PulseChainCloak Browser",
+    "version": "0.1.0",
+    "description": "PulseChainCloak Browser - Privacy-focused browser for PulseChain mesh network",
+    "main": ".webpack/main",
+    "private": "true",
+    "workspaces": [
+        "packages/browser",
+        "packages/electron-chrome-extensions"
+    ],
+    "scripts": {
+        "build": "yarn run build:electron-chrome-extensions",
+        "build:electron-chrome-extensions": "yarn --cwd ./packages/electron-chrome-extensions build",
+        "start": "yarn build && yarn --cwd ./packages/browser start",
+        "package": "yarn build && yarn --cwd ./packages/browser package",
+        "make": "yarn build && yarn --cwd ./packages/browser make",
+        "start:debug": "cross-env DEBUG='electron-chrome-extensions:*' yarn start"
+    },
+    "license": "GPL-3.0",
+    "author": "PulseChainCloak Community",
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "eslint": "^8.40.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-react": "^7.32.2",
+        "prettier": "^2.8.8"
+    }
 }

@@ -54,7 +54,7 @@ interface ChromeContextMenuOptions {
   openLink: (
     url: string,
     disposition: 'default' | 'foreground-tab' | 'background-tab' | 'new-window',
-    params: Electron.ContextMenuParams,
+    params: Electron.ContextMenuParams
   ) => void
 
   /** Chrome extension menu items. */
@@ -134,7 +134,7 @@ export const buildChromeContextMenu = (opts: ChromeContextMenuOptions): Menu => 
     } else {
       if (
         app.isEmojiPanelSupported() &&
-        !['input-number', 'input-telephone'].includes(params.formControlType)
+        !['number', 'tel', 'other'].includes(params.inputFieldType)
       ) {
         append({
           label: labels.emoji,
@@ -212,13 +212,13 @@ export const buildChromeContextMenu = (opts: ChromeContextMenuOptions): Menu => 
 
     append({
       label: labels.back,
-      enabled: webContents.navigationHistory.canGoBack(),
-      click: () => webContents.navigationHistory.goBack(),
+      enabled: webContents.canGoBack(),
+      click: () => webContents.goBack(),
     })
     append({
       label: labels.forward,
-      enabled: webContents.navigationHistory.canGoForward(),
-      click: () => webContents.navigationHistory.goForward(),
+      enabled: webContents.canGoForward(),
+      click: () => webContents.goForward(),
     })
     append({
       label: labels.reload,
