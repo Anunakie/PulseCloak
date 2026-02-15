@@ -142,3 +142,4 @@ node_ui/static/binaries/
 .vscode
 # Large binary files - too big for GitHub
 browser-extract/
+.a0proj/
