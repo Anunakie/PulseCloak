@@ -1,4 +1,0 @@
-# Ignore downloaded/bundled node binaries (added by CI)
-*
-!.gitkeep
-!.gitignore

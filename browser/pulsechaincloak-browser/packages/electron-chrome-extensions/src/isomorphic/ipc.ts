@@ -1,1 +1,0 @@
-export const formatIpcName = (name: string) => `crx-${name}`
