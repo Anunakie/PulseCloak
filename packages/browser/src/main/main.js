@@ -104,14 +104,9 @@ const launchApp = async () => {
     await initExtensions();
     await autoLoadExtensions();
 
-    // Open a single new-tab landing page once the renderer is ready.
-    mainWindow.webContents.once('did-finish-load', () => {
-        setTimeout(() => {
-            tabsManager
-                .loadInTab({ url: 'https://duckduckgo.com' })
-                .catch((e) => log.error('Failed to open initial tab', e));
-        }, 500);
-    });
+    // No auto-load on startup — let the renderer show its HomePage
+    // (renders when tabs.length === 0). User opens a tab by typing a URL,
+    // clicking a dock dApp, or using the home search bar.
 };
 
 const start = async () => {
