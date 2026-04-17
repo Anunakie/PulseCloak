@@ -1,7 +1,7 @@
 {
     "name": "pulsechaincloak-browser-app",
     "productName": "PulseChainCloak Browser",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "PulseChainCloak Browser - Decentralized privacy browser for PulseChain",
     "main": ".webpack/main",
     "scripts": {

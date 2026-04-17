@@ -1,53 +1,42 @@
-/* PulseChainCloak Browser — Cyberpunk Theme
- * ========================================
- * Color palette:
- *   --pc-bg-0:       #0a0e1a  (deep space)
- *   --pc-bg-1:       #0f1424  (panel)
- *   --pc-bg-2:       #161c30  (elevated)
- *   --pc-border:     #26304d
- *   --pc-cyan:       #00e5ff  (primary accent)
- *   --pc-cyan-dim:   #00a8c2
- *   --pc-purple:     #7c3aed  (secondary accent)
- *   --pc-pink:       #ec4899
- *   --pc-text:       #e5e7eb
- *   --pc-text-dim:   #9ca3af
- *   --pc-danger:     #ef4444
- *   --pc-success:    #10b981
- */
+/* ================================================================
+   PulseChainCloak Browser v13 — MASQ-inspired theme
+   ================================================================ */
 
 :root {
-    --pc-bg-0: #0a0e1a;
-    --pc-bg-1: #0f1424;
-    --pc-bg-2: #161c30;
-    --pc-bg-3: #1f2742;
-    --pc-border: #26304d;
-    --pc-border-bright: #3b4a78;
-    --pc-cyan: #00e5ff;
-    --pc-cyan-dim: #00a8c2;
-    --pc-purple: #7c3aed;
-    --pc-purple-dim: #5b21b6;
-    --pc-pink: #ec4899;
-    --pc-text: #e5e7eb;
-    --pc-text-dim: #9ca3af;
-    --pc-text-muted: #6b7280;
-    --pc-danger: #ef4444;
-    --pc-success: #10b981;
-    --pc-warning: #f59e0b;
+    /* Surfaces */
+    --pcc-bg: #0a1628;
+    --pcc-bg-1: #0d1a2e;
+    --pcc-bg-2: #0f1e30;
+    --pcc-bg-3: #142539;
+    --pcc-bg-4: #1a2d44;
+    --pcc-border: rgba(255, 255, 255, 0.06);
+    --pcc-border-strong: rgba(255, 255, 255, 0.12);
 
-    --pc-header-h: 36px;
-    --pc-tabstrip-h: 36px;
-    --pc-toolbar-h: 52px;
-    --pc-chrome-h: 124px;
-    --pc-sidebar-w: 64px;
+    /* Text */
+    --pcc-text: #e2e8f0;
+    --pcc-text-dim: #94a3b8;
+    --pcc-text-mute: #64748b;
 
-    --pc-radius-sm: 6px;
-    --pc-radius: 10px;
-    --pc-radius-lg: 14px;
+    /* Accents */
+    --pcc-accent: #2dd3ff;
+    --pcc-accent-2: #3b9eff;
+    --pcc-accent-3: #1f6fff;
+    --pcc-purple: #7c3aed;
+    --pcc-green: #22c55e;
+    --pcc-yellow: #f59e0b;
+    --pcc-red: #ef4444;
 
-    --pc-shadow-glow: 0 0 12px rgba(0, 229, 255, 0.35);
-    --pc-shadow-purple: 0 0 12px rgba(124, 58, 237, 0.35);
+    /* Sizes */
+    --pcc-titlebar-h: 36px;
+    --pcc-toolbar-h: 52px;
+    --pcc-sidebar-w: 64px;
+    --pcc-dock-h: 52px;
 
-    --pc-font: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    /* Shadows */
+    --pcc-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --pcc-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+    --pcc-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.55);
+    --pcc-glow: 0 0 12px rgba(45, 211, 255, 0.35);
 }
 
 * {
@@ -56,31 +45,44 @@
 
 html,
 body,
-#root {
+#app {
     margin: 0;
     padding: 0;
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: var(--pc-bg-0);
-    color: var(--pc-text);
-    font-family: var(--pc-font);
-    font-size: 14px;
+    color: var(--pcc-text);
+    background: var(--pcc-bg);
+    font-family:
+        'Switzer', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-feature-settings: 'ss01', 'ss02';
     -webkit-font-smoothing: antialiased;
-    user-select: none;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 button {
     font-family: inherit;
-    font-size: inherit;
+    color: inherit;
     cursor: pointer;
+    border: none;
+    background: transparent;
 }
 
-input,
-textarea {
+input {
     font-family: inherit;
     color: inherit;
-    user-select: text;
+}
+
+/* Draggable titlebar region (electron) */
+.pcc-drag {
+    -webkit-app-region: drag;
+    user-select: none;
+}
+
+.pcc-no-drag {
+    -webkit-app-region: no-drag;
 }
 
 /* Scrollbars */
@@ -88,13 +90,13 @@ textarea {
     width: 8px;
     height: 8px;
 }
-::-webkit-scrollbar-track {
-    background: transparent;
-}
 ::-webkit-scrollbar-thumb {
-    background: var(--pc-border-bright);
+    background: var(--pcc-bg-4);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--pc-cyan-dim);
+    background: var(--pcc-accent-3);
+}
+::-webkit-scrollbar-track {
+    background: transparent;
 }

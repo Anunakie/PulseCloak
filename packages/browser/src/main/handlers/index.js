@@ -77,10 +77,23 @@ const initMain = async () => {
     });
 
     ipcMain.handle('tab:open-new-tab', async (event, arg) => {
-        const url = arg?.url
-            ? resolveUserInputToUrl(arg.url)
+        // Coerce arg → plain string URL (the renderer may pass a string, an
+        // object, or accidentally a non-serializable event). Never return the
+        // raw Tab instance — it contains non-cloneable BrowserView refs which
+        // crash the IPC layer with `An object could not be cloned`.
+        let rawUrl = '';
+        if (typeof arg === 'string') rawUrl = arg;
+        else if (arg && typeof arg === 'object') rawUrl = String(arg.url || '');
+        const url = rawUrl
+            ? resolveUserInputToUrl(rawUrl)
             : 'https://duckduckgo.com';
-        return tabsManager.openNewTab({ url });
+        try {
+            const tab = await tabsManager.openNewTab({ url });
+            return { ok: true, id: tab?.id ?? null, url };
+        } catch (err) {
+            log.error('tab:open-new-tab failed', err);
+            return { ok: false, error: String(err?.message || err) };
+        }
     });
 
     ipcMain.handle('tab:close-tab', async (event, arg) => {
