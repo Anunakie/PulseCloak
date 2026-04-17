@@ -877,7 +877,15 @@ function App() {
     const handleForward = () => api.goForwardTab?.({ id: selectedId });
     const handleReload = () => api.refreshTab?.({ id: selectedId });
     const handleStop = () => api.stopTab?.({ id: selectedId });
-    const handleHome = () => api.goHomeTab?.({ id: selectedId });
+    // Home button returns to the internal HomePage (React component).
+    // The HomePage renders when tabs.length === 0, so clicking Home closes
+    // all open tabs. Users can re-open dApps from the dock or Spaces.
+    const handleHome = () => {
+        const currentTabs = Array.isArray(tabs) ? [...tabs] : [];
+        currentTabs.forEach((t) => {
+            if (t?.id) api.closeTab?.({ id: t.id });
+        });
+    };
 
     const handleUrlSubmit = (e) => {
         e.preventDefault();
