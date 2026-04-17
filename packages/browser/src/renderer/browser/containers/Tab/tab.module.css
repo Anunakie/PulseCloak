@@ -1,0 +1,12 @@
+/* Tab placeholder — the BrowserView in the main process sits on top of this. */
+.webview {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.webviewSelected {
+    display: block;
+    width: 100%;
+    height: 100%;
+}

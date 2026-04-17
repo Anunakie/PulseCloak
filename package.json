@@ -1,0 +1,35 @@
+{
+    "name": "pulsechaincloak-browser",
+    "productName": "PulseChainCloak Browser",
+    "version": "2.0.0",
+    "description": "PulseChainCloak Browser - Decentralized privacy browser for PulseChain with bundled Web3 wallets, dApp Spaces, and mesh VPN integration.",
+    "main": ".webpack/main",
+    "private": "true",
+    "workspaces": [
+        "packages/browser",
+        "packages/electron-chrome-extensions"
+    ],
+    "scripts": {
+        "build": "yarn run build:electron-chrome-extensions",
+        "build:electron-chrome-extensions": "yarn --cwd ./packages/electron-chrome-extensions build",
+        "start": "yarn build && yarn --cwd ./packages/browser start",
+        "start:debug": "cross-env DEBUG='electron-chrome-extensions:*' yarn start",
+        "start:debugAll": "cross-env DEBUG='*' yarn start",
+        "make": "yarn build && yarn --cwd ./packages/browser make",
+        "make:win": "yarn build && yarn --cwd ./packages/browser make --platform=win32 --arch=x64"
+    },
+    "license": "GPL-3.0",
+    "author": "PulseChainCloak Team <info@pulsechaincloak.io>",
+    "contributors": [
+        "PulseChainCloak-Project",
+        "Samuel Maddock <sam@samuelmaddock.com> (original electron-browser-shell)",
+        "MASQ-Project (fork base)"
+    ],
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "eslint": "^8.40.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-react": "^7.32.2",
+        "prettier": "^2.8.8"
+    }
+}

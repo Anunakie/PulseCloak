@@ -1,0 +1,558 @@
+/* PulseChainCloak Browser — Main App Layout */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(
+            ellipse at top,
+            rgba(124, 58, 237, 0.08) 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            ellipse at bottom right,
+            rgba(0, 229, 255, 0.05) 0%,
+            transparent 60%
+        ),
+        var(--pc-bg-0);
+    color: var(--pc-text);
+    overflow: hidden;
+}
+
+/* ---------- Titlebar ---------------------------------------------------- */
+.titlebar {
+    height: var(--pc-header-h);
+    display: flex;
+    align-items: stretch;
+    background: rgba(10, 14, 26, 0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--pc-border);
+    -webkit-app-region: drag;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.titlebarDrag {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-inline: 16px;
+    -webkit-app-region: drag;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+.brandDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--pc-cyan) 0%,
+        var(--pc-purple) 100%
+    );
+    box-shadow: var(--pc-shadow-glow);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.brandName {
+    background: linear-gradient(
+        90deg,
+        var(--pc-cyan) 0%,
+        var(--pc-purple) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.brandNetwork {
+    color: var(--pc-text-dim);
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.windowControls {
+    display: flex;
+    -webkit-app-region: no-drag;
+}
+
+.winBtn {
+    width: 44px;
+    height: var(--pc-header-h);
+    background: transparent;
+    border: none;
+    color: var(--pc-text-dim);
+    font-size: 14px;
+    transition: all 0.15s ease;
+    -webkit-app-region: no-drag;
+}
+
+.winBtn:hover {
+    background: var(--pc-bg-2);
+    color: var(--pc-text);
+}
+
+.winBtnClose:hover {
+    background: var(--pc-danger);
+    color: #fff;
+}
+
+/* ---------- Tab strip --------------------------------------------------- */
+.tabstrip {
+    height: var(--pc-tabstrip-h);
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 0 12px 0 8px;
+    background: rgba(15, 20, 36, 0.6);
+    border-bottom: 1px solid var(--pc-border);
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-shrink: 0;
+    -webkit-app-region: no-drag;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 30px;
+    min-width: 120px;
+    max-width: 220px;
+    padding: 0 8px 0 12px;
+    background: var(--pc-bg-1);
+    border: 1px solid var(--pc-border);
+    border-bottom: none;
+    border-radius: var(--pc-radius) var(--pc-radius) 0 0;
+    font-size: 12px;
+    color: var(--pc-text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.tab:hover {
+    background: var(--pc-bg-2);
+    color: var(--pc-text);
+}
+
+.tabActive {
+    background: var(--pc-bg-2);
+    color: var(--pc-text);
+    border-color: var(--pc-border-bright);
+    box-shadow: 0 -2px 0 0 var(--pc-cyan) inset;
+}
+
+.tabTitle {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tabClose {
+    width: 18px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    color: var(--pc-text-muted);
+    border-radius: var(--pc-radius-sm);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tabClose:hover {
+    background: var(--pc-danger);
+    color: #fff;
+}
+
+.newTabBtn {
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: 1px solid var(--pc-border);
+    color: var(--pc-text-dim);
+    border-radius: var(--pc-radius-sm);
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 4px;
+    transition: all 0.15s ease;
+}
+
+.newTabBtn:hover {
+    background: var(--pc-bg-2);
+    border-color: var(--pc-cyan);
+    color: var(--pc-cyan);
+    box-shadow: var(--pc-shadow-glow);
+}
+
+/* ---------- Toolbar ----------------------------------------------------- */
+.toolbar {
+    height: var(--pc-toolbar-h);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    background: rgba(15, 20, 36, 0.8);
+    border-bottom: 1px solid var(--pc-border);
+    flex-shrink: 0;
+}
+
+.navBtns {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.navBtn {
+    width: 34px;
+    height: 34px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--pc-radius-sm);
+    color: var(--pc-text-dim);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+}
+
+.navBtn:hover:not(:disabled) {
+    background: var(--pc-bg-2);
+    border-color: var(--pc-border-bright);
+    color: var(--pc-cyan);
+}
+
+.navBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.urlForm {
+    flex: 1;
+    display: flex;
+}
+
+.urlBar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 12px;
+    background: var(--pc-bg-2);
+    border: 1px solid var(--pc-border);
+    border-radius: 18px;
+    transition: all 0.15s ease;
+}
+
+.urlBar:focus-within {
+    border-color: var(--pc-cyan);
+    box-shadow: var(--pc-shadow-glow);
+    background: var(--pc-bg-3);
+}
+
+.urlBarLock {
+    color: var(--pc-success);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.urlInput {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--pc-text);
+    font-size: 13px;
+    letter-spacing: 0.2px;
+}
+
+.urlInput::placeholder {
+    color: var(--pc-text-muted);
+}
+
+.toolbarActions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.browserActions {
+    display: flex;
+    align-items: center;
+}
+
+/* Chrome extension action buttons come from <browser-action-list>. */
+browser-action-list {
+    display: flex;
+}
+browser-action-list::part(action) {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--pc-radius-sm);
+    margin-inline: 2px;
+    transition: background 0.15s ease;
+}
+browser-action-list::part(action):hover {
+    background: var(--pc-bg-2);
+}
+
+/* ---------- Body / Sidebar / Content ----------------------------------- */
+.body {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    position: relative;
+}
+
+.sidebar {
+    width: var(--pc-sidebar-w);
+    display: flex;
+    flex-direction: column;
+    background: rgba(15, 20, 36, 0.9);
+    border-right: 1px solid var(--pc-border);
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.sidebarHeader {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--pc-border);
+    flex-shrink: 0;
+}
+
+.sidebarLogo {
+    font-size: 20px;
+    color: var(--pc-cyan);
+    filter: drop-shadow(0 0 6px var(--pc-cyan));
+}
+
+.sidebarContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    gap: 4px;
+}
+
+.spaceCategory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--pc-border);
+}
+
+.spaceCategory:last-child {
+    border-bottom: none;
+}
+
+.spaceCatIcon {
+    font-size: 10px;
+    color: var(--pc-text-muted);
+    padding: 4px 0;
+}
+
+.spaceBtn {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--pc-radius);
+    color: var(--pc-text);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.spaceBtn:hover {
+    background: var(--pc-bg-2);
+    border-color: var(--pc-cyan);
+    transform: translateY(-1px);
+    box-shadow: var(--pc-shadow-glow);
+}
+
+.spaceIcon {
+    font-size: 20px;
+}
+
+/* ---------- Tab container ----------------------------------------------- */
+.tabContainer {
+    flex: 1;
+    position: relative;
+    background: var(--pc-bg-0);
+    min-width: 0;
+}
+
+.emptyState {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 16px;
+    padding: 40px;
+}
+
+.emptyLogo {
+    font-size: 64px;
+    filter: drop-shadow(0 0 16px var(--pc-cyan));
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.emptyState h1 {
+    margin: 0;
+    font-size: 28px;
+    background: linear-gradient(
+        90deg,
+        var(--pc-cyan) 0%,
+        var(--pc-purple) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.emptyState p {
+    margin: 0;
+    color: var(--pc-text-dim);
+}
+
+.primaryBtn {
+    padding: 12px 24px;
+    background: linear-gradient(
+        135deg,
+        var(--pc-cyan) 0%,
+        var(--pc-purple) 100%
+    );
+    border: none;
+    border-radius: var(--pc-radius);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 12px rgba(0, 229, 255, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primaryBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 229, 255, 0.5);
+}
+
+/* ---------- Settings overlay -------------------------------------------- */
+.settingsOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 14, 26, 0.7);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.settingsPanel {
+    width: 480px;
+    max-width: 90vw;
+    max-height: 80vh;
+    background: var(--pc-bg-1);
+    border: 1px solid var(--pc-border-bright);
+    border-radius: var(--pc-radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), var(--pc-shadow-purple);
+    overflow: hidden;
+}
+
+.settingsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--pc-border);
+}
+
+.settingsHeader h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--pc-cyan);
+}
+
+.settingsBody {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+
+.settingsRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--pc-bg-2);
+    border: 1px solid var(--pc-border);
+    border-radius: var(--pc-radius-sm);
+    font-size: 13px;
+}
+
+.settingsRow label {
+    color: var(--pc-text-dim);
+    font-weight: 500;
+}
+
+.settingsRow span {
+    color: var(--pc-text);
+    max-width: 60%;
+    text-align: right;
+}
+
+.settingsFoot {
+    margin: 12px 0 0 0;
+    font-size: 12px;
+    color: var(--pc-text-muted);
+    line-height: 1.5;
+}
+
+.settingsFoot a {
+    color: var(--pc-cyan);
+    text-decoration: none;
+}
+
+.settingsFoot a:hover {
+    text-decoration: underline;
+}

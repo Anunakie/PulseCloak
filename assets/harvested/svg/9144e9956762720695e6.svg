@@ -1,0 +1,39 @@
+<svg width="248" height="248" viewBox="0 0 248 248" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="98" y="98" width="52" height="52" rx="12" fill="url(#paint0_linear_31184_8626)" />
+    <rect x="100" y="100" width="48" height="48" rx="10" stroke="white" stroke-opacity="0.05"
+        stroke-width="4" />
+    <g clip-path="url(#clip0_31184_8626)">
+        <path
+            d="M129.384 113.964L134.036 118.616C134.381 118.962 134.655 119.371 134.842 119.822C135.029 120.273 135.125 120.756 135.125 121.244C135.125 121.732 135.029 122.216 134.842 122.667C134.655 123.117 134.381 123.527 134.036 123.872L130.622 127.286C130.277 127.631 129.867 127.905 129.417 128.092C128.966 128.279 128.482 128.375 127.994 128.375C127.506 128.375 127.023 128.279 126.572 128.092C126.121 127.905 125.712 127.631 125.366 127.286L124.978 126.897L116.507 135.368C116.078 135.797 115.511 136.062 114.907 136.115L114.681 136.125H113.167C112.85 136.125 112.545 136.009 112.309 135.799C112.072 135.588 111.921 135.299 111.884 134.984L111.875 134.833V133.319C111.875 132.713 112.089 132.126 112.478 131.661L112.632 131.493L113.167 130.958H115.75V128.375H118.333V125.792L121.103 123.022L120.714 122.634C120.369 122.288 120.095 121.879 119.908 121.428C119.721 120.977 119.625 120.494 119.625 120.006C119.625 119.518 119.721 119.034 119.908 118.583C120.095 118.133 120.369 117.723 120.714 117.378L124.128 113.964C124.473 113.619 124.883 113.345 125.333 113.158C125.784 112.971 126.268 112.875 126.756 112.875C127.244 112.875 127.727 112.971 128.178 113.158C128.629 113.345 129.038 113.619 129.384 113.964Z"
+            stroke="url(#paint1_linear_31184_8626)" stroke-width="2.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path d="M127.375 120.625H127.388" stroke="url(#paint2_linear_31184_8626)"
+            stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g opacity="0.2">
+        <circle opacity="0.4" cx="125" cy="125" r="58.5" stroke="#00D1FF" />
+        <circle opacity="0.3" cx="125" cy="125" r="80.5" stroke="#00D1FF" />
+        <circle opacity="0.2" cx="124" cy="124" r="101.5" stroke="#00D1FF" />
+        <circle opacity="0.1" cx="124" cy="124" r="123.5" stroke="#00D1FF" />
+    </g>
+    <defs>
+        <linearGradient id="paint0_linear_31184_8626" x1="124" y1="98" x2="124" y2="150"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#062038" />
+            <stop offset="1" stop-color="#01152D" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_31184_8626" x1="123.5" y1="112.875" x2="123.5"
+            y2="136.125" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#13D5FF" />
+            <stop offset="1" stop-color="#0085FF" />
+        </linearGradient>
+        <linearGradient id="paint2_linear_31184_8626" x1="127.381" y1="120.625" x2="127.381"
+            y2="121.625" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#13D5FF" />
+            <stop offset="1" stop-color="#0085FF" />
+        </linearGradient>
+        <clipPath id="clip0_31184_8626">
+            <rect width="31" height="31" fill="white" transform="translate(108 109)" />
+        </clipPath>
+    </defs>
+</svg>

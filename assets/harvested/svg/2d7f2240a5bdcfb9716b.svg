@@ -1,0 +1,94 @@
+<svg width="344" height="366" viewBox="0 0 344 366" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="147" y="116" width="52" height="52" rx="12" fill="url(#paint0_linear_36103_8)" />
+    <rect x="149" y="118" width="48" height="48" rx="10" stroke="white" stroke-opacity="0.05"
+        stroke-width="4" />
+    <g clip-path="url(#clip0_36103_8)">
+        <path
+            d="M169.5 144.333C169.5 146.267 172.634 147.833 176.5 147.833C180.366 147.833 183.5 146.267 183.5 144.333C183.5 142.4 180.366 140.833 176.5 140.833C172.634 140.833 169.5 142.4 169.5 144.333Z"
+            stroke="url(#paint1_linear_36103_8)" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path
+            d="M169.5 144.333V149C169.5 150.932 172.634 152.5 176.5 152.5C180.366 152.5 183.5 150.932 183.5 149V144.333"
+            stroke="url(#paint2_linear_36103_8)" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path
+            d="M162.5 135C162.5 136.251 163.835 137.406 166 138.031C168.165 138.656 170.835 138.656 173 138.031C175.165 137.406 176.5 136.251 176.5 135C176.5 133.749 175.165 132.594 173 131.969C170.835 131.344 168.165 131.344 166 131.969C163.835 132.594 162.5 133.749 162.5 135Z"
+            stroke="url(#paint3_linear_36103_8)" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path d="M162.5 135V146.667C162.5 147.703 163.401 148.358 164.833 149"
+            stroke="url(#paint4_linear_36103_8)" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+        <path d="M162.5 140.833C162.5 141.869 163.401 142.525 164.833 143.167"
+            stroke="url(#paint5_linear_36103_8)" stroke-width="1.75" stroke-linecap="round"
+            stroke-linejoin="round" />
+    </g>
+    <circle opacity="0.4" cx="174" cy="142" r="58.5" stroke="#0085FF" />
+    <circle opacity="0.3" cx="174" cy="142" r="80.5" stroke="#0085FF" />
+    <circle opacity="0.2" cx="173" cy="141" r="101.5" stroke="#0085FF" />
+    <circle opacity="0.1" cx="173" cy="141" r="123.5" stroke="#0085FF" />
+    <circle cx="233.5" cy="78.5" r="5" stroke="#34FFAA" />
+    <circle cx="160.5" cy="48.5" r="5" stroke="#34FFAA" />
+    <circle cx="113.5" cy="100.5" r="5" stroke="#34FFAA" />
+    <circle cx="81.5" cy="186.5" r="5" stroke="#34FFAA" />
+    <circle cx="199.5" cy="227.5" r="5" stroke="#34FFAA" />
+    <circle cx="255.5" cy="153.5" r="5" stroke="#34FFAA" />
+    <path opacity="0.4" d="M165.5 50.5L228.5 76" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M165.5 50.5L255 148" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M161 53.5L174 118" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M155.5 50L117.5 96" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M148 146L117 104.5" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M83 180.5L111.5 105.5" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M86.5 188.5L194 227" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M254 159L205 226" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M175 170L198.5 221.5" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M86.5 188.5L174.5 171" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M235.5 83.5L255 148" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <path opacity="0.4" d="M200.5 143.5L250.5 154" stroke="#34FFAA" stroke-linecap="round"
+        stroke-dasharray="2 2" />
+    <defs>
+        <linearGradient id="paint0_linear_36103_8" x1="173" y1="116" x2="173" y2="168"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#062038" />
+            <stop offset="1" stop-color="#01152D" />
+        </linearGradient>
+        <linearGradient id="paint1_linear_36103_8" x1="176.5" y1="140.833" x2="176.5" y2="147.833"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34FFAA" />
+            <stop offset="1" stop-color="#5EE671" />
+        </linearGradient>
+        <linearGradient id="paint2_linear_36103_8" x1="176.5" y1="144.333" x2="176.5" y2="152.5"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34FFAA" />
+            <stop offset="1" stop-color="#5EE671" />
+        </linearGradient>
+        <linearGradient id="paint3_linear_36103_8" x1="169.5" y1="131.5" x2="169.5" y2="138.5"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34FFAA" />
+            <stop offset="1" stop-color="#5EE671" />
+        </linearGradient>
+        <linearGradient id="paint4_linear_36103_8" x1="163.667" y1="135" x2="163.667" y2="149"
+            gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34FFAA" />
+            <stop offset="1" stop-color="#5EE671" />
+        </linearGradient>
+        <linearGradient id="paint5_linear_36103_8" x1="163.667" y1="140.833" x2="163.667"
+            y2="143.167" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#34FFAA" />
+            <stop offset="1" stop-color="#5EE671" />
+        </linearGradient>
+        <clipPath id="clip0_36103_8">
+            <rect width="28" height="28" fill="white" transform="translate(159 128)" />
+        </clipPath>
+    </defs>
+</svg>

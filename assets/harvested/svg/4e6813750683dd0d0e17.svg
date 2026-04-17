@@ -1,0 +1,12 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"
+    xmlns:svg="http://www.w3.org/2000/svg">
+    <g class="layer">
+        <title>Layer 1</title>
+        <rect fill="#00141F" height="23.38" id="svg_3" rx="1.5" stroke="#12252F"
+            transform="rotate(-135, 16.002, 16.0106)" width="23.58" x="4.21" y="4.32" />
+        <rect fill="#00141F" height="29" id="svg_4" rx="2"
+            transform="matrix(0, -0.989083, 1.1008, 0, -119.007, 112.756)" width="18" x="95.91"
+            y="108.16" />
+    </g>
+
+</svg>
